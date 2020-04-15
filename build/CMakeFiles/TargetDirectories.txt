@@ -1,0 +1,4 @@
+/Users/cameron/demo/build/CMakeFiles/rebuild_cache.dir
+/Users/cameron/demo/build/CMakeFiles/edit_cache.dir
+/Users/cameron/demo/build/CMakeFiles/GLAD.dir
+/Users/cameron/demo/build/CMakeFiles/demo.dir

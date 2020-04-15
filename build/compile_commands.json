@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/Users/cameron/demo/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -I/Users/cameron/demo/demo -I/Users/cameron/demo/include -I/Users/cameron/demo/src -I/System/Library/Frameworks   -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/GLAD.dir/src/glad.c.o   -c /Users/cameron/demo/src/glad.c",
+  "file": "/Users/cameron/demo/src/glad.c"
+},
+{
+  "directory": "/Users/cameron/demo/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/cameron/demo/demo -I/Users/cameron/demo/include -I/Users/cameron/demo/src -I/System/Library/Frameworks   -Wall -Wno-deprecated-declarations -std=c++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/demo.dir/src/main.cpp.o -c /Users/cameron/demo/src/main.cpp",
+  "file": "/Users/cameron/demo/src/main.cpp"
+},
+{
+  "directory": "/Users/cameron/demo/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/cameron/demo/demo -I/Users/cameron/demo/include -I/Users/cameron/demo/src -I/System/Library/Frameworks   -Wall -Wno-deprecated-declarations -std=c++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/demo.dir/src/renderer.cpp.o -c /Users/cameron/demo/src/renderer.cpp",
+  "file": "/Users/cameron/demo/src/renderer.cpp"
+},
+{
+  "directory": "/Users/cameron/demo/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/cameron/demo/demo -I/Users/cameron/demo/include -I/Users/cameron/demo/src -I/System/Library/Frameworks   -Wall -Wno-deprecated-declarations -std=c++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/demo.dir/src/stb_image.cpp.o -c /Users/cameron/demo/src/stb_image.cpp",
+  "file": "/Users/cameron/demo/src/stb_image.cpp"
+},
+{
+  "directory": "/Users/cameron/demo/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/cameron/demo/demo -I/Users/cameron/demo/include -I/Users/cameron/demo/src -I/System/Library/Frameworks   -Wall -Wno-deprecated-declarations -std=c++14 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14   -o CMakeFiles/demo.dir/src/window.cpp.o -c /Users/cameron/demo/src/window.cpp",
+  "file": "/Users/cameron/demo/src/window.cpp"
+}
+]
