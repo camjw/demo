@@ -25,7 +25,9 @@ Window::Window(const std::string &window_name)
         printf("Failed to initialize GLAD\n");
     }
 
-	setup_callbacks();
+    glEnable(GL_DEPTH_TEST);
+
+    setup_callbacks();
 }
 
 Window::~Window()
