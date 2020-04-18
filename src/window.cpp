@@ -28,6 +28,7 @@ Window::Window(const std::string &window_name)
     glEnable(GL_DEPTH_TEST);
 
     setup_callbacks();
+
 }
 
 Window::~Window()

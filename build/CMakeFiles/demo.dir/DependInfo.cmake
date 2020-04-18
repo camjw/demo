@@ -4,6 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/cameron/demo/src/bitmask.cpp" "/Users/cameron/demo/build/CMakeFiles/demo.dir/src/bitmask.cpp.o"
+  "/Users/cameron/demo/src/engine.cpp" "/Users/cameron/demo/build/CMakeFiles/demo.dir/src/engine.cpp.o"
+  "/Users/cameron/demo/src/input_processor.cpp" "/Users/cameron/demo/build/CMakeFiles/demo.dir/src/input_processor.cpp.o"
   "/Users/cameron/demo/src/main.cpp" "/Users/cameron/demo/build/CMakeFiles/demo.dir/src/main.cpp.o"
   "/Users/cameron/demo/src/renderer.cpp" "/Users/cameron/demo/build/CMakeFiles/demo.dir/src/renderer.cpp.o"
   "/Users/cameron/demo/src/stb_image.cpp" "/Users/cameron/demo/build/CMakeFiles/demo.dir/src/stb_image.cpp.o"

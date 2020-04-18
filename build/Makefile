@@ -153,6 +153,60 @@ demo/fast:
 	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/build
 .PHONY : demo/fast
 
+src/bitmask.o: src/bitmask.cpp.o
+
+.PHONY : src/bitmask.o
+
+# target to build an object file
+src/bitmask.cpp.o:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/bitmask.cpp.o
+.PHONY : src/bitmask.cpp.o
+
+src/bitmask.i: src/bitmask.cpp.i
+
+.PHONY : src/bitmask.i
+
+# target to preprocess a source file
+src/bitmask.cpp.i:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/bitmask.cpp.i
+.PHONY : src/bitmask.cpp.i
+
+src/bitmask.s: src/bitmask.cpp.s
+
+.PHONY : src/bitmask.s
+
+# target to generate assembly for a file
+src/bitmask.cpp.s:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/bitmask.cpp.s
+.PHONY : src/bitmask.cpp.s
+
+src/engine.o: src/engine.cpp.o
+
+.PHONY : src/engine.o
+
+# target to build an object file
+src/engine.cpp.o:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/engine.cpp.o
+.PHONY : src/engine.cpp.o
+
+src/engine.i: src/engine.cpp.i
+
+.PHONY : src/engine.i
+
+# target to preprocess a source file
+src/engine.cpp.i:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/engine.cpp.i
+.PHONY : src/engine.cpp.i
+
+src/engine.s: src/engine.cpp.s
+
+.PHONY : src/engine.s
+
+# target to generate assembly for a file
+src/engine.cpp.s:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/engine.cpp.s
+.PHONY : src/engine.cpp.s
+
 src/glad.o: src/glad.c.o
 
 .PHONY : src/glad.o
@@ -179,6 +233,33 @@ src/glad.s: src/glad.c.s
 src/glad.c.s:
 	$(MAKE) -f CMakeFiles/GLAD.dir/build.make CMakeFiles/GLAD.dir/src/glad.c.s
 .PHONY : src/glad.c.s
+
+src/input_processor.o: src/input_processor.cpp.o
+
+.PHONY : src/input_processor.o
+
+# target to build an object file
+src/input_processor.cpp.o:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/input_processor.cpp.o
+.PHONY : src/input_processor.cpp.o
+
+src/input_processor.i: src/input_processor.cpp.i
+
+.PHONY : src/input_processor.i
+
+# target to preprocess a source file
+src/input_processor.cpp.i:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/input_processor.cpp.i
+.PHONY : src/input_processor.cpp.i
+
+src/input_processor.s: src/input_processor.cpp.s
+
+.PHONY : src/input_processor.s
+
+# target to generate assembly for a file
+src/input_processor.cpp.s:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/input_processor.cpp.s
+.PHONY : src/input_processor.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -298,9 +379,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... GLAD"
 	@echo "... demo"
+	@echo "... src/bitmask.o"
+	@echo "... src/bitmask.i"
+	@echo "... src/bitmask.s"
+	@echo "... src/engine.o"
+	@echo "... src/engine.i"
+	@echo "... src/engine.s"
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
+	@echo "... src/input_processor.o"
+	@echo "... src/input_processor.i"
+	@echo "... src/input_processor.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

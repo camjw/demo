@@ -1,4 +1,7 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/demo.dir/src/bitmask.cpp.o"
+  "CMakeFiles/demo.dir/src/engine.cpp.o"
+  "CMakeFiles/demo.dir/src/input_processor.cpp.o"
   "CMakeFiles/demo.dir/src/main.cpp.o"
   "CMakeFiles/demo.dir/src/renderer.cpp.o"
   "CMakeFiles/demo.dir/src/stb_image.cpp.o"

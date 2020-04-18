@@ -14,7 +14,7 @@ class Shader
 public:
     unsigned int ID;
 
-    Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr)
+    void init(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr)
     {
         std::string vertexCode;
         std::string fragmentCode;
@@ -48,7 +48,6 @@ public:
         }
         catch (std::ifstream::failure& e)
         {
-            std::cout << e.what() << std::endl;
             std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
         }
 

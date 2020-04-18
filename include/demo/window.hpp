@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <cstdio>
 #include <string>
 
@@ -19,7 +20,7 @@ class Window
     void setup_callbacks();
 
   private:
-	GLFWwindow *glfw_window = nullptr;
+	  GLFWwindow *glfw_window = nullptr;
 
     static void error_callback(int code, const char* description);
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
