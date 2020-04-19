@@ -37,7 +37,9 @@ class Engine
     Camera *camera = nullptr;
 
 	Shader simple_shader;
-	unsigned int VBO, VAO;
+	Shader light_shader;
+	Shader lamp_shader;
+	unsigned int cube_VBO, cube_VAO, light_VAO;
     Texture texture1, texture2;
 };
 #endif

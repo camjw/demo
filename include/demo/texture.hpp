@@ -20,6 +20,16 @@ class Texture
 {
 public:
     Texture();
+    GLuint ID = 0;
+
+    //Delete the copy constructor/assignment.
+    Texture(const Texture &) = delete;
+    Texture &operator=(const Texture &) = delete;
+
+    Texture(Texture &&other) : ID(other.ID)
+    {
+        other.ID = 0;
+    }
 
     void build(const std::string& filename);
     void bind() const;
@@ -29,7 +39,6 @@ public:
     }
 
 private:
-    GLuint ID;
     GLuint width, height;
     GLuint Internal_Format;
     GLuint Image_Format;

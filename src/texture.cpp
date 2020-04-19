@@ -7,11 +7,9 @@ Texture::Texture()
 
 void Texture::build(const std::string& filename)
 {
-    glGenTextures(1, &this->ID);
-
     int img_width, img_height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load("assets/textures/sopranos_challenge.png", &img_width, &img_height, &nrChannels, 0);
+    unsigned char *data = stbi_load(filename.c_str(), &img_width, &img_height, &nrChannels, 0);
 
     glGenTextures(1, &this->ID);
     glBindTexture(GL_TEXTURE_2D, this->ID);
