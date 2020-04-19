@@ -1,6 +1,9 @@
 #ifndef DEMO_TEXTURE_HPP
 #define DEMO_TEXTURE_HPP
 
+#include <glad/glad.h>
+#include <stb_image.h>
+
 #include <cstdint>
 #include <string>
 
@@ -13,42 +16,29 @@ enum TextureType
     HEIGHT = 4,
 };
 
-std::string to_string(TextureType type)
+class Texture
 {
-    switch (type)
+public:
+    Texture();
+
+    void build(const std::string& filename);
+    void bind() const;
+    inline TextureType get_type()
     {
-        case (NONE):
-        {
-            return "texture_none";
-        }
-        case (DIFFUSE):
-        {
-            return "texture_diffuse";
-        }
-        case (SPECULAR):
-        {
-            return "texture_specular";
-        }
-        case (NORMAL):
-        {
-            return "texture_normal";
-        }
-        case (HEIGHT):
-        {
-            return "texture_height";
-        }
+        return type;
     }
 
-    return "";
-}
+private:
+    GLuint ID;
+    GLuint width, height;
+    GLuint Internal_Format;
+    GLuint Image_Format;
+    GLuint Wrap_S;
+    GLuint Wrap_T;
+    GLuint Filter_Min;
+    GLuint Filter_Max;
 
-
-struct Texture
-{
-    uint16_t id;
-    std::string path;
-    TextureType type;
+    TextureType type = TextureType::NONE;
 };
 
 #endif
-

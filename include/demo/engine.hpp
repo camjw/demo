@@ -5,6 +5,7 @@
 #include <demo/timer.hpp>
 #include <demo/window.hpp>
 #include <demo/shader.hpp>
+#include <demo/texture.hpp>
 #include <demo/camera.hpp>
 
 #include <glm/glm.hpp>
@@ -37,6 +38,6 @@ class Engine
 
 	Shader simple_shader;
 	unsigned int VBO, VAO;
-	unsigned int texture1, texture2;
+    Texture texture1, texture2;
 };
 #endif
