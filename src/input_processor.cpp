@@ -43,6 +43,10 @@ void InputProcessor::process_input()
 
 	bool right_mouse_button_pressed = read_mouse_state(GLFW_MOUSE_BUTTON_RIGHT);
 	this_frame_keys.set_bit((int)Key::RightMouseButton, right_mouse_button_pressed);
+
+    // update mouse position
+    last_frame_mouse = this_frame_mouse;
+    this_frame_mouse = mouse_position;
 }
 
 bool InputProcessor::is_key_pressed(Key keycode)
@@ -90,4 +94,9 @@ void InputProcessor::process_mouse_button_event(int button, int action, int mods
 			mouse_state[button] = false;
 			break;
 	}
+}
+
+void InputProcessor::process_framebuffer_size_event(float width, float height)
+{
+    framebuffer_size = float2(width, height);
 }

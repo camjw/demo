@@ -5,6 +5,7 @@
 #include <demo/timer.hpp>
 #include <demo/window.hpp>
 #include <demo/shader.hpp>
+#include <demo/camera.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -32,12 +33,10 @@ class Engine
   private:
 	Window *window = nullptr;
 	InputProcessor *input = nullptr;
+    Camera *camera = nullptr;
 
 	Shader simple_shader;
 	unsigned int VBO, VAO;
 	unsigned int texture1, texture2;
-
-    std::vector<float> vertices;
-    std::vector<glm::vec3> cubePositions;
 };
 #endif

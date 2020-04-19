@@ -1,6 +1,7 @@
 #include <demo/window.hpp>
+#include <demo/input_processor.hpp>
 
-Window::Window(const std::string &window_name)
+Window::Window(const std::string &window_name): width(800), height(600)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,7 +29,6 @@ Window::Window(const std::string &window_name)
     glEnable(GL_DEPTH_TEST);
 
     setup_callbacks();
-
 }
 
 Window::~Window()
@@ -39,30 +39,30 @@ Window::~Window()
 
 void Window::setup_callbacks()
 {
-	//glfwSetKeyCallback(glfw_window, keyboard_callback);
-	//glfwSetCursorPosCallback(glfw_window, mouse_position_callback);
-	//glfwSetMouseButtonCallback(glfw_window, mouse_button_callback);
+    glfwSetKeyCallback(glfw_window, keyboard_callback);
+    glfwSetCursorPosCallback(glfw_window, mouse_position_callback);
+    glfwSetMouseButtonCallback(glfw_window, mouse_button_callback);
 	glfwSetErrorCallback(error_callback);
     glfwSetFramebufferSizeCallback(glfw_window, framebuffer_size_callback);
 }
 
-//void Window::keyboard_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
-//{
-	//InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
-	//input->process_keyboard_event(key, scancode, action, mods);
-//}
+void Window::keyboard_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
+    input->process_keyboard_event(key, scancode, action, mods);
+}
 
-//void Window::mouse_position_callback(GLFWwindow *window, double xpos, double ypos)
-//{
-	//InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
-	//input->process_mouse_position_event(xpos, ypos);
-//}
+void Window::mouse_position_callback(GLFWwindow *window, double xpos, double ypos)
+{
+    InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
+    input->process_mouse_position_event(xpos, ypos);
+}
 
-//void Window::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
-//{
-	//InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
-	//input->process_mouse_button_event(button, action, mods);
-//}
+void Window::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+{
+    InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
+    input->process_mouse_button_event(button, action, mods);
+}
 
 void Window::error_callback(int code, const char *description)
 {
@@ -71,5 +71,14 @@ void Window::error_callback(int code, const char *description)
 
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    InputProcessor *input = reinterpret_cast<InputProcessor *>(glfwGetWindowUserPointer(window));
+    input->process_framebuffer_size_event(width, height);
     glViewport(0, 0, width, height);
+}
+
+void Window::update(Time time, InputState* input)
+{
+    float2 framebuffer_size = input->get_framebuffer_size();
+    width = framebuffer_size.x;
+    height = framebuffer_size.y;
 }

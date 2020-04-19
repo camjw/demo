@@ -3,11 +3,12 @@
 Engine::Engine()
 {
 	window = new Window("Estuary King");
+    camera = new Camera();
 	input = new InputProcessor(window);
 
     simple_shader.init("./assets/shaders/simple_shader.vert", "./assets/shaders/simple_shader.frag");
 
-    vertices = {
+    float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -51,26 +52,13 @@ Engine::Engine()
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
-    cubePositions = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3( 2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3( 1.3f, -2.0f, -2.5f),
-        glm::vec3( 1.5f,  2.0f, -2.5f),
-        glm::vec3( 1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
-
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -89,7 +77,7 @@ Engine::Engine()
     unsigned char *data = stbi_load("assets/textures/sopranos_challenge.png", &width, &height, &nrChannels, 0);
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
@@ -129,11 +117,13 @@ Engine::~Engine()
     glDeleteBuffers(1, &VBO);
 
 	delete input;
+    delete camera;
 	delete window;
 }
 
 void Engine::update(Time time)
 {
+    camera->update(time, input);
 }
 
 void Engine::late_update(Time time)
@@ -142,6 +132,19 @@ void Engine::late_update(Time time)
 
 void Engine::draw()
 {
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -152,12 +155,8 @@ void Engine::draw()
 
     simple_shader.use();
 
-    glm::mat4 view          = glm::mat4(1.0f);
-    glm::mat4 projection    = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
-    view       = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    simple_shader.setMat4("projection", projection);
-    simple_shader.setMat4("view", view);
+    simple_shader.setMat4("projection", window->get_projection_matrix());
+    simple_shader.setMat4("view", camera->get_view_matrix());
 
     glBindVertexArray(VAO);
     for (unsigned int i = 0; i < 10; i++)

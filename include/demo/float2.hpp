@@ -1,5 +1,5 @@
-#ifndef EKE__MATHS__FLOAT2_HPP
-#define EKE__MATHS__FLOAT2_HPP
+#ifndef DEMO_FLOAT2_HPP
+#define DEMO_FLOAT2_HPP
 
 #include <cmath>
 
@@ -15,6 +15,11 @@ class float2
         float2 operator + (float2 const &other)
         {
             return float2(x + other.x, y + other.y);
+        }
+
+        float2 operator - (float2 const &other)
+        {
+            return float2(x - other.x, y - other.y);
         }
 
         float2 operator * (float const l)
@@ -50,6 +55,5 @@ class float2
             return float2(x / m, y / m);
         }
 };
-
 
 #endif

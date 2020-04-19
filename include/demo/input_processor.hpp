@@ -16,6 +16,8 @@ class InputState
     virtual bool is_key_up(Key keycode) = 0;
     virtual bool is_key_down(Key keycode) = 0;
     virtual float2 get_mouse_position() = 0;
+    virtual float2 get_mouse_offset() = 0;
+    virtual float2 get_framebuffer_size() = 0;
 };
 
 class InputProcessor: public InputState
@@ -32,10 +34,19 @@ class InputProcessor: public InputState
     {
         return mouse_position;
     }
+    inline float2 get_mouse_offset()
+    {
+        return this_frame_mouse - last_frame_mouse;
+    }
+    inline float2 get_framebuffer_size()
+    {
+        return framebuffer_size;
+    }
 
 	void process_keyboard_event(int key, int scancode, int action, int mods);
 	void process_mouse_position_event(double xpos, double ypos);
 	void process_mouse_button_event(int button, int action, int mods);
+    void process_framebuffer_size_event(float width, float height);
 
   private:
 	inline bool read_keyboard_state(int keycode)
@@ -61,6 +72,7 @@ class InputProcessor: public InputState
 
 		return mouse_state[keycode];
 	}
+    
 
 	Bitmask this_frame_keys;
 	Bitmask last_frame_keys;
@@ -71,6 +83,8 @@ class InputProcessor: public InputState
 	std::unordered_map<int, bool> keyboard_state;
 	std::unordered_map<int, bool> mouse_state;
     float2 mouse_position;
+
+    float2 framebuffer_size;
 };
 
 #endif
