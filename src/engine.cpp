@@ -123,6 +123,7 @@ Engine::~Engine()
 
 void Engine::update(Time time)
 {
+    window->update(time, input);
     camera->update(time, input);
 }
 

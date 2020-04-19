@@ -1,8 +1,10 @@
 #include <demo/camera.hpp>
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : position(position), forward(glm::vec3(0.0f, 0.0f, -1.0f)),  world_up(up), yaw(yaw), pitch(pitch), movement_speed(SPEED), mouse_sensitivity(SENSITIVITY), zoom(ZOOM)
+Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : 
+    position(position), forward(glm::vec3(0.0f, 0.0f, -1.0f)),  world_up(up), yaw(yaw), 
+    pitch(pitch), movement_speed(SPEED), mouse_sensitivity(SENSITIVITY), zoom(ZOOM)
 {
-        update_camera_vectors();
+    update_camera_vectors();
 }
 
 glm::mat4 Camera::get_view_matrix()
@@ -11,6 +13,14 @@ glm::mat4 Camera::get_view_matrix()
 }
 
 void Camera::update(Time time, InputState* input)
+{
+    process_keyboard(time, input);
+    process_mouse_movement(time, input);
+
+    update_camera_vectors();
+}
+
+void Camera::process_keyboard(Time time, InputState* input)
 {
     float velocity = movement_speed * time.delta_time;
     if (input->is_key_pressed(Key::Up))
@@ -23,24 +33,31 @@ void Camera::update(Time time, InputState* input)
     }
     if (input->is_key_pressed(Key::Left))
     {
-        yaw -= velocity;
+        yaw -= LOOK_SPEED * velocity;
     }
     if (input->is_key_pressed(Key::Right))
     {
-        yaw += velocity;
+        yaw += LOOK_SPEED * velocity;
     }
 
-    process_mouse_movement(time, input);
-
-    update_camera_vectors();
+    if (is_fps_camera)
+    {
+        position.y = 0;
+    }
 }
+
 
 void Camera::process_mouse_movement(Time time, InputState* input)
 {
+    if (!input->is_key_pressed(Key::LeftMouseButton))
+    {
+        return;
+    }
+
     float2 mouse_offset = input->get_mouse_offset() * mouse_sensitivity;
 
     yaw   += mouse_offset.x;
-    pitch += mouse_offset.y;
+    pitch -= mouse_offset.y;
 
     if (pitch > 89.0f)
     {
@@ -71,12 +88,15 @@ void Camera::process_mouse_scroll(float yoffset)
 
 void Camera::update_camera_vectors()
 {
-    glm::vec3 forward;
-    forward.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    forward.y = sin(glm::radians(pitch));
-    forward.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    forward = glm::normalize(forward);
+    yaw = glm::mod(yaw, 360.0f);
+
+    glm::vec3 front;
+    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front.y = sin(glm::radians(pitch));
+    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
+    forward = glm::normalize(front);
 
     right = glm::normalize(glm::cross(forward, world_up));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    up    = glm::normalize(glm::cross(right, forward));
+    up = glm::normalize(glm::cross(right, forward));
 }

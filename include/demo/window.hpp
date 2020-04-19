@@ -22,7 +22,7 @@ class Window
 	~Window();
 
 	inline GLFWwindow *get_glfw_window() { return glfw_window; }
-	inline bool should_close() { return glfwWindowShouldClose(glfw_window); }
+	inline bool should_close() { return glfwWindowShouldClose(glfw_window) || close_window; }
     inline glm::mat4x4 get_projection_matrix()
     {
         return glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f);
@@ -32,10 +32,12 @@ class Window
         this->width = width;
         this->height = height;
     }
+
     void update(Time time, InputState* input);
 
   private:
 	GLFWwindow *glfw_window = nullptr;
+    bool close_window = false;
     float width, height;
 
     void setup_callbacks();

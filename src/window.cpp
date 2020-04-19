@@ -81,4 +81,6 @@ void Window::update(Time time, InputState* input)
     float2 framebuffer_size = input->get_framebuffer_size();
     width = framebuffer_size.x;
     height = framebuffer_size.y;
+
+    close_window = input->is_key_pressed(Key::Esc);
 }

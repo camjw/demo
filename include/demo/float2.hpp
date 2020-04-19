@@ -27,6 +27,11 @@ class float2
             return float2(l * x, l * y);
         }
 
+        float2 operator / (float const l)
+        {
+            return float2(x / l, y / l);
+        }
+
         void operator += (float2 const &other)
         {
             x += other.x;

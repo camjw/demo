@@ -84,7 +84,7 @@ class InputProcessor: public InputState
 	std::unordered_map<int, bool> mouse_state;
     float2 mouse_position;
 
-    float2 framebuffer_size;
+    float2 framebuffer_size = float2(800, 600);
 };
 
 #endif

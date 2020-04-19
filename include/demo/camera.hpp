@@ -11,18 +11,17 @@
 #include <demo/input_processor.hpp>
 
 // Default camera values
-const float YAW         = -90.0f;
-const float PITCH       =  0.0f;
 const float SPEED       =  0.025f;
 const float SENSITIVITY =  0.1f;
 const float ZOOM        =  45.0f;
+const float LOOK_SPEED = 2.0f;
 
 
 class Camera
 {
 public:
 
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
 
     glm::mat4 get_view_matrix();
     void update(Time time, InputState* input);
@@ -49,7 +48,7 @@ private:
     float movement_speed;
     float mouse_sensitivity;
     float zoom;
-    bool is_fps_camera = false;
+    bool is_fps_camera = true;
 };
 
 #endif
