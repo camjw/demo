@@ -31,6 +31,11 @@ public:
         return position;
     }
 
+    inline glm::vec3 get_forward_direction()
+    {
+        return forward;
+    }
+
 
 private:
     void update_camera_vectors();

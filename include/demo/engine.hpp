@@ -45,5 +45,6 @@ class Engine
     Texture texture1, texture2;
 
     std::vector<glm::vec3> cubes;
+    std::vector<glm::vec3> lights;
 };
 #endif
