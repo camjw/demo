@@ -32,6 +32,8 @@ class Engine
 	bool is_running();
 
   private:
+    float random_float(float low = -5, float high = 15);
+
 	Window *window = nullptr;
 	InputProcessor *input = nullptr;
     Camera *camera = nullptr;
@@ -41,5 +43,7 @@ class Engine
 	Shader lamp_shader;
 	unsigned int cube_VBO, cube_VAO, light_VAO;
     Texture texture1, texture2;
+
+    std::vector<glm::vec3> cubes;
 };
 #endif

@@ -26,6 +26,11 @@ public:
     glm::mat4 get_view_matrix();
     void update(Time time, InputState* input);
 
+    inline glm::vec3 get_position()
+    {
+        return position;
+    }
+
 
 private:
     void update_camera_vectors();

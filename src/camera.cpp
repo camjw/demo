@@ -31,13 +31,28 @@ void Camera::process_keyboard(Time time, InputState* input)
     {
         position -= forward * velocity;
     }
-    if (input->is_key_pressed(Key::Left))
+
+    if (input->is_key_pressed(Key::LeftShift) || input->is_key_pressed(Key::RightShift))
     {
-        yaw -= LOOK_SPEED * velocity;
+        if (input->is_key_pressed(Key::Left))
+        {
+            position -= right * velocity;
+        }
+        if (input->is_key_pressed(Key::Right))
+        {
+            position += right * velocity;
+        }
     }
-    if (input->is_key_pressed(Key::Right))
+    else 
     {
-        yaw += LOOK_SPEED * velocity;
+        if (input->is_key_pressed(Key::Left))
+        {
+            yaw -= LOOK_SPEED * velocity;
+        }
+        if (input->is_key_pressed(Key::Right))
+        {
+            yaw += LOOK_SPEED * velocity;
+        }
     }
 
     if (is_fps_camera)
