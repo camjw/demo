@@ -7,6 +7,7 @@
 #include <demo/shader.hpp>
 #include <demo/texture.hpp>
 #include <demo/camera.hpp>
+#include <demo/cube_map.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -41,10 +42,13 @@ class Engine
 	Shader simple_shader;
 	Shader light_shader;
 	Shader lamp_shader;
-	unsigned int cube_VBO, cube_VAO, light_VAO;
+	Shader skybox_shader;
+	unsigned int cube_VBO, cube_VAO, light_VAO, skybox_VAO, skybox_VBO;
     Texture texture1, texture2;
 
     std::vector<glm::vec3> cubes;
     std::vector<glm::vec3> lights;
+
+    CubeMap skybox;
 };
 #endif

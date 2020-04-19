@@ -22,7 +22,6 @@ public:
     Texture();
     GLuint ID = 0;
 
-    //Delete the copy constructor/assignment.
     Texture(const Texture &) = delete;
     Texture &operator=(const Texture &) = delete;
 

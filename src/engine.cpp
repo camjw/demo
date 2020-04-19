@@ -9,6 +9,7 @@ Engine::Engine()
     simple_shader.init("./assets/shaders/simple_shader.vert", "./assets/shaders/simple_shader.frag");
     light_shader.init("./assets/shaders/lighting_shader.vert", "./assets/shaders/lighting_shader.frag");
     lamp_shader.init("./assets/shaders/lamp_shader.vert", "./assets/shaders/lamp_shader.frag");
+    skybox_shader.init("./assets/shaders/skybox_shader.vert", "./assets/shaders/skybox_shader.frag");
 
     float vertices[] = {
         // positions          // normals           // texture coords
@@ -55,6 +56,59 @@ Engine::Engine()
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
 
+    float skyboxVertices[] = {
+        // positions
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
+    };
+
+    glGenVertexArrays(1, &skybox_VAO);
+    glGenBuffers(1, &skybox_VBO);
+    glBindVertexArray(skybox_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, skybox_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
     glGenVertexArrays(1, &cube_VAO);
     glGenBuffers(1, &cube_VBO);
 
@@ -96,6 +150,18 @@ Engine::Engine()
     {
         lights.push_back(glm::vec3(random_float(), random_float(), random_float()));
     }
+
+
+    std::vector<std::string> faces = {
+        "assets/textures/skybox/right.png",
+        "assets/textures/skybox/left.png",
+        "assets/textures/skybox/top.png",
+        "assets/textures/skybox/bottom.png",
+        "assets/textures/skybox/front.png",
+        "assets/textures/skybox/back.png",
+    };
+
+    skybox.build(faces);
 }
 
 float Engine::random_float(float low, float high)
@@ -234,6 +300,17 @@ void Engine::draw()
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
+
+    // draw skybox
+    glDepthMask(GL_FALSE);
+    skybox_shader.use();
+    skybox_shader.setMat4("view", glm::mat4(glm::mat3(camera->get_view_matrix())));
+    skybox_shader.setMat4("projection", window->get_projection_matrix());
+    glBindVertexArray(skybox_VAO);
+    skybox.bind();
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+    glDepthFunc(GL_LESS);
 
     glfwSwapBuffers(window->get_glfw_window());
 }
