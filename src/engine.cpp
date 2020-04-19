@@ -103,18 +103,17 @@ Engine::Engine()
 
     glGenVertexArrays(1, &skybox_VAO);
     glGenBuffers(1, &skybox_VBO);
-    glBindVertexArray(skybox_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, skybox_VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glBindVertexArray(skybox_VAO);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
+
     glGenVertexArrays(1, &cube_VAO);
     glGenBuffers(1, &cube_VBO);
-
     glBindBuffer(GL_ARRAY_BUFFER, cube_VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glBindVertexArray(cube_VAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -127,7 +126,6 @@ Engine::Engine()
 
     // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
     glBindBuffer(GL_ARRAY_BUFFER, cube_VBO);
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -302,10 +300,11 @@ void Engine::draw()
     }
 
     // draw skybox
-    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_LEQUAL); 
     skybox_shader.use();
     skybox_shader.setMat4("view", glm::mat4(glm::mat3(camera->get_view_matrix())));
     skybox_shader.setMat4("projection", window->get_projection_matrix());
+    
     glBindVertexArray(skybox_VAO);
     skybox.bind();
     glDrawArrays(GL_TRIANGLES, 0, 36);
