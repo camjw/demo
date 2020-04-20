@@ -9,6 +9,10 @@
 #include <demo/camera.hpp>
 #include <demo/cube_map.hpp>
 
+#include <imgui/imgui.h>
+#include <imgui/bindings/imgui_impl_glfw.h>
+#include <imgui/bindings/imgui_impl_opengl3.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

@@ -160,6 +160,16 @@ Engine::Engine()
     };
 
     skybox.build(faces);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    // Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForOpenGL(window->get_glfw_window(), true);
+    const char *glsl_version = "#version 330 core";
+    ImGui_ImplOpenGL3_Init(glsl_version);
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
 }
 
 float Engine::random_float(float low, float high)
@@ -171,6 +181,10 @@ Engine::~Engine()
 {
     glDeleteVertexArrays(1, &cube_VAO);
     glDeleteBuffers(1, &cube_VBO);
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
 	delete input;
     delete camera;
@@ -191,6 +205,10 @@ void Engine::draw()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
     glActiveTexture(GL_TEXTURE0);
     texture1.bind();
@@ -310,6 +328,20 @@ void Engine::draw()
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     glDepthFunc(GL_LESS);
+
+     // render your GUI
+    ImGui::Begin("Demo window");
+    ImGui::Button("Hello!");
+    ImGui::End();
+
+    // Render dear imgui into screen
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    int display_w, display_h;
+    glfwGetFramebufferSize(window->get_glfw_window(), &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+    glfwSwapBuffers(window->get_glfw_window());
 
     glfwSwapBuffers(window->get_glfw_window());
 }
