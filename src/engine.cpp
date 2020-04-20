@@ -341,7 +341,6 @@ void Engine::draw()
     int display_w, display_h;
     glfwGetFramebufferSize(window->get_glfw_window(), &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
-    glfwSwapBuffers(window->get_glfw_window());
 
     glfwSwapBuffers(window->get_glfw_window());
 }

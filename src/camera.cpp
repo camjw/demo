@@ -64,7 +64,7 @@ void Camera::process_keyboard(Time time, InputState* input)
 
 void Camera::process_mouse_movement(Time time, InputState* input)
 {
-    if (!input->is_key_pressed(Key::LeftMouseButton))
+    if (!(input->is_key_pressed(Key::LeftMouseButton) && input->is_key_pressed(Key::LeftShift)))
     {
         return;
     }
