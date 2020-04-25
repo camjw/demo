@@ -1,8 +1,8 @@
 #ifndef DEMO_ECS_ECS_HPP
 #define DEMO_ECS_ECS_HPP
 
-#include <cstdint>
 #include <bitset>
+#include <cstdint>
 
 using Entity = std::uint32_t;
 const Entity MAX_ENTITIES = 5000;

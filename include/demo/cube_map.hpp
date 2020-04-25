@@ -15,10 +15,11 @@ public:
     GLuint ID = 0;
 
     //Delete the copy constructor/assignment.
-    CubeMap(const CubeMap &) = delete;
-    CubeMap &operator=(const CubeMap &) = delete;
+    CubeMap(const CubeMap&) = delete;
+    CubeMap& operator=(const CubeMap&) = delete;
 
-    CubeMap(CubeMap &&other) : ID(other.ID)
+    CubeMap(CubeMap&& other)
+        : ID(other.ID)
     {
         other.ID = 0;
     }

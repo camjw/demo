@@ -7,34 +7,34 @@
 
 int main()
 {
-	Engine engine;
+    Engine engine;
 
-	const int UPDATE_FREQUENCY = 60;
-	const float CYCLE_TIME = 1000.0f / UPDATE_FREQUENCY;
+    const int UPDATE_FREQUENCY = 60;
+    const float CYCLE_TIME = 1000.0f / UPDATE_FREQUENCY;
 
-	static Timer system_timer;
-	static Timer physics_timer;
+    static Timer system_timer;
+    static Timer physics_timer;
 
-	float accumulated_milliseconds = 0.0f;
+    float accumulated_milliseconds = 0.0f;
 
-	while (engine.is_running())
-	{
-		system_timer.tick();
-		engine.process_input();
-		accumulated_milliseconds += system_timer.get_time().delta_time;
+    while (engine.is_running())
+    {
+        system_timer.tick();
+        engine.process_input();
+        accumulated_milliseconds += system_timer.get_time().delta_time;
 
-		if (accumulated_milliseconds >= CYCLE_TIME)
-		{
-			accumulated_milliseconds -= CYCLE_TIME;
+        if (accumulated_milliseconds >= CYCLE_TIME)
+        {
+            accumulated_milliseconds -= CYCLE_TIME;
 
-			physics_timer.tick();
+            physics_timer.tick();
 
-			Time time = physics_timer.get_time();
-			engine.update(time);
+            Time time = physics_timer.get_time();
+            engine.update(time);
 
-			engine.late_update(time);
+            engine.late_update(time);
 
-			engine.draw();
-		}
-	}
+            engine.draw();
+        }
+    }
 }

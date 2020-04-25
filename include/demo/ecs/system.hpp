@@ -3,23 +3,23 @@
 
 #include <set>
 
-#include <demo/timer.hpp>
-#include <demo/input_processor.hpp>
 #include <demo/ecs/ecs.hpp>
+#include <demo/input_processor.hpp>
+#include <demo/timer.hpp>
 
 class System
 {
-    public:
-        virtual void update(Time time, InputState* input);
-        virtual void late_update(Time time, InputState* input);
+public:
+    virtual void update(Time time, InputState* input);
+    virtual void late_update(Time time, InputState* input);
 
-        std::set<Entity> entities;
+    std::set<Entity> entities;
 };
 
 class RendererSystem
 {
-    public:
-        std::set<Entity> entities;
+public:
+    std::set<Entity> entities;
 };
 
 #endif

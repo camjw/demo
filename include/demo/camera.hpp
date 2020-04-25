@@ -7,20 +7,18 @@
 
 #include <vector>
 
-#include <demo/timer.hpp>
 #include <demo/input_processor.hpp>
+#include <demo/timer.hpp>
 
 // Default camera values
-const float SPEED       =  0.025f;
-const float SENSITIVITY =  0.1f;
-const float ZOOM        =  45.0f;
+const float SPEED = 0.025f;
+const float SENSITIVITY = 0.1f;
+const float ZOOM = 45.0f;
 const float LOOK_SPEED = 2.0f;
-
 
 class Camera
 {
 public:
-
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
 
     glm::mat4 get_view_matrix();
@@ -35,7 +33,6 @@ public:
     {
         return forward;
     }
-
 
 private:
     void update_camera_vectors();
@@ -53,7 +50,7 @@ private:
     // Euler Angles
     float yaw;
     float pitch;
-    
+
     // Camera options
     float movement_speed;
     float mouse_sensitivity;

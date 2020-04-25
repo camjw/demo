@@ -1,0 +1,7 @@
+include/*
+!include/demo/
+
+cmake/
+
+src/imgui/
+src/glad.c

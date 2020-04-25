@@ -6,12 +6,12 @@
 
 class maths
 {
-    public:
-        static float3 multiply(quaternion q, float3 v)
-        {
-            quaternion c = q.inverse() * quaternion(0, v.x, v.y, v.z) * q;
-            return float3(c.x, c.y, c.z);
-        }
+public:
+    static float3 multiply(quaternion q, float3 v)
+    {
+        quaternion c = q.inverse() * quaternion(0, v.x, v.y, v.z) * q;
+        return float3(c.x, c.y, c.z);
+    }
 };
 
 #endif

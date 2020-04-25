@@ -1,8 +1,14 @@
 #include <demo/camera.hpp>
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : 
-    position(position), forward(glm::vec3(0.0f, 0.0f, -1.0f)),  world_up(up), yaw(yaw), 
-    pitch(pitch), movement_speed(SPEED), mouse_sensitivity(SENSITIVITY), zoom(ZOOM)
+Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+    : position(position)
+    , forward(glm::vec3(0.0f, 0.0f, -1.0f))
+    , world_up(up)
+    , yaw(yaw)
+    , pitch(pitch)
+    , movement_speed(SPEED)
+    , mouse_sensitivity(SENSITIVITY)
+    , zoom(ZOOM)
 {
     update_camera_vectors();
 }
@@ -43,7 +49,7 @@ void Camera::process_keyboard(Time time, InputState* input)
             position += right * velocity;
         }
     }
-    else 
+    else
     {
         if (input->is_key_pressed(Key::Left))
         {
@@ -61,7 +67,6 @@ void Camera::process_keyboard(Time time, InputState* input)
     }
 }
 
-
 void Camera::process_mouse_movement(Time time, InputState* input)
 {
     if (!(input->is_key_pressed(Key::LeftMouseButton) && input->is_key_pressed(Key::LeftShift)))
@@ -71,7 +76,7 @@ void Camera::process_mouse_movement(Time time, InputState* input)
 
     float2 mouse_offset = input->get_mouse_offset() * mouse_sensitivity;
 
-    yaw   += mouse_offset.x;
+    yaw += mouse_offset.x;
     pitch -= mouse_offset.y;
 
     if (pitch > 89.0f)
@@ -112,6 +117,6 @@ void Camera::update_camera_vectors()
 
     forward = glm::normalize(front);
 
-    right = glm::normalize(glm::cross(forward, world_up));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    right = glm::normalize(glm::cross(forward, world_up)); // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     up = glm::normalize(glm::cross(right, forward));
 }

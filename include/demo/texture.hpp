@@ -22,10 +22,11 @@ public:
     Texture();
     GLuint ID = 0;
 
-    Texture(const Texture &) = delete;
-    Texture &operator=(const Texture &) = delete;
+    Texture(const Texture&) = delete;
+    Texture& operator=(const Texture&) = delete;
 
-    Texture(Texture &&other) : ID(other.ID)
+    Texture(Texture&& other)
+        : ID(other.ID)
     {
         other.ID = 0;
     }

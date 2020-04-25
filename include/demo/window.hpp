@@ -1,8 +1,8 @@
 #ifndef DEMO_WINDOW_HPP
 #define DEMO_WINDOW_HPP
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,19 +10,19 @@
 #include <cstdio>
 #include <string>
 
+#include <demo/maths/float2.hpp>
 #include <demo/timer.hpp>
-#include <demo/float2.hpp>
 
 class InputState;
 
 class Window
 {
-  public:
-	Window(const std::string &window_name);
-	~Window();
+public:
+    Window(const std::string& window_name);
+    ~Window();
 
-	inline GLFWwindow *get_glfw_window() { return glfw_window; }
-	inline bool should_close() { return glfwWindowShouldClose(glfw_window) || close_window; }
+    inline GLFWwindow* get_glfw_window() { return glfw_window; }
+    inline bool should_close() { return glfwWindowShouldClose(glfw_window) || close_window; }
     inline glm::mat4x4 get_projection_matrix()
     {
         return glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f);
@@ -35,8 +35,8 @@ class Window
 
     void update(Time time, InputState* input);
 
-  private:
-	GLFWwindow *glfw_window = nullptr;
+private:
+    GLFWwindow* glfw_window = nullptr;
     bool close_window = false;
     float width, height;
 
