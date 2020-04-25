@@ -17,7 +17,7 @@ class EntityManager
             }
         }
 
-        Entity CreateEntity()
+        Entity create_entity()
 	    {
 		    assert(livingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
     
@@ -28,7 +28,7 @@ class EntityManager
 		    return id;
 	    }
     
-	    void DestroyEntity(Entity entity)
+	    void destroy_entity(Entity entity)
 	    {
 		    assert(entity < MAX_ENTITIES && "Entity out of range.");
     
@@ -38,14 +38,14 @@ class EntityManager
 		    --livingEntityCount;
 	    }
     
-	    void SetSignature(Entity entity, Signature signature)
+	    void set_signature(Entity entity, Signature signature)
 	    {
 		    assert(entity < MAX_ENTITIES && "Entity out of range.");
     
 		    signatures[entity] = signature;
 	    }
     
-	    Signature GetSignature(Entity entity)
+	    Signature get_signature(Entity entity)
 	    {
 		    assert(entity < MAX_ENTITIES && "Entity out of range.");
     
