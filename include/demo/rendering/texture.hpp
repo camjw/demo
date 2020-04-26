@@ -22,13 +22,23 @@ public:
     Texture();
     GLuint ID = 0;
 
-    Texture(const Texture&) = delete;
-    Texture& operator=(const Texture&) = delete;
+    Texture(const Texture &) = delete;
+    Texture &operator=(const Texture &) = delete;
 
-    Texture(Texture&& other)
-        : ID(other.ID)
+    Texture(Texture &&other) : ID(other.ID)
     {
-        other.ID = 0;
+        other.ID = 0; //Use the "null" texture for the old object.
+    }
+
+    Texture &operator=(Texture &&other)
+    {
+        //ALWAYS check for self-assignment.
+        if(this != &other)
+        {
+            Release();
+            //obj_ is now 0.
+            std::swap(ID, other.ID);
+        }
     }
 
     void build(const std::string& filename);
@@ -39,6 +49,11 @@ public:
     }
 
 private:
+    void Release()
+    {
+        glDeleteTextures(1, &ID);
+        ID = 0;
+    }
     GLuint width, height;
     GLuint Internal_Format;
     GLuint Image_Format;

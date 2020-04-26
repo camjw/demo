@@ -7,6 +7,8 @@
 #include <demo/input_processor.hpp>
 #include <demo/timer.hpp>
 
+class Coordinator;
+
 class System
 {
     public:

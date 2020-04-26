@@ -105,6 +105,8 @@ private:
     std::unordered_map<const char*, Signature> signatures {};
     std::unordered_map<const char*, std::shared_ptr<System>> systems {};
     std::unordered_map<const char*, std::shared_ptr<UpdatableSystem>> updatable_systems {};
+
+    std::shared_ptr<Coordinator> coordinator;
 };
 
 #endif

@@ -9,7 +9,7 @@
 class Coordinator
 {
 public:
-    void Init()
+    void init()
     {
         // Create pointers to each manager
         componentManager = std::make_unique<ComponentManager>();
@@ -80,6 +80,12 @@ public:
     std::shared_ptr<T> register_system()
     {
         return systemManager->register_system<T>();
+    }
+
+    template <typename T>
+    std::shared_ptr<T> register_updatable_system()
+    {
+        return systemManager->register_updatable_system<T>();
     }
 
     template <typename T>
