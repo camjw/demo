@@ -10,22 +10,38 @@
 
 class CubeMap
 {
-public:
-    CubeMap();
-    GLuint ID = 0;
+    public:
+        CubeMap();
+        GLuint ID = 0;
 
-    //Delete the copy constructor/assignment.
-    CubeMap(const CubeMap&) = delete;
-    CubeMap& operator=(const CubeMap&) = delete;
+        CubeMap(const CubeMap&) = delete;
+        CubeMap& operator=(const CubeMap&) = delete;
 
-    CubeMap(CubeMap&& other)
-        : ID(other.ID)
-    {
-        other.ID = 0;
-    }
+        CubeMap(CubeMap &&other) : ID(other.ID) 
+        {
+            other.ID = 0;
+        }
 
-    void build(const std::vector<std::string> faces);
-    void bind() const;
+        CubeMap &operator=(CubeMap &&other)
+        {
+            if(this != &other)
+            {
+                release();
+                std::swap(ID, other.ID);
+            }
+
+            return *this;
+        }
+
+        void build(const std::vector<std::string> faces);
+        void bind() const;
+
+    private:
+        void release()
+        {
+            glDeleteTextures(1, &ID);
+            ID = 0;
+        }
 };
 
 #endif

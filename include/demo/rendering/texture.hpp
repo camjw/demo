@@ -7,62 +7,58 @@
 #include <cstdint>
 #include <string>
 
-enum TextureType
+using TextureID = uint8_t;
+
+struct TextureComponent
 {
-    NONE = 0,
-    DIFFUSE = 1,
-    SPECULAR = 2,
-    NORMAL = 3,
-    HEIGHT = 4,
+    TextureID id;
 };
 
 class Texture
 {
-public:
-    Texture();
-    GLuint ID = 0;
+    public:
+        Texture();
+        Texture(const std::string& filename);
+        GLuint ID = 0;
 
-    Texture(const Texture &) = delete;
-    Texture &operator=(const Texture &) = delete;
+        Texture(const Texture &) = delete;
+        Texture &operator=(const Texture &) = delete;
 
-    Texture(Texture &&other) : ID(other.ID)
-    {
-        other.ID = 0; //Use the "null" texture for the old object.
-    }
-
-    Texture &operator=(Texture &&other)
-    {
-        //ALWAYS check for self-assignment.
-        if(this != &other)
+        Texture(Texture &&other) : ID(other.ID)
         {
-            Release();
-            //obj_ is now 0.
-            std::swap(ID, other.ID);
+            other.ID = 0; //Use the "null" texture for the old object.
         }
-    }
 
-    void build(const std::string& filename);
-    void bind() const;
-    inline TextureType get_type()
-    {
-        return type;
-    }
+        Texture &operator=(Texture &&other)
+        {
+            //ALWAYS check for self-assignment.
+            if(this != &other)
+            {
+                release();
+                //obj_ is now 0.
+                std::swap(ID, other.ID);
+            }
 
-private:
-    void Release()
-    {
-        glDeleteTextures(1, &ID);
-        ID = 0;
-    }
-    GLuint width, height;
-    GLuint Internal_Format;
-    GLuint Image_Format;
-    GLuint Wrap_S;
-    GLuint Wrap_T;
-    GLuint Filter_Min;
-    GLuint Filter_Max;
+            return *this;
+        }
 
-    TextureType type = TextureType::NONE;
+        void build(const std::string& filename);
+        void bind() const;
+        void destroy() {};
+
+    private:
+        void release()
+        {
+            glDeleteTextures(1, &ID);
+            ID = 0;
+        }
+        GLuint width, height;
+        GLuint Internal_Format;
+        GLuint Image_Format;
+        GLuint Wrap_S;
+        GLuint Wrap_T;
+        GLuint Filter_Min;
+        GLuint Filter_Max;
 };
 
 #endif

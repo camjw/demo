@@ -11,6 +11,8 @@
 #include <demo/rendering/shader.hpp>
 #include <demo/rendering/texture.hpp>
 #include <demo/rendering/cube_map.hpp>
+#include <demo/rendering/mesh_repository.hpp>
+#include <demo/rendering/texture_repository.hpp>
 
 #include <imgui/imgui.h>
 #include <imgui/bindings/imgui_impl_glfw.h>
@@ -19,6 +21,8 @@
 class RenderingSystem : public System
 {
     public:
+        RenderingSystem();
+        ~RenderingSystem();
         void init(Window* window, Camera* camera, Coordinator* coordinator);
         void destroy();
         void draw();
@@ -27,6 +31,9 @@ class RenderingSystem : public System
         Camera* camera;
         Window* window;
         Coordinator* coordinator;
+
+        MeshRepository* mesh_repository;
+        TextureRepository* texture_repository;
 
         Shader simple_shader;
         Shader light_shader;

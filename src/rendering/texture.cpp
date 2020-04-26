@@ -12,6 +12,11 @@ Texture::Texture()
 {
 }
 
+Texture::Texture(const std::string& filename): Texture()
+{
+    build(filename);
+}
+
 void Texture::build(const std::string& filename)
 {
     int img_width, img_height, nrChannels;
@@ -36,9 +41,6 @@ void Texture::build(const std::string& filename)
     {
         printf("Failed to load texture\n");
     }
-
-    printf("Loaded texture\n");
-    printf("%u\n", ID);
     
     stbi_image_free(data);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -46,9 +48,5 @@ void Texture::build(const std::string& filename)
 
 void Texture::bind() const
 {
-    printf("Binding texture\n");
-    printf("%u\n", ID);
-    printf("%u\n", this->ID);
     glBindTexture(GL_TEXTURE_2D, this->ID);
-    printf("%u\n", this->ID);
 }

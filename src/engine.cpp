@@ -35,9 +35,7 @@ void Engine::late_update(Time time)
 
 void Engine::draw()
 {
-    printf("About to draw\n");
     rendering_system->draw();
-    printf("Finished drawing\n");
 }
 
 void Engine::process_input()

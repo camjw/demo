@@ -1,6 +1,18 @@
 #include <demo/rendering/rendering_system.hpp>
 #include <random>
 
+RenderingSystem::RenderingSystem()
+{
+    mesh_repository = new MeshRepository();
+    texture_repository = new TextureRepository();
+}
+
+RenderingSystem::~RenderingSystem()
+{
+    delete mesh_repository;
+    delete texture_repository;
+}
+
 void RenderingSystem::destroy()
 {
     glDeleteVertexArrays(1, &cube_VAO);
@@ -188,7 +200,6 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
 void RenderingSystem::draw()
 {
-    printf("Made it to here\n");
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -196,12 +207,10 @@ void RenderingSystem::draw()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    printf("Made it to here 2\n");
     glActiveTexture(GL_TEXTURE0);
     texture1.bind();
     glActiveTexture(GL_TEXTURE1);
     texture2.bind();
-    printf("Made it to here 3\n");
 
     light_shader.use();
     light_shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);

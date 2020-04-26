@@ -8,54 +8,54 @@
 
 class EntityManager
 {
-public:
-    EntityManager()
-    {
-        for (Entity entity = 0; entity < MAX_ENTITIES; entity++)
+    public:
+        EntityManager()
         {
-            availableEntities.push(entity);
+            for (Entity entity = 0; entity < MAX_ENTITIES; entity++)
+            {
+                availableEntities.push(entity);
+            }
         }
-    }
 
-    Entity create_entity()
-    {
-        assert(livingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
+        Entity create_entity()
+        {
+            assert(livingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
 
-        Entity id = availableEntities.front();
-        availableEntities.pop();
-        ++livingEntityCount;
+            Entity id = availableEntities.front();
+            availableEntities.pop();
+            ++livingEntityCount;
 
-        return id;
-    }
+            return id;
+        }
 
-    void destroy_entity(Entity entity)
-    {
-        assert(entity < MAX_ENTITIES && "Entity out of range.");
+        void destroy_entity(Entity entity)
+        {
+            assert(entity < MAX_ENTITIES && "Entity out of range.");
 
-        signatures[entity].reset();
+            signatures[entity].reset();
 
-        availableEntities.push(entity);
-        --livingEntityCount;
-    }
+            availableEntities.push(entity);
+            --livingEntityCount;
+        }
 
-    void set_signature(Entity entity, Signature signature)
-    {
-        assert(entity < MAX_ENTITIES && "Entity out of range.");
+        void set_signature(Entity entity, Signature signature)
+        {
+            assert(entity < MAX_ENTITIES && "Entity out of range.");
 
-        signatures[entity] = signature;
-    }
+            signatures[entity] = signature;
+        }
 
-    Signature get_signature(Entity entity)
-    {
-        assert(entity < MAX_ENTITIES && "Entity out of range.");
+        Signature get_signature(Entity entity)
+        {
+            assert(entity < MAX_ENTITIES && "Entity out of range.");
 
-        return signatures[entity];
-    }
+            return signatures[entity];
+        }
 
-private:
-    std::queue<Entity> availableEntities;
-    std::array<Signature, MAX_ENTITIES> signatures;
-    uint32_t livingEntityCount = 0;
+    private:
+        std::queue<Entity> availableEntities;
+        std::array<Signature, MAX_ENTITIES> signatures;
+        uint32_t livingEntityCount = 0;
 };
 
 #endif
