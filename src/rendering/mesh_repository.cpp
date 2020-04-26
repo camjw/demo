@@ -23,7 +23,8 @@ MeshID MeshRepository::create_mesh(
 )
 {
     std::shared_ptr<Mesh> new_mesh = std::make_shared<Mesh>(positions, normals, uvs, indices);
-
+    new_mesh->init();
+    
     meshes.insert(std::make_pair(++current_mesh_id, new_mesh));
     return current_mesh_id;
 }

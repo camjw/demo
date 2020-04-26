@@ -36,10 +36,10 @@ class Mesh
         void init();
         void destroy();
 
-        unsigned int VAO;
+        unsigned int VAO, EBO;
 
     private:
-        unsigned int VBO, EBO;
+        unsigned int VBO;
 };
 
 #endif

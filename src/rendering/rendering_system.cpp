@@ -18,9 +18,9 @@ void RenderingSystem::destroy()
     glDeleteVertexArrays(1, &cube_VAO);
     glDeleteBuffers(1, &cube_VBO);
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    // ImGui_ImplOpenGL3_Shutdown();
+    // ImGui_ImplGlfw_Shutdown();
+    // ImGui::DestroyContext();
 }
 
 void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordinator)
@@ -146,6 +146,10 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     MeshID cube_mesh_id = mesh_repository->create_mesh(cube_positions, cube_normals, cube_uvs, cube_indices);
     std::shared_ptr<Mesh> cube_mesh = mesh_repository->get_mesh(cube_mesh_id);
     cube_VAO = cube_mesh->VAO;
+    cube_EBO = cube_mesh->EBO;
+
+    printf("VAO: %u\n", cube_VAO);
+    printf("EBO: %u\n", cube_EBO);
 
     float skyboxVertices[] = {
         // positions
@@ -212,7 +216,7 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     // seed rng;
     srand(static_cast<unsigned>(time(0)));
 	std::default_random_engine generator;
-	std::uniform_real_distribution<float> rand_position(-100.0f, 100.0f);
+	std::uniform_real_distribution<float> rand_position(-1.0f, 1.0f);
 
     for (int i = 0; i < 100; i++)
     {
@@ -236,15 +240,15 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
     skybox.build(faces);
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window->get_glfw_window(), true);
-    const char *glsl_version = "#version 330 core";
-    ImGui_ImplOpenGL3_Init(glsl_version);
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    // IMGUI_CHECKVERSION();
+    // ImGui::CreateContext();
+    // ImGuiIO &io = ImGui::GetIO();
+    // // Setup Platform/Renderer bindings
+    // ImGui_ImplGlfw_InitForOpenGL(window->get_glfw_window(), true);
+    // const char *glsl_version = "#version 330 core";
+    // ImGui_ImplOpenGL3_Init(glsl_version);
+    // // Setup Dear ImGui style
+    // ImGui::StyleColorsDark();
 }
 
 void RenderingSystem::draw()
@@ -252,9 +256,9 @@ void RenderingSystem::draw()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    // ImGui_ImplOpenGL3_NewFrame();
+    // ImGui_ImplGlfw_NewFrame();
+    // ImGui::NewFrame();
 
     glActiveTexture(GL_TEXTURE0);
     texture1.bind();
@@ -329,8 +333,11 @@ void RenderingSystem::draw()
     light_shader.setFloat("material.shininess", 32.0f);
 
     glBindVertexArray(cube_VAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_EBO);
     for (unsigned int i = 0; i < cubes.size(); i++)
     {
+        printf("VAO: %u\n", cube_VAO);
+        printf("EBO: %u\n", cube_EBO);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubes[i]);
         float angle = 20.0f * i;
@@ -340,7 +347,7 @@ void RenderingSystem::draw()
         light_shader.setMat4("model", model);
         light_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);    
     }
     
     // lamp_shader.use();
@@ -364,29 +371,29 @@ void RenderingSystem::draw()
     // }
 
     // draw skybox
-    glDepthFunc(GL_LEQUAL); 
-    skybox_shader.use();
-    skybox_shader.setMat4("view", glm::mat4(glm::mat3(camera->get_view_matrix())));
-    skybox_shader.setMat4("projection", window->get_projection_matrix());
+    // glDepthFunc(GL_LEQUAL); 
+    // skybox_shader.use();
+    // skybox_shader.setMat4("view", glm::mat4(glm::mat3(camera->get_view_matrix())));
+    // skybox_shader.setMat4("projection", window->get_projection_matrix());
     
-    glBindVertexArray(skybox_VAO);
-    skybox.bind();
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    glBindVertexArray(0);
-    glDepthFunc(GL_LESS);
+    // glBindVertexArray(skybox_VAO);
+    // skybox.bind();
+    // glDrawArrays(GL_TRIANGLES, 0, 36);
+    // glBindVertexArray(0);
+    // glDepthFunc(GL_LESS);
 
      // render your GUI
-    ImGui::Begin("Demo window");
-    ImGui::Button("Hello!");
-    ImGui::End();
+    // ImGui::Begin("Demo window");
+    // ImGui::Button("Hello!");
+    // ImGui::End();
 
-    // Render dear imgui into screen
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    // // Render dear imgui into screen
+    // ImGui::Render();
+    // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    int display_w, display_h;
-    glfwGetFramebufferSize(window->get_glfw_window(), &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
+    // int display_w, display_h;
+    // glfwGetFramebufferSize(window->get_glfw_window(), &display_w, &display_h);
+    // glViewport(0, 0, display_w, display_h);
 
     glfwSwapBuffers(window->get_glfw_window());
 }

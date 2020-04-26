@@ -39,7 +39,7 @@ class RenderingSystem : public System
         Shader light_shader;
         Shader lamp_shader;
         Shader skybox_shader;
-        unsigned int cube_VBO, cube_VAO, light_VAO, skybox_VAO, skybox_VBO;
+        unsigned int cube_VBO, cube_VAO, cube_EBO, light_VAO, skybox_VAO, skybox_VBO;
         Texture texture1, texture2;
 
         std::vector<glm::vec3> cubes;
