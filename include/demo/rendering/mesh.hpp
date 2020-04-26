@@ -1,6 +1,9 @@
 #ifndef DEMO_RENDERING_MESH_HPP
 #define DEMO_RENDERING_MESH_HPP
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <string>
 #include <vector>
 
@@ -30,7 +33,8 @@ class Mesh
 
         std::vector<uint32_t> indices;
 
-        void destroy() {}
+        void init();
+        void destroy();
 
         unsigned int VAO;
 

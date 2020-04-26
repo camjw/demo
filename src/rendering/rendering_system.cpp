@@ -34,50 +34,118 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     lamp_shader.init("./assets/shaders/lamp_shader.vert", "./assets/shaders/lamp_shader.frag");
     skybox_shader.init("./assets/shaders/skybox_shader.vert", "./assets/shaders/skybox_shader.frag");
 
-    float vertices[] = {
-        // positions          // normals           // texture coords
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+    std::vector<float3> cube_positions = {
+        float3(-0.5f, -0.5f, -0.5f),  
+        float3(0.5f, -0.5f, -0.5f),  
+        float3(0.5f,  0.5f, -0.5f),   
+        float3(-0.5f,  0.5f, -0.5f),   
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+        float3(-0.5f, -0.5f,  0.5f),  
+        float3(0.5f, -0.5f,  0.5f),  
+        float3(0.5f,  0.5f,  0.5f),  
+        float3(-0.5f,  0.5f,  0.5f),   
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        float3(-0.5f,  0.5f,  0.5f), 
+        float3(-0.5f,  0.5f, -0.5f), 
+        float3(-0.5f, -0.5f, -0.5f),  
+        float3(-0.5f, -0.5f,  0.5f), 
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        float3(0.5f,  0.5f,  0.5f),  
+        float3(0.5f,  0.5f, -0.5f),  
+        float3(0.5f, -0.5f, -0.5f),   
+        float3(0.5f, -0.5f,  0.5f),  
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+        float3(-0.5f, -0.5f, -0.5f),  
+        float3(0.5f, -0.5f, -0.5f),  
+        float3(0.5f, -0.5f,  0.5f),   
+        float3(-0.5f, -0.5f,  0.5f),  
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+        float3(-0.5f,  0.5f, -0.5f),  
+        float3(0.5f,  0.5f, -0.5f),  
+        float3(0.5f,  0.5f,  0.5f),  
+        float3(-0.5f,  0.5f,  0.5f)  
     };
+
+    std::vector<float3> cube_normals = {
+        float3(0.0f,  0.0f, -1.0f), 
+        float3(0.0f,  0.0f, -1.0f), 
+        float3(0.0f,  0.0f, -1.0f), 
+        float3(0.0f,  0.0f, -1.0f), 
+
+        float3(0.0f,  0.0f,  1.0f), 
+        float3(0.0f,  0.0f,  1.0f), 
+        float3(0.0f,  0.0f,  1.0f), 
+        float3(0.0f,  0.0f,  1.0f), 
+
+        float3(-1.0f,  0.0f,  0.0f), 
+        float3(-1.0f,  0.0f,  0.0f), 
+        float3(-1.0f,  0.0f,  0.0f), 
+        float3(-1.0f,  0.0f,  0.0f), 
+
+        float3(1.0f,  0.0f,  0.0f), 
+        float3(1.0f,  0.0f,  0.0f), 
+        float3(1.0f,  0.0f,  0.0f), 
+        float3(1.0f,  0.0f,  0.0f), 
+
+        float3(0.0f, -1.0f,  0.0f), 
+        float3(0.0f, -1.0f,  0.0f), 
+        float3(0.0f, -1.0f,  0.0f), 
+        float3(0.0f, -1.0f,  0.0f), 
+
+        float3(0.0f,  1.0f,  0.0f), 
+        float3(0.0f,  1.0f,  0.0f), 
+        float3(0.0f,  1.0f,  0.0f), 
+        float3(0.0f,  1.0f,  0.0f)
+    };
+
+    std::vector<float2> cube_uvs = {
+        float2(0.0f,  0.0f),
+        float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f),
+
+        float2(0.0f,  0.0f),
+        float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f),
+        
+        float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f),
+        float2(0.0f,  0.0f),
+        
+        float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f),
+        float2(0.0f,  0.0f),
+        
+        float2(0.0f,  1.0f),
+        float2(1.0f,  1.0f),
+        float2(1.0f,  0.0f),
+        float2(0.0f,  0.0f),
+        
+        float2(0.0f,  1.0f),
+        float2(1.0f,  1.0f),
+        float2(1.0f,  0.0f),
+        float2(0.0f,  0.0f)
+    };
+
+    std::vector<uint32_t> cube_indices;
+
+    for (uint32_t i = 0; i < 6; i++)
+    {
+        cube_indices.push_back(4 * i);
+        cube_indices.push_back(4 * i + 1);
+        cube_indices.push_back(4 * i + 2);
+        cube_indices.push_back(4 * i);
+        cube_indices.push_back(4 * i + 2);
+        cube_indices.push_back(4 * i + 3);
+
+    };
+
+    MeshID cube_mesh_id = mesh_repository->create_mesh(cube_positions, cube_normals, cube_uvs, cube_indices);
+    std::shared_ptr<Mesh> cube_mesh = mesh_repository->get_mesh(cube_mesh_id);
+    cube_VAO = cube_mesh->VAO;
 
     float skyboxVertices[] = {
         // positions
@@ -132,25 +200,6 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-
-    glGenVertexArrays(1, &cube_VAO);
-    glGenBuffers(1, &cube_VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, cube_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glBindVertexArray(cube_VAO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-    glGenVertexArrays(1, &light_VAO);
-    glBindVertexArray(light_VAO);
-
-    // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
-    glBindBuffer(GL_ARRAY_BUFFER, cube_VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
 
     texture1.build("assets/textures/sopranos_challenge.png");
     texture2.build("assets/textures/primal_scream.png");
@@ -294,25 +343,25 @@ void RenderingSystem::draw()
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
     
-    lamp_shader.use();
+    // lamp_shader.use();
 
-    lamp_shader.setMat4("projection", window->get_projection_matrix());
-    lamp_shader.setMat4("view", camera->get_view_matrix());
+    // lamp_shader.setMat4("projection", window->get_projection_matrix());
+    // lamp_shader.setMat4("view", camera->get_view_matrix());
 
-    lamp_shader.setVec3("lightColour", lightColor);
+    // lamp_shader.setVec3("lightColour", lightColor);
 
-    glBindVertexArray(light_VAO);
-    for (int i = 0; i < lights.size(); i++) 
-    {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, lights[i]);
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-        lamp_shader.setMat4("model", model);
-        lamp_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
-        lamp_shader.setVec3("viewPos", camera->get_position());
+    // glBindVertexArray(light_VAO);
+    // for (int i = 0; i < lights.size(); i++) 
+    // {
+    //     glm::mat4 model = glm::mat4(1.0f);
+    //     model = glm::translate(model, lights[i]);
+    //     model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+    //     lamp_shader.setMat4("model", model);
+    //     lamp_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
+    //     lamp_shader.setVec3("viewPos", camera->get_position());
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
+    //     glDrawArrays(GL_TRIANGLES, 0, 36);
+    // }
 
     // draw skybox
     glDepthFunc(GL_LEQUAL); 
