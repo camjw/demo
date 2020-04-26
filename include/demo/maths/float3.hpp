@@ -8,7 +8,7 @@ class float3
 {
 
 public:
-    float3();
+    float3(): x(0.0f), y(0.0f), z(0.0f) {}
     float3(float x, float y, float z)
         : x(x)
         , y(y)
@@ -82,46 +82,58 @@ public:
         return float3(-x, -y, -z);
     }
 
-    float3& operator+=(float3 const& other)
+    float3 operator+=(float3 const& other)
     {
         x += other.x;
         y += other.y;
         z += other.z;
+
+        return *this;
     }
 
-    float3& operator-=(float3 const& other)
+    float3 operator-=(float3 const& other)
     {
         x -= other.x;
         y -= other.y;
         z -= other.z;
+
+        return *this;
     }
 
-    float3& operator*=(float3 const& other)
+    float3 operator*=(float3 const& other)
     {
         x *= other.x;
         y *= other.y;
         z *= other.z;
+        
+        return *this;
     }
 
-    float3& operator*=(const float scale)
+    float3 operator*=(const float scale)
     {
         x *= scale;
         y *= scale;
         z *= scale;
+
+        return *this;
     }
 
-    float3& operator/=(float3 const& other)
+    float3 operator/=(float3 const& other)
     {
         x /= other.x;
         y /= other.y;
         z /= other.z;
+
+        return *this;
     }
 
-    float3& operator/=(const float scale)
+    float3 operator/=(const float scale)
     {
         x /= scale;
         y /= scale;
         z /= scale;
+
+        return *this;
     }
 
     bool operator==(float3 const& other)

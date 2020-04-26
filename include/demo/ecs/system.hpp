@@ -9,17 +9,15 @@
 
 class System
 {
-public:
-    virtual void update(Time time, InputState* input);
-    virtual void late_update(Time time, InputState* input);
-
-    std::set<Entity> entities;
+    public:
+        std::set<Entity> entities;
 };
 
-class RendererSystem
+class UpdatableSystem: public System
 {
-public:
-    std::set<Entity> entities;
+    public:
+        virtual void update(Time time, InputState* input) {}
+        virtual void late_update(Time time, InputState* input) {}
 };
 
 #endif

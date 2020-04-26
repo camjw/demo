@@ -2,10 +2,10 @@
 #define DEMO_ENGINE_HPP
 
 #include <demo/camera.hpp>
-#include <demo/cube_map.hpp>
+#include <demo/rendering/cube_map.hpp>
 #include <demo/input_processor.hpp>
-#include <demo/shader.hpp>
-#include <demo/texture.hpp>
+#include <demo/rendering/shader.hpp>
+#include <demo/rendering/texture.hpp>
 #include <demo/timer.hpp>
 #include <demo/window.hpp>
 

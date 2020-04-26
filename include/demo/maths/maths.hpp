@@ -1,7 +1,9 @@
 #ifndef DEMO_MATHS_MATHS_HPP
 #define DEMO_MATHS_MATHS_HPP
 
+#include <demo/maths/float2.hpp>
 #include <demo/maths/float3.hpp>
+
 #include <demo/maths/quaternion.hpp>
 
 class maths

@@ -5,9 +5,8 @@
 
 class float2
 {
-
 public:
-    float2();
+    float2(): x(0.0f), y(0.0f) {}
     float2(float x, float y)
         : x(x)
         , y(y)
@@ -74,40 +73,52 @@ public:
         return float2(-x, -y);
     }
 
-    float2& operator+=(float2 const& other)
+    float2 operator+=(float2 const& other)
     {
         x += other.x;
         y += other.y;
+        
+        return *this;
     }
 
-    float2& operator-=(float2 const& other)
+    float2 operator-=(float2 const& other)
     {
         x -= other.x;
         y -= other.y;
+        
+        return *this;
     }
 
-    float2& operator*=(float2 const& other)
+    float2 operator*=(float2 const& other)
     {
         x *= other.x;
         y *= other.y;
+        
+        return *this;
     }
 
-    float2& operator*=(const float scale)
+    float2 operator*=(const float scale)
     {
         x *= scale;
         y *= scale;
+        
+        return *this;
     }
 
-    float2& operator/=(float2 const& other)
+    float2 operator/=(float2 const& other)
     {
         x /= other.x;
         y /= other.y;
+
+        return *this;
     }
 
-    float2& operator/=(const float scale)
+    float2 operator/=(const float scale)
     {
         x /= scale;
         y /= scale;
+        
+        return *this;
     }
 
     bool operator==(float2 const& other)
@@ -122,4 +133,5 @@ public:
 
     float x, y;
 };
+
 #endif

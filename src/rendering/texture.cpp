@@ -1,4 +1,4 @@
-#include <demo/texture.hpp>
+#include <demo/rendering/texture.hpp>
 
 Texture::Texture()
     : width(0)

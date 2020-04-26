@@ -27,6 +27,20 @@ public:
     }
 
     template <typename T>
+    std::shared_ptr<T> register_updatable_system()
+    {
+        const char* typeName = typeid(T).name();
+
+        assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
+
+        // Create a pointer to the system and return it so it can be used externally
+        auto system = std::make_shared<T>();
+        systems.insert({ typeName, system });
+        updatable_systems.insert({ typeName, system });
+        return system;
+    }
+
+    template <typename T>
     void set_signature(Signature signature)
     {
         const char* typeName = typeid(T).name();
@@ -73,15 +87,24 @@ public:
 
     void update_systems(Time time, InputState* input)
     {
-        for (auto const& system : systems)
+        for (auto const& system : updatable_systems)
         {
             system.second->update(time, input);
+        }
+    }
+
+    void late_update_systems(Time time, InputState* input)
+    {
+        for (auto const& system : updatable_systems)
+        {
+            system.second->late_update(time, input);
         }
     }
 
 private:
     std::unordered_map<const char*, Signature> signatures {};
     std::unordered_map<const char*, std::shared_ptr<System>> systems {};
+    std::unordered_map<const char*, std::shared_ptr<UpdatableSystem>> updatable_systems {};
 };
 
 #endif
