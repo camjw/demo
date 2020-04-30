@@ -333,6 +333,7 @@ void RenderingSystem::draw()
     light_shader.setFloat("material.shininess", 32.0f);
 
     glBindVertexArray(cube_VAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_EBO);
     for (unsigned int i = 0; i < cubes.size(); i++)
     {
         printf("VAO: %u\n", cube_VAO);
@@ -346,10 +347,12 @@ void RenderingSystem::draw()
         light_shader.setMat4("model", model);
         light_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
 
+        printf("is this the line seg faulting?\n");
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);    
     }
     
 
+    printf("is this the line seg faulting 2?\n");
     glBindVertexArray(0);
     // lamp_shader.use();
 
