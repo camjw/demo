@@ -333,7 +333,6 @@ void RenderingSystem::draw()
     light_shader.setFloat("material.shininess", 32.0f);
 
     glBindVertexArray(cube_VAO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_EBO);
     for (unsigned int i = 0; i < cubes.size(); i++)
     {
         printf("VAO: %u\n", cube_VAO);
@@ -350,6 +349,8 @@ void RenderingSystem::draw()
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);    
     }
     
+
+    glBindVertexArray(0);
     // lamp_shader.use();
 
     // lamp_shader.setMat4("projection", window->get_projection_matrix());
