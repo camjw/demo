@@ -4,7 +4,7 @@
 #include <demo/maths/float2.hpp>
 #include <math.h>
 
-class float3
+struct float3
 {
 
 public:

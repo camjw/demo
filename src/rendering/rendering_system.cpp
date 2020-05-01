@@ -334,10 +334,9 @@ void RenderingSystem::draw()
 
     glBindVertexArray(cube_VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_EBO);
-    for (unsigned int i = 0; i < cubes.size(); i++)
-    {
-        printf("VAO: %u\n", cube_VAO);
-        printf("EBO: %u\n", cube_EBO);
+    //for (unsigned int i = 0; i < cubes.size(); i++)
+    //{
+    int i = 0;
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubes[i]);
         float angle = 20.0f * i;
@@ -347,12 +346,10 @@ void RenderingSystem::draw()
         light_shader.setMat4("model", model);
         light_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
 
-        printf("is this the line seg faulting?\n");
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);    
-    }
+    //}
     
 
-    printf("is this the line seg faulting 2?\n");
     glBindVertexArray(0);
     // lamp_shader.use();
 
@@ -374,17 +371,17 @@ void RenderingSystem::draw()
     //     glDrawArrays(GL_TRIANGLES, 0, 36);
     // }
 
-    // draw skybox
-    // glDepthFunc(GL_LEQUAL); 
-    // skybox_shader.use();
-    // skybox_shader.setMat4("view", glm::mat4(glm::mat3(camera->get_view_matrix())));
-    // skybox_shader.setMat4("projection", window->get_projection_matrix());
+     //draw skybox
+     glDepthFunc(GL_LEQUAL); 
+     skybox_shader.use();
+     skybox_shader.setMat4("view", glm::mat4(glm::mat3(camera->get_view_matrix())));
+     skybox_shader.setMat4("projection", window->get_projection_matrix());
     
-    // glBindVertexArray(skybox_VAO);
-    // skybox.bind();
-    // glDrawArrays(GL_TRIANGLES, 0, 36);
-    // glBindVertexArray(0);
-    // glDepthFunc(GL_LESS);
+     glBindVertexArray(skybox_VAO);
+     skybox.bind();
+     glDrawArrays(GL_TRIANGLES, 0, 36);
+     glBindVertexArray(0);
+     glDepthFunc(GL_LESS);
 
      // render your GUI
     // ImGui::Begin("Demo window");

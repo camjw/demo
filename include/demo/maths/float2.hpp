@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-class float2
+struct float2
 {
 public:
     float2(): x(0.0f), y(0.0f) {}

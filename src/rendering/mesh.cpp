@@ -7,6 +7,8 @@ void Mesh::init()
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
+    glBufferData(GL_ARRAY_BUFFER, positions.size() * 7 * sizeof(float), NULL, GL_STATIC_DRAW);
+
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), &positions[0]);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(normals), &normals[0]);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals), sizeof(uvs), &uvs[0]);

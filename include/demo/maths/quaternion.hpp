@@ -5,7 +5,7 @@
 
 #include <demo/maths/float3.hpp>
 
-class quaternion
+struct quaternion
 {
 public:
     quaternion()
