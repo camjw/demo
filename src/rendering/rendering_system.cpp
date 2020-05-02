@@ -5,6 +5,8 @@ RenderingSystem::RenderingSystem()
 {
     mesh_repository = new MeshRepository();
     texture_repository = new TextureRepository();
+
+    // glEnable(GL_CULL_FACE);
 }
 
 RenderingSystem::~RenderingSystem()
@@ -29,7 +31,8 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     this->camera = camera;
     this->coordinator = coordinator;
 
-    simple_shader.init("./assets/shaders/simple_shader.vert", "./assets/shaders/simple_shader.frag");
+    // simple_shader.init("./assets/shaders/simple_shader.vert", "./assets/shaders/simple_shader.frag");
+    simple_shader.init("./assets/shaders/uv_test_shader.vert", "./assets/shaders/uv_test_shader.frag");
     light_shader.init("./assets/shaders/lighting_shader.vert", "./assets/shaders/lighting_shader.frag");
     lamp_shader.init("./assets/shaders/lamp_shader.vert", "./assets/shaders/lamp_shader.frag");
     skybox_shader.init("./assets/shaders/skybox_shader.vert", "./assets/shaders/skybox_shader.frag");
@@ -100,8 +103,8 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
     std::vector<float2> cube_uvs = {
         float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
         float2(1.0f,  1.0f),
+        float2(1.0f,  0.0f),
         float2(0.0f,  1.0f),
 
         float2(0.0f,  0.0f),
@@ -128,6 +131,37 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
         float2(1.0f,  0.0f),
         float2(1.0f,  1.0f),
         float2(0.0f,  1.0f)
+
+        // float2(1.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        
+        // float2(1.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+
+        // float2(1.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+
+        // float2(1.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+
+        // float2(1.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+
+        // float2(1.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f),
+        // float2(0.0f, 0.0f)
+
     };
 
     std::vector<uint32_t> cube_indices;
@@ -143,7 +177,7 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
         cube_indices.push_back(4 * i + 3);
     };
 
-    for (int j = 0; j < 6; j++) 
+    for (int j = 0; j < 1; j++) 
     {
         for (int i = 0; i < 4; i++)
         {
@@ -223,12 +257,14 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 
-    texture1.build("assets/textures/sopranos_challenge.png");
-    texture2.build("assets/textures/primal_scream.png");
+    texture1.build("assets/textures/uv_test.png");
+    // texture2.build("assets/textures/primal_scream.png");
 
     simple_shader.use();
-    simple_shader.setInt("texture1", 0);
-    simple_shader.setInt("texture2", 1);
+
+    simple_shader.setInt("tex", 0);
+    // simple_shader.setInt("texture1", 0);
+    // simple_shader.setInt("texture2", 1);
 
 
     // seed rng;
@@ -350,6 +386,9 @@ void RenderingSystem::draw()
 
     light_shader.setFloat("material.shininess", 32.0f);
 
+    simple_shader.use();
+    simple_shader.setMat4("projection", window->get_projection_matrix());
+    simple_shader.setMat4("view", camera->get_view_matrix());
     glBindVertexArray(cube_VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_EBO);
     for (unsigned int i = 0; i < cubes.size(); i++)
@@ -360,6 +399,7 @@ void RenderingSystem::draw()
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
         //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
+        simple_shader.setMat4("model", model);
         light_shader.setMat4("model", model);
         light_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
 
