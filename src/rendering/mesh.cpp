@@ -10,19 +10,19 @@ void Mesh::init()
     glBufferData(GL_ARRAY_BUFFER, (positions.size() + normals.size()) * sizeof(float3) + uvs.size() * sizeof(float2), NULL, GL_STATIC_DRAW);
 
     glBufferSubData(
-        GL_ARRAY_BUFFER, 
+        GL_ARRAY_BUFFER,
         0, 
         positions.size() * sizeof(float3), 
         &positions[0]
     );
     glBufferSubData(
-        GL_ARRAY_BUFFER, 
+        GL_ARRAY_BUFFER,
         positions.size() * sizeof(float3), 
         normals.size() * sizeof(float3), 
         &normals[0]
     );
     glBufferSubData(
-        GL_ARRAY_BUFFER, 
+        GL_ARRAY_BUFFER,
         (positions.size() + normals.size()) * sizeof(float3), 
         uvs.size() * sizeof(float2), 
         &uvs[0]

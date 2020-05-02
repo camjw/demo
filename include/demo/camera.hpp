@@ -11,10 +11,10 @@
 #include <demo/timer.hpp>
 
 // Default camera values
-const float SPEED = 0.025f;
-const float SENSITIVITY = 0.1f;
+const float SPEED = 0.01f;
+const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
-const float LOOK_SPEED = 2.0f;
+const float LOOK_SPEED = 0.5f;
 
 class Camera
 {
@@ -55,7 +55,7 @@ private:
     float movement_speed;
     float mouse_sensitivity;
     float zoom;
-    bool is_fps_camera = true;
+    bool is_fps_camera = false;
 };
 
 #endif

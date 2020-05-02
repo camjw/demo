@@ -6,7 +6,7 @@ RenderingSystem::RenderingSystem()
     mesh_repository = new MeshRepository();
     texture_repository = new TextureRepository();
 
-    // glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 }
 
 RenderingSystem::~RenderingSystem()
@@ -39,13 +39,13 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
     std::vector<float3> cube_positions = {
         float3(-0.5f, -0.5f, -0.5f),
-        float3(0.5f, -0.5f, -0.5f),
-        float3(0.5f,  0.5f, -0.5f),
         float3(-0.5f,  0.5f, -0.5f),
+        float3(0.5f,   0.5f, -0.5f),
+        float3(0.5f,  -0.5f, -0.5f),
 
         float3(-0.5f, -0.5f,  0.5f),
-        float3(0.5f, -0.5f,  0.5f),
-        float3(0.5f,  0.5f,  0.5f),
+        float3(0.5f,  -0.5f,  0.5f),
+        float3(0.5f,   0.5f,  0.5f),
         float3(-0.5f,  0.5f,  0.5f),
 
         float3(-0.5f,  0.5f,  0.5f),
@@ -54,19 +54,19 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
         float3(-0.5f, -0.5f,  0.5f),
 
         float3(0.5f,  0.5f,  0.5f),
-        float3(0.5f,  0.5f, -0.5f),
+        float3(0.5f, -0.5f, 0.5f),
         float3(0.5f, -0.5f, -0.5f),
-        float3(0.5f, -0.5f,  0.5f),
+        float3(0.5f,  0.5f, -0.5f),
 
         float3(-0.5f, -0.5f, -0.5f),
-        float3(0.5f, -0.5f, -0.5f),
-        float3(0.5f, -0.5f,  0.5f),
+        float3(0.5f,  -0.5f, -0.5f),
+        float3(0.5f,  -0.5f,  0.5f),
         float3(-0.5f, -0.5f,  0.5f),
 
-        float3(-0.5f,  0.5f, -0.5f),
-        float3(0.5f,  0.5f, -0.5f),
+        float3(-0.5f, 0.5f, -0.5f),
+        float3(-0.5f,  0.5f, 0.5f),
         float3(0.5f,  0.5f,  0.5f),
-        float3(-0.5f,  0.5f,  0.5f)
+        float3(0.5f, 0.5f,  -0.5f)
     };
 
     std::vector<float3> cube_normals = {
@@ -103,8 +103,8 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
     std::vector<float2> cube_uvs = {
         float2(0.0f,  0.0f),
-        float2(1.0f,  1.0f),
         float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
         float2(0.0f,  1.0f),
 
         float2(0.0f,  0.0f),
@@ -131,37 +131,6 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
         float2(1.0f,  0.0f),
         float2(1.0f,  1.0f),
         float2(0.0f,  1.0f)
-
-        // float2(1.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        
-        // float2(1.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-
-        // float2(1.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-
-        // float2(1.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-
-        // float2(1.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-
-        // float2(1.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f),
-        // float2(0.0f, 0.0f)
-
     };
 
     std::vector<uint32_t> cube_indices;
@@ -176,27 +145,6 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
         cube_indices.push_back(4 * i + 2);
         cube_indices.push_back(4 * i + 3);
     };
-
-    for (int j = 0; j < 1; j++) 
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            printf("\nVertex %i:\n", 4 * j + i);
-            cube_positions[4 * j + i].print();
-            cube_normals[4 * j + i].print();
-            cube_uvs[4 * j + i].print();
-        }
-
-        for (int i = 0; i < 2; i++)
-        {
-            printf("\nTriangle %i:\n", 6 * j + i);
-            printf("(%i, %i, %i)\n", cube_indices[6 * j + 3 * i], cube_indices[6 * j + 3 * i + 1], cube_indices[6 * j + 3 * i + 2]);
-            printf("Triangle uvs:\n");
-            cube_uvs[cube_indices[6 * j + 3 * i]].print();
-            cube_uvs[cube_indices[6 * j + 3 * i + 1]].print();
-            cube_uvs[cube_indices[6 * j + 3 * i + 2]].print();
-        }
-    }
 
     MeshID cube_mesh_id = mesh_repository->create_mesh(cube_positions, cube_normals, cube_uvs, cube_indices);
     std::shared_ptr<Mesh> cube_mesh = mesh_repository->get_mesh(cube_mesh_id);
@@ -397,7 +345,7 @@ void RenderingSystem::draw()
         model = glm::translate(model, cubes[i]);
         float angle = 20.0f * i;
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
         simple_shader.setMat4("model", model);
         light_shader.setMat4("model", model);
