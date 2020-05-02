@@ -9,15 +9,15 @@ void Mesh::init()
 
     glBufferData(GL_ARRAY_BUFFER, positions.size() * 7 * sizeof(float), NULL, GL_STATIC_DRAW);
 
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), &positions[0]);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(normals), &normals[0]);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals), sizeof(uvs), &uvs[0]);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, positions.size() * sizeof(float3), &positions[0]);
+    glBufferSubData(GL_ARRAY_BUFFER, positions.size() * sizeof(float3), normals.size() * sizeof(float3), &normals[0]);
+    glBufferSubData(GL_ARRAY_BUFFER, (positions.size() + normals.size()) * sizeof(float3), uvs.size() * sizeof(float2), &uvs[0]);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);  
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float3), 0);  
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(sizeof(positions)));  
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float3), (void*)(sizeof(positions)));  
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(sizeof(positions) + sizeof(normals)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float2), (void*)(sizeof(positions) + sizeof(normals)));
 
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

@@ -35,35 +35,35 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     skybox_shader.init("./assets/shaders/skybox_shader.vert", "./assets/shaders/skybox_shader.frag");
 
     std::vector<float3> cube_positions = {
-        float3(-0.5f, -0.5f, -0.5f),  
-        float3(0.5f, -0.5f, -0.5f),  
-        float3(0.5f,  0.5f, -0.5f),   
-        float3(-0.5f,  0.5f, -0.5f),   
+        float3(-0.5f, -0.5f, -0.5f),
+        float3(0.5f, -0.5f, -0.5f),
+        float3(0.5f,  0.5f, -0.5f),
+        float3(-0.5f,  0.5f, -0.5f),
 
-        float3(-0.5f, -0.5f,  0.5f),  
-        float3(0.5f, -0.5f,  0.5f),  
-        float3(0.5f,  0.5f,  0.5f),  
-        float3(-0.5f,  0.5f,  0.5f),   
+        float3(-0.5f, -0.5f,  0.5f),
+        float3(0.5f, -0.5f,  0.5f),
+        float3(0.5f,  0.5f,  0.5f),
+        float3(-0.5f,  0.5f,  0.5f),
 
-        float3(-0.5f,  0.5f,  0.5f), 
-        float3(-0.5f,  0.5f, -0.5f), 
-        float3(-0.5f, -0.5f, -0.5f),  
-        float3(-0.5f, -0.5f,  0.5f), 
+        float3(-0.5f,  0.5f,  0.5f),
+        float3(-0.5f,  0.5f, -0.5f),
+        float3(-0.5f, -0.5f, -0.5f),
+        float3(-0.5f, -0.5f,  0.5f),
 
-        float3(0.5f,  0.5f,  0.5f),  
-        float3(0.5f,  0.5f, -0.5f),  
-        float3(0.5f, -0.5f, -0.5f),   
-        float3(0.5f, -0.5f,  0.5f),  
+        float3(0.5f,  0.5f,  0.5f),
+        float3(0.5f,  0.5f, -0.5f),
+        float3(0.5f, -0.5f, -0.5f),
+        float3(0.5f, -0.5f,  0.5f),
 
-        float3(-0.5f, -0.5f, -0.5f),  
-        float3(0.5f, -0.5f, -0.5f),  
-        float3(0.5f, -0.5f,  0.5f),   
-        float3(-0.5f, -0.5f,  0.5f),  
+        float3(-0.5f, -0.5f, -0.5f),
+        float3(0.5f, -0.5f, -0.5f),
+        float3(0.5f, -0.5f,  0.5f),
+        float3(-0.5f, -0.5f,  0.5f),
 
-        float3(-0.5f,  0.5f, -0.5f),  
-        float3(0.5f,  0.5f, -0.5f),  
-        float3(0.5f,  0.5f,  0.5f),  
-        float3(-0.5f,  0.5f,  0.5f)  
+        float3(-0.5f,  0.5f, -0.5f),
+        float3(0.5f,  0.5f, -0.5f),
+        float3(0.5f,  0.5f,  0.5f),
+        float3(-0.5f,  0.5f,  0.5f)
     };
 
     std::vector<float3> cube_normals = {
@@ -135,21 +135,18 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     for (uint32_t i = 0; i < 6; i++)
     {
         cube_indices.push_back(4 * i);
+        cube_indices.push_back(4 * i + 2);
         cube_indices.push_back(4 * i + 1);
-        cube_indices.push_back(4 * i + 2);
+        
         cube_indices.push_back(4 * i);
-        cube_indices.push_back(4 * i + 2);
         cube_indices.push_back(4 * i + 3);
-
+        cube_indices.push_back(4 * i + 2);
     };
 
     MeshID cube_mesh_id = mesh_repository->create_mesh(cube_positions, cube_normals, cube_uvs, cube_indices);
     std::shared_ptr<Mesh> cube_mesh = mesh_repository->get_mesh(cube_mesh_id);
     cube_VAO = cube_mesh->VAO;
     cube_EBO = cube_mesh->EBO;
-
-    printf("VAO: %u\n", cube_VAO);
-    printf("EBO: %u\n", cube_EBO);
 
     float skyboxVertices[] = {
         // positions
@@ -216,7 +213,7 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     // seed rng;
     srand(static_cast<unsigned>(time(0)));
 	std::default_random_engine generator;
-	std::uniform_real_distribution<float> rand_position(-1.0f, 1.0f);
+	std::uniform_real_distribution<float> rand_position(-10.0f, 10.0f);
 
     for (int i = 0; i < 100; i++)
     {
@@ -334,20 +331,19 @@ void RenderingSystem::draw()
 
     glBindVertexArray(cube_VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_EBO);
-    //for (unsigned int i = 0; i < cubes.size(); i++)
-    //{
-    int i = 0;
+    for (unsigned int i = 0; i < cubes.size(); i++)
+    {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubes[i]);
         float angle = 20.0f * i;
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
         light_shader.setMat4("model", model);
         light_shader.setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model))));
 
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);    
-    //}
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);    
+    }
     
 
     glBindVertexArray(0);
