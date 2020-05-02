@@ -2,6 +2,7 @@
 #define DEMO_MATHS_QUATERNION_HPP
 
 #include <math.h>
+#include <cstdio>
 
 #include <demo/maths/float3.hpp>
 
@@ -63,6 +64,11 @@ public:
     quaternion inverse()
     {
         return quaternion(w, -x, -y, -z);
+    }
+
+    void print() 
+    {       
+        printf("(%f, %f, %f, %f)\n", w, x, y, z);
     }
 
     float w, x, y, z;

@@ -108,26 +108,26 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
         float2(1.0f,  0.0f),
         float2(1.0f,  1.0f),
         float2(0.0f,  1.0f),
-        
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
+
         float2(0.0f,  0.0f),
-        
         float2(1.0f,  0.0f),
         float2(1.0f,  1.0f),
         float2(0.0f,  1.0f),
+
         float2(0.0f,  0.0f),
-        
-        float2(0.0f,  1.0f),
-        float2(1.0f,  1.0f),
         float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f),
+
         float2(0.0f,  0.0f),
-        
-        float2(0.0f,  1.0f),
-        float2(1.0f,  1.0f),
         float2(1.0f,  0.0f),
-        float2(0.0f,  0.0f)
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f),
+
+        float2(0.0f,  0.0f),
+        float2(1.0f,  0.0f),
+        float2(1.0f,  1.0f),
+        float2(0.0f,  1.0f)
     };
 
     std::vector<uint32_t> cube_indices;
@@ -135,13 +135,34 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     for (uint32_t i = 0; i < 6; i++)
     {
         cube_indices.push_back(4 * i);
-        cube_indices.push_back(4 * i + 2);
         cube_indices.push_back(4 * i + 1);
+        cube_indices.push_back(4 * i + 2);
         
         cube_indices.push_back(4 * i);
-        cube_indices.push_back(4 * i + 3);
         cube_indices.push_back(4 * i + 2);
+        cube_indices.push_back(4 * i + 3);
     };
+
+    for (int j = 0; j < 6; j++) 
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            printf("\nVertex %i:\n", 4 * j + i);
+            cube_positions[4 * j + i].print();
+            cube_normals[4 * j + i].print();
+            cube_uvs[4 * j + i].print();
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            printf("\nTriangle %i:\n", 6 * j + i);
+            printf("(%i, %i, %i)\n", cube_indices[6 * j + 3 * i], cube_indices[6 * j + 3 * i + 1], cube_indices[6 * j + 3 * i + 2]);
+            printf("Triangle uvs:\n");
+            cube_uvs[cube_indices[6 * j + 3 * i]].print();
+            cube_uvs[cube_indices[6 * j + 3 * i + 1]].print();
+            cube_uvs[cube_indices[6 * j + 3 * i + 2]].print();
+        }
+    }
 
     MeshID cube_mesh_id = mesh_repository->create_mesh(cube_positions, cube_normals, cube_uvs, cube_indices);
     std::shared_ptr<Mesh> cube_mesh = mesh_repository->get_mesh(cube_mesh_id);

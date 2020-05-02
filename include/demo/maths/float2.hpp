@@ -2,6 +2,7 @@
 #define DEMO_MATHS_FLOAT_2_HPP
 
 #include <math.h>
+#include <cstdio>
 
 struct float2
 {
@@ -129,6 +130,11 @@ public:
     bool operator!=(float2 const& other)
     {
         return x != other.x || y != other.y;
+    }
+
+    void print()
+    {
+        printf("(%f, %f)\n", x, y);
     }
 
     float x, y;

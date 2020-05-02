@@ -3,6 +3,7 @@
 
 #include <demo/maths/float2.hpp>
 #include <math.h>
+#include <cstdio>
 
 struct float3
 {
@@ -144,6 +145,11 @@ public:
     bool operator!=(float3 const& other)
     {
         return x != other.x || y != other.y || x != other.z;
+    }
+
+    void print()
+    {
+        printf("(%f, %f, %f)\n", x, y, z);
     }
 
     float x, y, z;
