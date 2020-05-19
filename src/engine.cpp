@@ -33,9 +33,9 @@ void Engine::late_update(Time time)
 {
 }
 
-void Engine::draw()
+void Engine::draw(Time time)
 {
-    rendering_system->draw();
+    rendering_system->draw(time);
 }
 
 void Engine::process_input()

@@ -42,59 +42,10 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     cube_VAO = cube_mesh->VAO;
     cube_EBO = cube_mesh->EBO;
 
-    float skyboxVertices[] = {
-        // positions
-        -1.0f,  1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-        -1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f
-    };
-
-    glGenVertexArrays(1, &skybox_VAO);
-    glGenBuffers(1, &skybox_VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, skybox_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glBindVertexArray(skybox_VAO);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
+    MeshID skybox_mesh_id = mesh_repository->create_skybox();
+    std::shared_ptr<Mesh> skybox_mesh = mesh_repository->get_mesh(skybox_mesh_id);
+    skybox_VAO = skybox_mesh->VAO;
+    skybox_EBO = skybox_mesh->EBO;
 
     texture1.build("assets/textures/uv_test.png");
     texture2.build("assets/textures/primal_scream.png");
@@ -144,7 +95,7 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     // ImGui::StyleColorsDark();
 }
 
-void RenderingSystem::draw()
+void RenderingSystem::draw(Time time)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -275,7 +226,7 @@ void RenderingSystem::draw()
     
      glBindVertexArray(skybox_VAO);
      skybox.bind();
-     glDrawArrays(GL_TRIANGLES, 0, 36);
+     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
      glBindVertexArray(0);
      glDepthFunc(GL_LESS);
 

@@ -4,98 +4,98 @@ std::shared_ptr<Mesh> Mesh::cube()
 {
     std::vector<float3> cube_positions = {
         float3(-0.5f, -0.5f, -0.5f),
-        float3(-0.5f,  0.5f, -0.5f),
-        float3(0.5f,   0.5f, -0.5f),
-        float3(0.5f,  -0.5f, -0.5f),
+        float3(-0.5f, 0.5f, -0.5f),
+        float3(0.5f, 0.5f, -0.5f),
+        float3(0.5f, -0.5f, -0.5f),
 
-        float3(-0.5f, -0.5f,  0.5f),
-        float3(0.5f,  -0.5f,  0.5f),
-        float3(0.5f,   0.5f,  0.5f),
-        float3(-0.5f,  0.5f,  0.5f),
+        float3(-0.5f, -0.5f, 0.5f),
+        float3(0.5f, -0.5f, 0.5f),
+        float3(0.5f, 0.5f, 0.5f),
+        float3(-0.5f, 0.5f, 0.5f),
 
-        float3(-0.5f,  0.5f,  0.5f),
-        float3(-0.5f,  0.5f, -0.5f),
+        float3(-0.5f, 0.5f, 0.5f),
+        float3(-0.5f, 0.5f, -0.5f),
         float3(-0.5f, -0.5f, -0.5f),
-        float3(-0.5f, -0.5f,  0.5f),
+        float3(-0.5f, -0.5f, 0.5f),
 
-        float3(0.5f,  0.5f,  0.5f),
+        float3(0.5f, 0.5f, 0.5f),
         float3(0.5f, -0.5f, 0.5f),
         float3(0.5f, -0.5f, -0.5f),
-        float3(0.5f,  0.5f, -0.5f),
+        float3(0.5f, 0.5f, -0.5f),
 
         float3(-0.5f, -0.5f, -0.5f),
-        float3(0.5f,  -0.5f, -0.5f),
-        float3(0.5f,  -0.5f,  0.5f),
-        float3(-0.5f, -0.5f,  0.5f),
+        float3(0.5f, -0.5f, -0.5f),
+        float3(0.5f, -0.5f, 0.5f),
+        float3(-0.5f, -0.5f, 0.5f),
 
         float3(-0.5f, 0.5f, -0.5f),
-        float3(-0.5f,  0.5f, 0.5f),
-        float3(0.5f,  0.5f,  0.5f),
-        float3(0.5f, 0.5f,  -0.5f)
+        float3(-0.5f, 0.5f, 0.5f),
+        float3(0.5f, 0.5f, 0.5f),
+        float3(0.5f, 0.5f, -0.5f)
     };
 
     std::vector<float3> cube_normals = {
-        float3(0.0f,  0.0f, -1.0f),
-        float3(0.0f,  0.0f, -1.0f),
-        float3(0.0f,  0.0f, -1.0f),
-        float3(0.0f,  0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
 
-        float3(0.0f,  0.0f,  1.0f),
-        float3(0.0f,  0.0f,  1.0f),
-        float3(0.0f,  0.0f,  1.0f),
-        float3(0.0f,  0.0f,  1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
 
-        float3(-1.0f,  0.0f,  0.0f),
-        float3(-1.0f,  0.0f,  0.0f),
-        float3(-1.0f,  0.0f,  0.0f),
-        float3(-1.0f,  0.0f,  0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
 
-        float3(1.0f,  0.0f,  0.0f),
-        float3(1.0f,  0.0f,  0.0f),
-        float3(1.0f,  0.0f,  0.0f),
-        float3(1.0f,  0.0f,  0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
 
-        float3(0.0f, -1.0f,  0.0f),
-        float3(0.0f, -1.0f,  0.0f),
-        float3(0.0f, -1.0f,  0.0f),
-        float3(0.0f, -1.0f,  0.0f),
+        float3(0.0f, -1.0f, 0.0f),
+        float3(0.0f, -1.0f, 0.0f),
+        float3(0.0f, -1.0f, 0.0f),
+        float3(0.0f, -1.0f, 0.0f),
 
-        float3(0.0f,  1.0f,  0.0f),
-        float3(0.0f,  1.0f,  0.0f),
-        float3(0.0f,  1.0f,  0.0f),
-        float3(0.0f,  1.0f,  0.0f)
+        float3(0.0f, 1.0f, 0.0f),
+        float3(0.0f, 1.0f, 0.0f),
+        float3(0.0f, 1.0f, 0.0f),
+        float3(0.0f, 1.0f, 0.0f)
     };
 
     std::vector<float2> cube_uvs = {
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
 
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
 
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
 
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
 
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
 
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f)
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f)
     };
 
     std::vector<uint32_t> cube_indices;
@@ -112,6 +112,120 @@ std::shared_ptr<Mesh> Mesh::cube()
     };
 
     return std::make_shared<Mesh>(cube_positions, cube_normals, cube_uvs, cube_indices);
+}
+
+std::shared_ptr<Mesh> Mesh::skybox()
+{
+    std::vector<float3> skybox_positions = {
+        float3(-1.0f, -1.0f, -1.0f),
+        float3(-1.0f, 1.0f, -1.0f),
+        float3(1.0f, 1.0f, -1.0f),
+        float3(1.0f, -1.0f, -1.0f),
+
+        float3(-1.0f, -1.0f, 1.0f),
+        float3(1.0f, -1.0f, 1.0f),
+        float3(1.0f, 1.0f, 1.0f),
+        float3(-1.0f, 1.0f, 1.0f),
+
+        float3(-1.0f, 1.0f, 1.0f),
+        float3(-1.0f, 1.0f, -1.0f),
+        float3(-1.0f, -1.0f, -1.0f),
+        float3(-1.0f, -1.0f, 1.0f),
+
+        float3(1.0f, 1.0f, 1.0f),
+        float3(1.0f, -1.0f, 1.0f),
+        float3(1.0f, -1.0f, -1.0f),
+        float3(1.0f, 1.0f, -1.0f),
+
+        float3(-1.0f, -1.0f, -1.0f),
+        float3(1.0f, -1.0f, -1.0f),
+        float3(1.0f, -1.0f, 1.0f),
+        float3(-1.0f, -1.0f, 1.0f),
+
+        float3(-1.0f, 1.0f, -1.0f),
+        float3(-1.0f, 1.0f, 1.0f),
+        float3(1.0f, 1.0f, 1.0f),
+        float3(1.0f, 1.0f, -1.0f)
+    };
+
+    std::vector<float3> skybox_normals = {
+        float3(0.0f, 0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
+        float3(0.0f, 0.0f, -1.0f),
+
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+
+        float3(-1.0f, 0.0f, 0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
+        float3(-1.0f, 0.0f, 0.0f),
+
+        float3(1.0f, 0.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+
+        float3(0.0f, -1.0f, 0.0f),
+        float3(0.0f, -1.0f, 0.0f),
+        float3(0.0f, -1.0f, 0.0f),
+        float3(0.0f, -1.0f, 0.0f),
+
+        float3(0.0f, 1.0f, 0.0f),
+        float3(0.0f, 1.0f, 0.0f),
+        float3(0.0f, 1.0f, 0.0f),
+        float3(0.0f, 1.0f, 0.0f)
+    };
+
+    std::vector<float2> skybox_uvs = {
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f)
+    };
+
+    std::vector<uint32_t> skybox_indices;
+
+    for (uint32_t i = 0; i < 6; i++)
+    {
+        skybox_indices.push_back(4 * i);
+        skybox_indices.push_back(4 * i + 2);
+        skybox_indices.push_back(4 * i + 1);
+
+        skybox_indices.push_back(4 * i);
+        skybox_indices.push_back(4 * i + 3);
+        skybox_indices.push_back(4 * i + 2);
+    };
+
+    return std::make_shared<Mesh>(skybox_positions, skybox_normals, skybox_uvs, skybox_indices);
 }
 
 void Mesh::init()

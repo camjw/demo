@@ -34,7 +34,7 @@ int main()
 
             engine.late_update(time);
 
-            engine.draw();
+            engine.draw(time);
         }
     }
 }

@@ -1,10 +1,8 @@
 #include <demo/rendering/cube_map.hpp>
 
-CubeMap::CubeMap()
-{
-}
+CubeMap::CubeMap() = default;
 
-void CubeMap::build(const std::vector<std::string> faces)
+void CubeMap::build(const std::vector<std::string>& faces)
 {
     glGenTextures(1, &this->ID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, ID);

@@ -37,6 +37,15 @@ MeshID MeshRepository::create_cube()
     return current_mesh_id;
 }
 
+MeshID MeshRepository::create_skybox()
+{
+    std::shared_ptr<Mesh> skybox_mesh = Mesh::skybox();
+    skybox_mesh->init();
+
+    meshes.insert(std::make_pair(++current_mesh_id, skybox_mesh));
+    return current_mesh_id;
+}
+
 void MeshRepository::delete_mesh(MeshID mesh_id)
 {
     assert(meshes.find(mesh_id) != meshes.end() && "Removing non-existent mesh.");
