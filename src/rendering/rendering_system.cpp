@@ -37,116 +37,7 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     lamp_shader.init("./assets/shaders/lamp_shader.vert", "./assets/shaders/lamp_shader.frag");
     skybox_shader.init("./assets/shaders/skybox_shader.vert", "./assets/shaders/skybox_shader.frag");
 
-    std::vector<float3> cube_positions = {
-        float3(-0.5f, -0.5f, -0.5f),
-        float3(-0.5f,  0.5f, -0.5f),
-        float3(0.5f,   0.5f, -0.5f),
-        float3(0.5f,  -0.5f, -0.5f),
-
-        float3(-0.5f, -0.5f,  0.5f),
-        float3(0.5f,  -0.5f,  0.5f),
-        float3(0.5f,   0.5f,  0.5f),
-        float3(-0.5f,  0.5f,  0.5f),
-
-        float3(-0.5f,  0.5f,  0.5f),
-        float3(-0.5f,  0.5f, -0.5f),
-        float3(-0.5f, -0.5f, -0.5f),
-        float3(-0.5f, -0.5f,  0.5f),
-
-        float3(0.5f,  0.5f,  0.5f),
-        float3(0.5f, -0.5f, 0.5f),
-        float3(0.5f, -0.5f, -0.5f),
-        float3(0.5f,  0.5f, -0.5f),
-
-        float3(-0.5f, -0.5f, -0.5f),
-        float3(0.5f,  -0.5f, -0.5f),
-        float3(0.5f,  -0.5f,  0.5f),
-        float3(-0.5f, -0.5f,  0.5f),
-
-        float3(-0.5f, 0.5f, -0.5f),
-        float3(-0.5f,  0.5f, 0.5f),
-        float3(0.5f,  0.5f,  0.5f),
-        float3(0.5f, 0.5f,  -0.5f)
-    };
-
-    std::vector<float3> cube_normals = {
-        float3(0.0f,  0.0f, -1.0f), 
-        float3(0.0f,  0.0f, -1.0f), 
-        float3(0.0f,  0.0f, -1.0f), 
-        float3(0.0f,  0.0f, -1.0f), 
-
-        float3(0.0f,  0.0f,  1.0f), 
-        float3(0.0f,  0.0f,  1.0f), 
-        float3(0.0f,  0.0f,  1.0f), 
-        float3(0.0f,  0.0f,  1.0f), 
-
-        float3(-1.0f,  0.0f,  0.0f), 
-        float3(-1.0f,  0.0f,  0.0f), 
-        float3(-1.0f,  0.0f,  0.0f), 
-        float3(-1.0f,  0.0f,  0.0f), 
-
-        float3(1.0f,  0.0f,  0.0f), 
-        float3(1.0f,  0.0f,  0.0f), 
-        float3(1.0f,  0.0f,  0.0f), 
-        float3(1.0f,  0.0f,  0.0f), 
-
-        float3(0.0f, -1.0f,  0.0f), 
-        float3(0.0f, -1.0f,  0.0f), 
-        float3(0.0f, -1.0f,  0.0f), 
-        float3(0.0f, -1.0f,  0.0f), 
-
-        float3(0.0f,  1.0f,  0.0f), 
-        float3(0.0f,  1.0f,  0.0f), 
-        float3(0.0f,  1.0f,  0.0f), 
-        float3(0.0f,  1.0f,  0.0f)
-    };
-
-    std::vector<float2> cube_uvs = {
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
-
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
-
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
-
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
-
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f),
-
-        float2(0.0f,  0.0f),
-        float2(1.0f,  0.0f),
-        float2(1.0f,  1.0f),
-        float2(0.0f,  1.0f)
-    };
-
-    std::vector<uint32_t> cube_indices;
-
-    for (uint32_t i = 0; i < 6; i++)
-    {
-        cube_indices.push_back(4 * i);
-        cube_indices.push_back(4 * i + 1);
-        cube_indices.push_back(4 * i + 2);
-        
-        cube_indices.push_back(4 * i);
-        cube_indices.push_back(4 * i + 2);
-        cube_indices.push_back(4 * i + 3);
-    };
-
-    MeshID cube_mesh_id = mesh_repository->create_mesh(cube_positions, cube_normals, cube_uvs, cube_indices);
+    MeshID cube_mesh_id = mesh_repository->create_cube();
     std::shared_ptr<Mesh> cube_mesh = mesh_repository->get_mesh(cube_mesh_id);
     cube_VAO = cube_mesh->VAO;
     cube_EBO = cube_mesh->EBO;
@@ -206,7 +97,7 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
 
     texture1.build("assets/textures/uv_test.png");
-    // texture2.build("assets/textures/primal_scream.png");
+    texture2.build("assets/textures/primal_scream.png");
 
     simple_shader.use();
 

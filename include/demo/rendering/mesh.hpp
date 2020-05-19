@@ -18,51 +18,55 @@ struct MeshComponent
 
 class Mesh
 {
-    public:
-        Mesh() {};
-        Mesh(
-            std::vector<float3> positions, 
-            std::vector<float3> normals, 
-            std::vector<float2> uvs, 
-            std::vector<uint32_t> indices
-        ) : positions(positions), normals(normals), uvs(uvs), indices(indices) {};
+public:
+    Mesh() {};
+    static std::shared_ptr<Mesh> cube();
+    Mesh(
+        std::vector<float3> positions,
+        std::vector<float3> normals,
+        std::vector<float2> uvs,
+        std::vector<uint32_t> indices)
+        : positions(positions)
+        , normals(normals)
+        , uvs(uvs)
+        , indices(indices) {};
 
-        std::vector<float3> positions;
-        std::vector<float3> normals;
-        std::vector<float2> uvs;
+    std::vector<float3> positions;
+    std::vector<float3> normals;
+    std::vector<float2> uvs;
 
-        std::vector<uint32_t> indices;
+    std::vector<uint32_t> indices;
 
-        void init();
-        void destroy();
+    void init();
+    void destroy();
 
-        Mesh(const Mesh &) = delete;
-        Mesh &operator=(const Mesh &) = delete;
+    Mesh(const Mesh&) = delete;
+    Mesh& operator=(const Mesh&) = delete;
 
-        Mesh(Mesh &&other) : VAO(other.VAO), EBO(other.EBO), VBO(other.VBO)
+    Mesh(Mesh&& other)
+        : VAO(other.VAO)
+        , EBO(other.EBO)
+        , VBO(other.VBO)
+    {
+        other.VAO = 0;
+        other.VBO = 0;
+        other.EBO = 0;
+    }
+
+    Mesh& operator=(Mesh&& other)
+    {
+        if (this != &other)
         {
-            other.VAO = 0; //Use the "null" texture for the old object.
-            other.VBO = 0; //Use the "null" texture for the old object.
-            other.EBO = 0; //Use the "null" texture for the old object.
+            destroy();
+            std::swap(VAO, other.VAO);
+            std::swap(VBO, other.VBO);
+            std::swap(EBO, other.EBO);
         }
 
-        Mesh &operator=(Mesh &&other)
-        {
-            //ALWAYS check for self-assignment.
-            if(this != &other)
-            {
-                destroy();
-                //obj_ is now 0.
-                std::swap(VAO, other.VAO);
-                std::swap(VBO, other.VBO);
-                std::swap(EBO, other.EBO);
-            }
+        return *this;
+    }
 
-            return *this;
-        }
-
-        unsigned int VAO, EBO, VBO;
-
+    unsigned int VAO, EBO, VBO;
 };
 
 #endif

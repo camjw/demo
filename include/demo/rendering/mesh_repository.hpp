@@ -17,6 +17,9 @@ class MeshRepository
             std::vector<uint32_t> indices
         );
 
+        // helper functions for common meshes
+        MeshID create_cube();
+
         void delete_mesh(MeshID mesh_id);
 
     private:

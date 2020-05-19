@@ -22,7 +22,7 @@ void CubeMap::build(const std::vector<std::string> faces)
         }
         else
         {
-            printf("Cubemap tex failed to load at path: %s\n", faces[i].c_str());
+            printf("Cube Map tex failed to load at path: %s\n", faces[i].c_str());
             stbi_image_free(data);
         }
     }

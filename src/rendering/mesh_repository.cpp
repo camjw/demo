@@ -16,16 +16,24 @@ MeshID MeshRepository::create_mesh()
 }
 
 MeshID MeshRepository::create_mesh(
-    std::vector<float3> positions, 
-    std::vector<float3> normals, 
-    std::vector<float2> uvs, 
-    std::vector<uint32_t> indices
-)
+    std::vector<float3> positions,
+    std::vector<float3> normals,
+    std::vector<float2> uvs,
+    std::vector<uint32_t> indices)
 {
     std::shared_ptr<Mesh> new_mesh = std::make_shared<Mesh>(positions, normals, uvs, indices);
     new_mesh->init();
-    
+
     meshes.insert(std::make_pair(++current_mesh_id, new_mesh));
+    return current_mesh_id;
+}
+
+MeshID MeshRepository::create_cube()
+{
+    std::shared_ptr<Mesh> cube_mesh = Mesh::cube();
+    cube_mesh->init();
+
+    meshes.insert(std::make_pair(++current_mesh_id, cube_mesh));
     return current_mesh_id;
 }
 
