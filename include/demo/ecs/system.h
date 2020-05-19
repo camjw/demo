@@ -3,9 +3,9 @@
 
 #include <set>
 
-#include <demo/ecs/ecs.hpp>
-#include <demo/input_processor.hpp>
-#include <demo/timer.hpp>
+#include <demo/ecs/ecs.h>
+#include <demo/input_processor.h>
+#include <demo/timer.h>
 
 class Coordinator;
 
