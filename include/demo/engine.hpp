@@ -33,7 +33,7 @@ public:
 
     void update(Time time);
     void late_update(Time time);
-    void draw();
+    void draw(Time time);
 
     bool is_running();
 

@@ -33,7 +33,7 @@ class CubeMap
             return *this;
         }
 
-        void build(const std::vector<std::string> faces);
+        void build(const std::vector<std::string>& faces);
         void bind() const;
 
     private:

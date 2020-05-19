@@ -16,49 +16,48 @@ struct TextureComponent
 
 class Texture
 {
-    public:
-        Texture();
-        Texture(const std::string& filename);
-        GLuint ID = 0;
+public:
+    Texture();
+    explicit Texture(const std::string& filename);
+    GLuint ID = 0;
 
-        Texture(const Texture &) = delete;
-        Texture &operator=(const Texture &) = delete;
+    Texture(const Texture&) = delete;
+    Texture& operator=(const Texture&) = delete;
 
-        Texture(Texture &&other) : ID(other.ID)
+    Texture(Texture&& other) noexcept
+        : ID(other.ID)
+    {
+        other.ID = 0; //Use the "null" texture for the old object.
+    }
+
+    Texture& operator=(Texture&& other) noexcept
+    {
+        if (this != &other)
         {
-            other.ID = 0; //Use the "null" texture for the old object.
+            release();
+            std::swap(ID, other.ID);
         }
 
-        Texture &operator=(Texture &&other)
-        {
-            //ALWAYS check for self-assignment.
-            if(this != &other)
-            {
-                release();
-                //obj_ is now 0.
-                std::swap(ID, other.ID);
-            }
+        return *this;
+    }
 
-            return *this;
-        }
+    void build(const std::string& filename);
+    void bind() const;
+    void destroy() {};
 
-        void build(const std::string& filename);
-        void bind() const;
-        void destroy() {};
-
-    private:
-        void release()
-        {
-            glDeleteTextures(1, &ID);
-            ID = 0;
-        }
-        GLuint width, height;
-        GLuint Internal_Format;
-        GLuint Image_Format;
-        GLuint Wrap_S;
-        GLuint Wrap_T;
-        GLuint Filter_Min;
-        GLuint Filter_Max;
+private:
+    void release()
+    {
+        glDeleteTextures(1, &ID);
+        ID = 0;
+    }
+    GLuint width, height;
+    GLuint Internal_Format;
+    GLuint Image_Format;
+    GLuint Wrap_S;
+    GLuint Wrap_T;
+    GLuint Filter_Min;
+    GLuint Filter_Max;
 };
 
 #endif

@@ -19,6 +19,7 @@ class MeshRepository
 
         // helper functions for common meshes
         MeshID create_cube();
+        MeshID create_skybox();
 
         void delete_mesh(MeshID mesh_id);
 
