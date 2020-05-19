@@ -1,10 +1,10 @@
 #ifndef DEMO_ECS_COORDINATOR_HPP
 #define DEMO_ECS_COORDINATOR_HPP
 
-#include <demo/ecs/component_manager.hpp>
-#include <demo/ecs/ecs.hpp>
-#include <demo/ecs/entity_manager.hpp>
-#include <demo/ecs/system_manager.hpp>
+#include <demo/ecs/component_manager.h>
+#include <demo/ecs/ecs.h>
+#include <demo/ecs/entity_manager.h>
+#include <demo/ecs/system_manager.h>
 
 class Coordinator
 {

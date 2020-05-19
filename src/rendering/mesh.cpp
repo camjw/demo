@@ -1,4 +1,4 @@
-#include <demo/rendering/mesh.hpp>
+#include <demo/rendering/mesh.h>
 
 std::shared_ptr<Mesh> Mesh::cube()
 {

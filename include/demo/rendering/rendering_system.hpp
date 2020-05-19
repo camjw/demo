@@ -1,18 +1,18 @@
 #ifndef DEMO_RENDERING_RENDERING_SYSTEM_HPP
 #define DEMO_RENDERING_RENDERING_SYSTEM_HPP
 
-#include <demo/ecs/system.hpp>
-#include <demo/ecs/coordinator.hpp>
-#include <demo/ecs/ecs.hpp>
+#include <demo/ecs/system.h>
+#include <demo/ecs/coordinator.h>
+#include <demo/ecs/ecs.h>
 
-#include <demo/window.hpp>
-#include <demo/camera.hpp>
+#include <demo/window.h>
+#include <demo/camera.h>
 
-#include <demo/rendering/shader.hpp>
-#include <demo/rendering/texture.hpp>
-#include <demo/rendering/cube_map.hpp>
-#include <demo/rendering/mesh_repository.hpp>
-#include <demo/rendering/texture_repository.hpp>
+#include <demo/rendering/shader.h>
+#include <demo/rendering/texture.h>
+#include <demo/rendering/cube_map.h>
+#include <demo/rendering/mesh_repository.h>
+#include <demo/rendering/texture_repository.h>
 
 #include <imgui/imgui.h>
 #include <imgui/bindings/imgui_impl_glfw.h>

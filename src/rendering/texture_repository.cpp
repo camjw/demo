@@ -1,4 +1,4 @@
-#include <demo/rendering/texture_repository.hpp>
+#include <demo/rendering/texture_repository.h>
 
 std::shared_ptr<Texture> TextureRepository::get_texture(TextureID texture_id)
 {

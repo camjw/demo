@@ -4,11 +4,11 @@
 #include <typeinfo>
 #include <unordered_map>
 
-#include <demo/ecs/ecs.hpp>
-#include <demo/ecs/system.hpp>
+#include <demo/ecs/ecs.h>
+#include <demo/ecs/system.h>
 
-#include <demo/input_processor.hpp>
-#include <demo/timer.hpp>
+#include <demo/input_processor.h>
+#include <demo/timer.h>
 
 class SystemManager
 {

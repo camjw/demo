@@ -1,7 +1,7 @@
 #ifndef DEMO_RENDERING_MESH_REPOSITORY_HPP
 #define DEMO_RENDERING_MESH_REPOSITORY_HPP
 
-#include <demo/rendering/mesh.hpp>
+#include <demo/rendering/mesh.h>
 
 #include <unordered_map>
 

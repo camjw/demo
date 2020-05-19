@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cstdio>
 
-#include <demo/maths/float3.hpp>
+#include <demo/maths/float3.h>
 
 struct quaternion
 {

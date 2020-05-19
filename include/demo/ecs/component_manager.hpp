@@ -3,8 +3,8 @@
 
 #include <typeinfo>
 
-#include <demo/ecs/component_array.hpp>
-#include <demo/ecs/ecs.hpp>
+#include <demo/ecs/component_array.h>
+#include <demo/ecs/ecs.h>
 
 class ComponentManager
 {

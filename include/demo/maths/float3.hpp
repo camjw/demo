@@ -1,7 +1,7 @@
 #ifndef DEMO_MATHS_FLOAT_3_HPP
 #define DEMO_MATHS_FLOAT_3_HPP
 
-#include <demo/maths/float2.hpp>
+#include <demo/maths/float2.h>
 #include <math.h>
 #include <cstdio>
 

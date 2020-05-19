@@ -1,18 +1,18 @@
 #ifndef DEMO_ENGINE_HPP
 #define DEMO_ENGINE_HPP
 
-#include <demo/rendering/cube_map.hpp>
-#include <demo/rendering/shader.hpp>
-#include <demo/rendering/texture.hpp>
-#include <demo/rendering/rendering_system.hpp>
+#include <demo/rendering/cube_map.h>
+#include <demo/rendering/rendering_system.h>
+#include <demo/rendering/shader.h>
+#include <demo/rendering/texture.h>
 
-#include <demo/camera.hpp>
-#include <demo/input_processor.hpp>
-#include <demo/timer.hpp>
-#include <demo/window.hpp>
+#include <demo/camera.h>
+#include <demo/input_processor.h>
+#include <demo/timer.h>
+#include <demo/window.h>
 
-#include <demo/ecs/coordinator.hpp>
-#include <demo/ecs/ecs.hpp>
+#include <demo/ecs/coordinator.h>
+#include <demo/ecs/ecs.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

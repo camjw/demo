@@ -1,7 +1,7 @@
 #ifndef DEMO_ECS_COMPONENTS_TRANSFORM_HPP
 #define DEMO_ECS_COMPONENTS_TRANSFORM_HPP
 
-#include <demo/maths/maths.hpp>
+#include <demo/maths/maths.h>
 
 struct Transform
 {

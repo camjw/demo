@@ -1,4 +1,4 @@
-#include <demo/rendering/rendering_system.hpp>
+#include <demo/rendering/rendering_system.h>
 #include <random>
 
 RenderingSystem::RenderingSystem()

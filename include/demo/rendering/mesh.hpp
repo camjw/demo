@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include <demo/maths/maths.hpp>
+#include <demo/maths/maths.h>
 
 using MeshID = uint8_t;
 

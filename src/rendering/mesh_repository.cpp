@@ -1,4 +1,4 @@
-#include <demo/rendering/mesh_repository.hpp>
+#include <demo/rendering/mesh_repository.h>
 
 std::shared_ptr<Mesh> MeshRepository::get_mesh(MeshID mesh_id)
 {

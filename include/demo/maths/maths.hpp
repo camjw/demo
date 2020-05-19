@@ -1,10 +1,10 @@
 #ifndef DEMO_MATHS_MATHS_HPP
 #define DEMO_MATHS_MATHS_HPP
 
-#include <demo/maths/float2.hpp>
-#include <demo/maths/float3.hpp>
+#include <demo/maths/float2.h>
+#include <demo/maths/float3.h>
 
-#include <demo/maths/quaternion.hpp>
+#include <demo/maths/quaternion.h>
 
 class maths
 {

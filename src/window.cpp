@@ -1,5 +1,5 @@
-#include <demo/input_processor.hpp>
-#include <demo/window.hpp>
+#include <demo/input_processor.h>
+#include <demo/window.h>
 
 Window::Window(const std::string& window_name)
     : width(800)

@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#include <demo/input_processor.hpp>
-#include <demo/timer.hpp>
+#include <demo/input_processor.h>
+#include <demo/timer.h>
 
 // Default camera values
 const float SPEED = 0.01f;
