@@ -290,6 +290,17 @@ void Mesh::init()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 }
 
+void Mesh::bind()
+{
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+}
+
+void Mesh::draw()
+{
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+}
+
 void Mesh::destroy()
 {
     glBindVertexArray(0);

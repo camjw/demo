@@ -13,6 +13,7 @@
 #include <demo/rendering/cube_map.h>
 #include <demo/rendering/mesh_repository.h>
 #include <demo/rendering/texture_repository.h>
+#include <demo/rendering/shader_repository.h>
 
 #include <imgui/imgui.h>
 #include <imgui/bindings/imgui_impl_glfw.h>
@@ -28,18 +29,19 @@ class RenderingSystem : public System
         void draw(Time time);
 
     private:
-        Camera* camera;
-        Window* window;
-        Coordinator* coordinator;
+        Camera* camera{};
+        Window* window{};
+        Coordinator* coordinator{};
 
         MeshRepository* mesh_repository;
         TextureRepository* texture_repository;
+        ShaderRepository* shader_repository;
 
-        Shader simple_shader;
-        Shader light_shader;
-        Shader lamp_shader;
-        Shader skybox_shader;
-        unsigned int cube_VBO, cube_VAO, cube_EBO, light_VAO, skybox_VAO, skybox_EBO;
+        Shader simple_shader{};
+        Shader light_shader{};
+        Shader lamp_shader{};
+        Shader skybox_shader{};
+        unsigned int cube_VBO{}, cube_VAO{}, cube_EBO{}, light_VAO{}, skybox_VAO{}, skybox_EBO{};
         Texture texture1, texture2;
 
         std::vector<glm::vec3> cubes;

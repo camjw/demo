@@ -22,7 +22,7 @@ include_directories(demo
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Create executable
-add_executable(demo ${SOURCES})
+add_executable(demo ${SOURCES} src/rendering/shader_repository.cpp include/rendering/shader_repository.h include/demo/rendering/shader_repository.h src/rendering/shader.cpp)
 
 find_package(GLM REQUIRED)
 message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")

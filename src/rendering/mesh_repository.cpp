@@ -50,7 +50,15 @@ void MeshRepository::delete_mesh(MeshID mesh_id)
 {
     assert(meshes.find(mesh_id) != meshes.end() && "Removing non-existent mesh.");
 
-    std::shared_ptr<Mesh> meshToDelete = meshes[mesh_id];
-    meshToDelete->destroy();
+    std::shared_ptr<Mesh> mesh_to_delete = meshes[mesh_id];
+    mesh_to_delete->destroy();
     meshes.erase(mesh_id);
+}
+
+void MeshRepository::clear()
+{
+    for (auto mesh : meshes)
+    {
+        delete_mesh(mesh.first);
+    }
 }

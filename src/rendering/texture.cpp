@@ -47,7 +47,8 @@ void Texture::build(const std::string& filename)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::bind() const
+void Texture::bind(int texture_index) const
 {
+    glActiveTexture(GL_TEXTURE0 + texture_index);
     glBindTexture(GL_TEXTURE_2D, this->ID);
 }

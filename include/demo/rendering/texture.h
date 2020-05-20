@@ -27,7 +27,7 @@ public:
     Texture(Texture&& other) noexcept
         : ID(other.ID)
     {
-        other.ID = 0; //Use the "null" texture for the old object.
+        other.ID = 0;
     }
 
     Texture& operator=(Texture&& other) noexcept
@@ -42,7 +42,7 @@ public:
     }
 
     void build(const std::string& filename);
-    void bind() const;
+    void bind(int texture_index) const;
     void destroy() {};
 
 private:

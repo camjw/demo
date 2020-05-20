@@ -22,6 +22,7 @@ class MeshRepository
         MeshID create_skybox();
 
         void delete_mesh(MeshID mesh_id);
+        void clear();
 
     private:
         std::unordered_map<MeshID, std::shared_ptr<Mesh>> meshes;

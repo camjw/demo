@@ -13,6 +13,7 @@ class TextureRepository
         TextureID create_texture(std::string filename);
 
         void delete_texture(TextureID mesh_id);
+        void clear();
 
     private:
         std::unordered_map<TextureID, std::shared_ptr<Texture>> textures;

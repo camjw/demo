@@ -5,6 +5,7 @@ RenderingSystem::RenderingSystem()
 {
     mesh_repository = new MeshRepository();
     texture_repository = new TextureRepository();
+    shader_repository = new ShaderRepository();
 
     glEnable(GL_CULL_FACE);
 }
@@ -13,16 +14,14 @@ RenderingSystem::~RenderingSystem()
 {
     delete mesh_repository;
     delete texture_repository;
+    delete shader_repository;
 }
 
 void RenderingSystem::destroy()
 {
-    glDeleteVertexArrays(1, &cube_VAO);
-    glDeleteBuffers(1, &cube_VBO);
-
-    // ImGui_ImplOpenGL3_Shutdown();
-    // ImGui_ImplGlfw_Shutdown();
-    // ImGui::DestroyContext();
+    mesh_repository->clear();
+    texture_repository->clear();
+    shader_repository->clear();
 }
 
 void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordinator)
@@ -64,12 +63,12 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
 
     for (int i = 0; i < 100; i++)
     {
-        cubes.push_back(glm::vec3(rand_position(generator), rand_position(generator), rand_position(generator)));
+        cubes.emplace_back(rand_position(generator), rand_position(generator), rand_position(generator));
     }
     
     for (int i = 0; i < 4; i++)
     {
-        lights.push_back(glm::vec3(rand_position(generator), rand_position(generator), rand_position(generator)));
+        lights.emplace_back(rand_position(generator), rand_position(generator), rand_position(generator));
     }
 
 
@@ -83,16 +82,6 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     };
 
     skybox.build(faces);
-
-    // IMGUI_CHECKVERSION();
-    // ImGui::CreateContext();
-    // ImGuiIO &io = ImGui::GetIO();
-    // // Setup Platform/Renderer bindings
-    // ImGui_ImplGlfw_InitForOpenGL(window->get_glfw_window(), true);
-    // const char *glsl_version = "#version 330 core";
-    // ImGui_ImplOpenGL3_Init(glsl_version);
-    // // Setup Dear ImGui style
-    // ImGui::StyleColorsDark();
 }
 
 void RenderingSystem::draw(Time time)
@@ -104,10 +93,8 @@ void RenderingSystem::draw(Time time)
     // ImGui_ImplGlfw_NewFrame();
     // ImGui::NewFrame();
 
-    glActiveTexture(GL_TEXTURE0);
-    texture1.bind();
-    glActiveTexture(GL_TEXTURE1);
-    texture2.bind();
+    texture1.bind(0);
+    texture2.bind(1);
 
     light_shader.use();
     light_shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
@@ -226,7 +213,7 @@ void RenderingSystem::draw(Time time)
     
      glBindVertexArray(skybox_VAO);
      skybox.bind();
-     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
      glBindVertexArray(0);
      glDepthFunc(GL_LESS);
 
