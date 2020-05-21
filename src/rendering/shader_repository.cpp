@@ -40,3 +40,11 @@ void ShaderRepository::clear()
         delete_shader(shader.first);
     }
 }
+
+void ShaderRepository::for_all(Action<Shader>* action)
+{
+    for (auto shader: shaders)
+    {
+        action->run(shader.second);
+    }
+}

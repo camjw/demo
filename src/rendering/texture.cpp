@@ -12,7 +12,8 @@ Texture::Texture()
 {
 }
 
-Texture::Texture(const std::string& filename): Texture()
+Texture::Texture(const std::string& filename)
+    : Texture()
 {
     build(filename);
 }
@@ -42,7 +43,7 @@ void Texture::build(const std::string& filename)
     {
         printf("Failed to load texture\n");
     }
-    
+
     stbi_image_free(data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

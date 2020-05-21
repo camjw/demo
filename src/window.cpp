@@ -15,7 +15,7 @@ Window::Window(const std::string& window_name)
 #endif
 
     glfw_window = glfwCreateWindow(800, 600, window_name.c_str(), nullptr, nullptr);
-    if (glfw_window == NULL)
+    if (glfw_window == nullptr)
     {
         printf("Failed to intialise GLFW window!\n");
         glfwTerminate();
@@ -48,10 +48,10 @@ void Window::setup_callbacks()
     glfwSetFramebufferSizeCallback(glfw_window, framebuffer_size_callback);
 }
 
-void Window::keyboard_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Window::keyboard_callback(GLFWwindow* window, int key, int scan_code, int action, int mods)
 {
     InputProcessor* input = reinterpret_cast<InputProcessor*>(glfwGetWindowUserPointer(window));
-    input->process_keyboard_event(key, scancode, action, mods);
+    input->process_keyboard_event(key, scan_code, action, mods);
 }
 
 void Window::mouse_position_callback(GLFWwindow* window, double xpos, double ypos)

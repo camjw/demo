@@ -4,6 +4,7 @@
 #include <demo/rendering/shader.h>
 
 #include <unordered_map>
+#include <demo/templates/action.h>
 
 class ShaderRepository
 {
@@ -14,6 +15,7 @@ public:
 
     void delete_shader(ShaderID mesh_id);
     void clear();
+    void for_all(Action<Shader>* action);
 
 private:
     std::unordered_map<ShaderID, std::shared_ptr<Shader>> shaders;

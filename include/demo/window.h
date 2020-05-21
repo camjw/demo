@@ -42,7 +42,7 @@ private:
 
     void setup_callbacks();
 
-    static void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, int modst);
+    static void keyboard_callback(GLFWwindow* window, int key, int scan_code, int action, int modst);
     static void mouse_position_callback(GLFWwindow* window, double xpos, double ypos);
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);

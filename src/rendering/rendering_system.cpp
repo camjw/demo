@@ -84,14 +84,36 @@ void RenderingSystem::init(Window* window, Camera* camera, Coordinator* coordina
     skybox.build(faces);
 }
 
-void RenderingSystem::draw(Time time)
+void RenderingSystem::begin_draw(Time time)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // ImGui_ImplOpenGL3_NewFrame();
-    // ImGui_ImplGlfw_NewFrame();
-    // ImGui::NewFrame();
+    // Set common variables for shaders
+    shader_repository->for_all(new SetShaderTime(time));
+    shader_repository->for_all(new SetShaderProjection(window->get_projection_matrix()));
+    shader_repository->for_all(new SetShaderCamera(
+        camera->get_position(),
+        camera->get_forward_direction(),
+        camera->get_view_matrix()));
+}
+
+void RenderingSystem::draw_entities()
+{
+
+}
+
+void RenderingSystem::end_draw()
+{
+
+}
+
+void RenderingSystem::draw(Time time)
+{
+    begin_draw(time);
+    draw_entities();
+    end_draw();
+
 
     texture1.bind(0);
     texture2.bind(1);

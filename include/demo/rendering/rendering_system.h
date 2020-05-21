@@ -15,9 +15,10 @@
 #include <demo/rendering/texture_repository.h>
 #include <demo/rendering/shader_repository.h>
 
-#include <imgui/imgui.h>
+#include <demo/rendering/shader_commands/shader_commands.h>
 #include <imgui/bindings/imgui_impl_glfw.h>
 #include <imgui/bindings/imgui_impl_opengl3.h>
+#include <imgui/imgui.h>
 
 class RenderingSystem : public System
 {
@@ -27,6 +28,10 @@ class RenderingSystem : public System
         void init(Window* window, Camera* camera, Coordinator* coordinator);
         void destroy();
         void draw(Time time);
+
+        void begin_draw(Time time);
+        void draw_entities();
+        void end_draw();
 
     private:
         Camera* camera{};
