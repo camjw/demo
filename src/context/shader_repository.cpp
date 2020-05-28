@@ -1,4 +1,4 @@
-#include <demo/rendering/shader_repository.h>
+#include <demo/context/shader_repository.h>
 
 std::shared_ptr<Shader> ShaderRepository::get_shader(ShaderID shader_id)
 {

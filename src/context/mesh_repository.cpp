@@ -1,4 +1,4 @@
-#include <demo/rendering/mesh_repository.h>
+#include <demo/context/mesh_repository.h>
 
 std::shared_ptr<Mesh> MeshRepository::get_mesh(MeshID mesh_id)
 {
@@ -7,8 +7,14 @@ std::shared_ptr<Mesh> MeshRepository::get_mesh(MeshID mesh_id)
     return meshes[mesh_id];
 }
 
-MeshID MeshRepository::create_mesh()
+MeshID MeshRepository::get_or_create_mesh(const std::string &filename)
 {
+    auto found_pair = filename_to_mesh_id.find(filename);
+    if (found_pair != filename_to_mesh_id.end())
+    {
+        return found_pair->second;
+    }
+
     std::shared_ptr<Mesh> new_mesh = std::make_shared<Mesh>();
 
     meshes.insert(std::make_pair(++current_mesh_id, new_mesh));
