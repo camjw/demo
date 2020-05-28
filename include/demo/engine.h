@@ -6,8 +6,8 @@
 #include <demo/rendering/shader.h>
 #include <demo/rendering/texture.h>
 
-#include <demo/camera.h>
 #include <demo/input_processor.h>
+#include <demo/scene/camera.h>
 #include <demo/timer.h>
 #include <demo/window.h>
 
@@ -20,7 +20,9 @@
 
 #include <stb_image.h>
 
+#include <demo/context/demo_context.h>
 #include <vector>
+#include <demo/scene/scene_manager.h>
 
 class Engine
 {
@@ -40,8 +42,10 @@ public:
 private:
     Window* window = nullptr;
     InputProcessor* input = nullptr;
-    Camera* camera = nullptr;
     Coordinator* coordinator = nullptr;
+
+    std::shared_ptr<SceneManager> scene_manager;
+    std::shared_ptr<DemoContext> context;
     std::shared_ptr<RenderingSystem> rendering_system;
 };
 #endif

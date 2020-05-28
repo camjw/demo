@@ -1,15 +1,23 @@
-#ifndef DEMO_SCENE_LOADER_H
-#define DEMO_SCENE_LOADER_H
+#ifndef DEMO_SCENE_MANAGER_H
+#define DEMO_SCENE_MANAGER_H
 
-#include <demo/rendering/rendering_system.h>
-#include <demo/scene/resource_loader.h>
-
+#include <demo/input_processor.h>
+#include <demo/timer.h>
 #include <memory>
+#include <scripts/scenes/first_scene.h>
 
-class SceneLoader
+class SceneManager
 {
 public:
-    SceneLoader(std::shared_ptr<RenderingSystem>)
+    SceneManager();
+
+    void update(Time time, InputState* input);
+    void late_update(Time time, InputState* input);
+
+    Scene* get_current_scene();
+
+private:
+    Scene* first_scene;
 };
 
 #endif // DEMO_SCENE_LOADER_H
