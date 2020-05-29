@@ -8,7 +8,7 @@
 class IComponentArray
 {
 public:
-    virtual ~IComponentArray();
+    virtual ~IComponentArray() {};
     virtual void on_entity_destroyed(Entity entity) = 0;
 };
 
@@ -16,6 +16,8 @@ template <typename T>
 class ComponentArray : public IComponentArray
 {
 public:
+    ~ComponentArray() {};
+
     void insert_data(Entity entity, T component)
     {
         assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");

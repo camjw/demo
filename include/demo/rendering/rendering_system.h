@@ -25,7 +25,7 @@
 class RenderingSystem : public System
 {
 public:
-    void init(std::shared_ptr<DemoContext> context, Window* window, Coordinator* coordinator);
+    void init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
     void draw(Time time, Scene* scene);
 
 private:
@@ -36,8 +36,8 @@ private:
 
     Camera* camera {};
     Window* window {};
-    Coordinator* coordinator {};
 
+    std::shared_ptr<Coordinator> coordinator;
     std::shared_ptr<MeshRepository> mesh_repository;
     std::shared_ptr<TextureRepository> texture_repository;
     std::shared_ptr<ShaderRepository> shader_repository;

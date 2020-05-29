@@ -7,6 +7,10 @@
 class Scene
 {
 public:
+    Scene(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator)
+        : context(context), coordinator(coordinator)
+    {
+    }
     virtual void on_create() = 0;
     virtual void on_destroy() = 0;
 
@@ -14,6 +18,10 @@ public:
     virtual void on_unload() {};
 
     virtual std::shared_ptr<Camera> get_active_camera() = 0;
+
+protected:
+    std::shared_ptr<DemoContext> context;
+    std::shared_ptr<Coordinator> coordinator;
 };
 
 #endif // DEMO_SCENE_H

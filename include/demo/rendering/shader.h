@@ -10,6 +10,11 @@
 
 using ShaderID = uint8_t;
 
+struct ShaderComponent
+{
+    ShaderID id;
+};
+
 // TODO: refactor so this doesn't use streams or strings
 class Shader
 {

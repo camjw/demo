@@ -6,19 +6,24 @@ Engine::Engine()
     window = new Window("Estuary King");
     input = new InputProcessor(window);
 
-    scene_manager = std::make_shared<SceneManager>();
-
-    coordinator = new Coordinator();
+    coordinator = std::make_shared<Coordinator>();
     coordinator->init();
+
+    coordinator->register_component<TextureComponent>();
+    coordinator->register_component<MeshComponent>();
+    coordinator->register_component<ShaderComponent>();
 
     rendering_system = coordinator->register_system<RenderingSystem>();
     rendering_system->init(context, window, coordinator);
+
+    SceneManager sm = SceneManager(context, coordinator);
+    scene_manager = std::make_shared<SceneManager>(sm);
+
 }
 
 Engine::~Engine()
 {
     delete input;
-    delete coordinator;
     delete window;
 }
 

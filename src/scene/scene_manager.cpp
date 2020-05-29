@@ -1,8 +1,9 @@
 #include <demo/scene/scene_manager.h>
 
-SceneManager::SceneManager()
+SceneManager::SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator)
+    : context(context), coordinator(coordinator)
 {
-    first_scene = new FirstScene();
+    first_scene = new FirstScene(context, coordinator);
 }
 
 void SceneManager::update(Time time, InputState* input) { }

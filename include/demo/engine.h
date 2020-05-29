@@ -42,8 +42,8 @@ public:
 private:
     Window* window = nullptr;
     InputProcessor* input = nullptr;
-    Coordinator* coordinator = nullptr;
 
+    std::shared_ptr<Coordinator> coordinator;
     std::shared_ptr<SceneManager> scene_manager;
     std::shared_ptr<DemoContext> context;
     std::shared_ptr<RenderingSystem> rendering_system;

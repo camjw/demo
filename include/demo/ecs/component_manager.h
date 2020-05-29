@@ -35,13 +35,13 @@ public:
     template <typename T>
     void add_component(Entity entity, T component)
     {
-        get_component_array<T>()->InsertData(entity, component);
+        get_component_array<T>()->insert_data(entity, component);
     }
 
     template <typename T>
     void remove_component(Entity entity)
     {
-        get_component_array<T>()->RemoveData(entity);
+        get_component_array<T>()->remove_data(entity);
     }
 
     template <typename T>

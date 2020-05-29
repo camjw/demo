@@ -1,15 +1,13 @@
 #include <demo/rendering/rendering_system.h>
 
-void RenderingSystem::init(std::shared_ptr<DemoContext> context, Window* window, Coordinator* coordinator)
+void RenderingSystem::init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator)
 {
     glEnable(GL_CULL_FACE);
-
-    printf("Getting repositories");
+    
     mesh_repository = context->get_mesh_repository();
     texture_repository = context->get_texture_repository();
     shader_repository = context->get_shader_repository();
 
-    printf("Getting window and coordinator");
     this->window = window;
     this->coordinator = coordinator;
 
