@@ -2,6 +2,7 @@
 
 Engine::Engine()
 {
+    context = std::make_shared<DemoContext>();
     window = new Window("Estuary King");
     input = new InputProcessor(window);
 

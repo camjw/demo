@@ -8,7 +8,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-deprecated-declarations -std=c++14") 
 
 # Set the project name and version
-project(demo
+project(demo 
   VERSION 1.0
   LANGUAGES C CXX)
 
@@ -22,7 +22,7 @@ include_directories(demo
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Create executable
-add_executable(demo ${SOURCES} )
+add_executable(demo ${SOURCES})
 
 find_package(GLM REQUIRED)
 message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
