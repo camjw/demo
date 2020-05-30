@@ -70,6 +70,12 @@ public:
     }
 
     template <typename T>
+    bool has_component(Entity entity)
+    {
+        return componentManager->has_component<T>(entity);
+    }
+
+    template <typename T>
     ComponentType get_component_type()
     {
         return componentManager->get_component_type<T>();
@@ -80,12 +86,6 @@ public:
     std::shared_ptr<T> register_system()
     {
         return systemManager->register_system<T>();
-    }
-
-    template <typename T>
-    std::shared_ptr<T> register_updatable_system()
-    {
-        return systemManager->register_updatable_system<T>();
     }
 
     template <typename T>

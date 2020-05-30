@@ -20,11 +20,11 @@ public:
 
     void insert_data(Entity entity, T component)
     {
-        assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");
+        assert(entity_to_index_map.find(entity) == entity_to_index_map.end() && "Component added to same entity more than once.");
 
         // Put new entry at end and update the maps
         size_t newIndex = mSize;
-        entityToIndexMap[entity] = newIndex;
+        entity_to_index_map[entity] = newIndex;
         indexToEntityMap[newIndex] = entity;
         componentArray[newIndex] = component;
         ++mSize;
@@ -32,19 +32,19 @@ public:
 
     void remove_data(Entity entity)
     {
-        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Removing non-existent component.");
+        assert(entity_to_index_map.find(entity) != entity_to_index_map.end() && "Removing non-existent component.");
 
         // Copy element at end into deleted element's place to maintain density
-        size_t indexOfRemovedEntity = entityToIndexMap[entity];
+        size_t indexOfRemovedEntity = entity_to_index_map[entity];
         size_t indexOfLastElement = mSize - 1;
         componentArray[indexOfRemovedEntity] = componentArray[indexOfLastElement];
 
         // Update map to point to moved spot
         Entity entityOfLastElement = indexToEntityMap[indexOfLastElement];
-        entityToIndexMap[entityOfLastElement] = indexOfRemovedEntity;
+        entity_to_index_map[entityOfLastElement] = indexOfRemovedEntity;
         indexToEntityMap[indexOfRemovedEntity] = entityOfLastElement;
 
-        entityToIndexMap.erase(entity);
+        entity_to_index_map.erase(entity);
         indexToEntityMap.erase(indexOfLastElement);
 
         --mSize;
@@ -52,15 +52,20 @@ public:
 
     T& get_data(Entity entity)
     {
-        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retrieving non-existent component.");
+        assert(entity_to_index_map.find(entity) != entity_to_index_map.end() && "Retrieving non-existent component.");
 
         // Return a reference to the entity's component
-        return componentArray[entityToIndexMap[entity]];
+        return componentArray[entity_to_index_map[entity]];
+    }
+
+    bool has_data(Entity entity)
+    {
+        return entity_to_index_map.find(entity) != entity_to_index_map.end();
     }
 
     void on_entity_destroyed(Entity entity) override
     {
-        if (entityToIndexMap.find(entity) != entityToIndexMap.end())
+        if (entity_to_index_map.find(entity) != entity_to_index_map.end())
         {
             remove_data(entity);
         }
@@ -68,7 +73,7 @@ public:
 
 private:
     std::array<T, MAX_ENTITIES> componentArray;
-    std::unordered_map<Entity, size_t> entityToIndexMap;
+    std::unordered_map<Entity, size_t> entity_to_index_map;
     std::unordered_map<size_t, Entity> indexToEntityMap;
     size_t mSize;
 };

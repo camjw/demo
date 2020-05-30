@@ -811,8 +811,8 @@ CMakeFiles/demo.dir/src/rendering/mesh.cpp.o
  /Users/cameron/demo/src/rendering/mesh.cpp
 CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.o
  /Users/cameron/demo/src/rendering/mesh_repository.cpp
-CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o
- /Users/cameron/demo/src/rendering/rendering_system.cpp
+CMakeFiles/demo.dir/src/rendering/renderer.cpp.o
+ /Users/cameron/demo/src/rendering/renderer.cpp
 CMakeFiles/demo.dir/src/rendering/texture.cpp.o
  /Users/cameron/demo/src/rendering/texture.cpp
 CMakeFiles/demo.dir/src/rendering/texture_repository.cpp.o

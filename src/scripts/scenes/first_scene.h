@@ -14,16 +14,17 @@ public:
     virtual void on_create() override;
     virtual void on_destroy() override;
 
-    virtual std::shared_ptr<Camera> get_active_camera() override;
+    virtual Entity get_active_camera() override;
 
 private:
     void load_textures();
     void load_shaders();
     void load_meshes();
+    void build_camera();
 
     void build_entities();
 
-    std::shared_ptr<Camera> camera;
+    Entity camera;
 };
 
 #endif // DEMO_FIRST_SCENE_H

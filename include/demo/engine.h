@@ -46,6 +46,6 @@ private:
     std::shared_ptr<Coordinator> coordinator;
     std::shared_ptr<SceneManager> scene_manager;
     std::shared_ptr<DemoContext> context;
-    std::shared_ptr<RenderingSystem> rendering_system;
+    std::shared_ptr<Renderer> renderer;
 };
 #endif

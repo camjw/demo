@@ -93,7 +93,7 @@ demo/timer.h
 ../include/demo/engine.h
 demo/rendering/cube_map.h
 -
-demo/rendering/rendering_system.h
+demo/rendering/renderer.h
 -
 demo/rendering/shader.h
 -
@@ -1816,8 +1816,8 @@ demo/rendering/mesh.h
 demo/rendering/mesh_repository.h
 -
 
-/Users/cameron/demo/src/rendering/rendering_system.cpp
-demo/rendering/rendering_system.h
+/Users/cameron/demo/src/rendering/renderer.cpp
+demo/rendering/renderer.h
 -
 random
 -

@@ -7,7 +7,9 @@
 
 #include <vector>
 
+#include <demo/ecs/system.h>
 #include <demo/input_processor.h>
+#include <demo/maths/float3.h>
 #include <demo/timer.h>
 
 // Default camera values
@@ -16,38 +18,15 @@ const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
 const float LOOK_SPEED = 0.5f;
 
-class Camera
+struct CameraComponent
 {
-public:
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
-
-    glm::mat4 get_view_matrix();
-    void update(Time time, InputState* input);
-
-    inline glm::vec3 get_position()
-    {
-        return position;
-    }
-
-    inline glm::vec3 get_forward_direction()
-    {
-        return forward;
-    }
-
-private:
-    void update_camera_vectors();
-    void process_keyboard(Time time, InputState* input);
-    void process_mouse_movement(Time time, InputState* input);
-    void process_mouse_scroll(float yoffset);
-
-    // Camera Attributes
+    // Camera attributes
     glm::vec3 position;
-    glm::vec3 forward;
     glm::vec3 up;
+    glm::vec3 forward;
     glm::vec3 right;
-    glm::vec3 world_up;
 
-    // Euler Angles
+    // Euler angles (should replace with quaternion)
     float yaw;
     float pitch;
 
@@ -55,7 +34,27 @@ private:
     float movement_speed;
     float mouse_sensitivity;
     float zoom;
-    bool is_fps_camera = false;
+    bool is_fps_camera;
+
+    inline glm::mat4 get_view_matrix()
+    {
+        return glm::lookAt(position, position + forward, up);
+    }
+};
+
+const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
+
+class CameraSystem: public System
+{
+public:
+    void update(Time time, InputState* input) override;
+
+private:
+    void update_camera_vectors(CameraComponent* camera);
+    void process_keyboard(Time time, InputState* input, CameraComponent* camera);
+    void process_mouse_movement(Time time, InputState* input, CameraComponent* camera);
+
+    std::shared_ptr<Coordinator> coordinator;
 };
 
 #endif

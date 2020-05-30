@@ -1,29 +1,18 @@
 #include <demo/rendering/rendering_system.h>
 
-void RenderingSystem::init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator)
+Renderer::Renderer(std::shared_ptr<DemoContext> context,
+    Window* window, std::shared_ptr<Coordinator> coordinator)
+    : window(window)
+    , coordinator(coordinator)
 {
     glEnable(GL_CULL_FACE);
-    
+
     mesh_repository = context->get_mesh_repository();
     texture_repository = context->get_texture_repository();
     shader_repository = context->get_shader_repository();
-
-    this->window = window;
-    this->coordinator = coordinator;
-
-//    std::vector<std::string> faces = {
-//        "assets/textures/skybox/right.png",
-//        "assets/textures/skybox/left.png",
-//        "assets/textures/skybox/top.png",
-//        "assets/textures/skybox/bottom.png",
-//        "assets/textures/skybox/front.png",
-//        "assets/textures/skybox/back.png",
-//    };
-//
-//    skybox.build(faces);
 }
 
-void RenderingSystem::begin_draw(Time time)
+void Renderer::begin_draw(Time time)
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -33,12 +22,11 @@ void RenderingSystem::begin_draw(Time time)
     shader_repository->for_all(new SetShaderProjection(window->get_projection_matrix()));
 }
 
-void RenderingSystem::draw_entities()
+void Renderer::draw_entities()
 {
-
 }
 
-//void RenderingSystem::draw_skybox(Skybox* skybox)
+//void Renderer::draw_skybox(Skybox* skybox)
 //{
 //    //draw skybox
 //    glDepthFunc(GL_LEQUAL);
@@ -53,23 +41,30 @@ void RenderingSystem::draw_entities()
 //    glDepthFunc(GL_LESS);
 //}
 
-void RenderingSystem::end_draw()
+void Renderer::end_draw()
 {
-//    draw_skybox();
+    //    draw_skybox();
     glfwSwapBuffers(window->get_glfw_window());
 }
 
-void RenderingSystem::set_camera(Scene* scene)
+void Renderer::set_camera(Scene* scene)
 {
-    std::shared_ptr<Camera> camera = scene->get_active_camera();
+    Entity camera_entity = scene->get_active_camera();
+
+    if (!coordinator->has_component<CameraComponent>(camera_entity))
+    {
+        return;
+    }
+
+    CameraComponent& camera = coordinator->get_component<CameraComponent>(camera_entity);
 
     shader_repository->for_all(new SetShaderCamera(
-        camera->get_position(),
-        camera->get_forward_direction(),
-        camera->get_view_matrix()));
+        camera.position,
+        camera.forward,
+        camera.get_view_matrix()));
 }
 
-void RenderingSystem::draw(Time time, Scene* scene)
+void Renderer::draw(Time time, Scene* scene)
 {
     set_camera(scene);
     begin_draw(time);

@@ -3,7 +3,6 @@
 FirstScene::FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator)
     : Scene(context, coordinator)
 {
-    camera = std::make_shared<Camera>();
 }
 
 void FirstScene::on_create()
@@ -11,6 +10,8 @@ void FirstScene::on_create()
     load_textures();
     load_shaders();
     load_meshes();
+
+    build_camera();
 
     Entity entity = coordinator->create_entity();
 
@@ -39,13 +40,19 @@ void FirstScene::load_meshes()
     // Moved this back out just because CBA to add stupid functions now
 }
 
+void FirstScene::build_camera()
+{
+    camera = coordinator->create_entity();
+    coordinator->add_component(camera, CameraComponent{});
+}
+
 
 void FirstScene::on_destroy()
 {
     // Dump all of those here
 }
 
-std::shared_ptr<Camera> FirstScene::get_active_camera()
+Entity FirstScene::get_active_camera()
 {
     return camera;
 }

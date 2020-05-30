@@ -50,6 +50,12 @@ public:
         return get_component_array<T>()->get_data(entity);
     }
 
+    template <typename T>
+    bool has_component(Entity entity)
+    {
+        return get_component_array<T>()->has_data(entity);
+    }
+
     void on_entity_destroyed(Entity entity)
     {
         for (auto const& pair : componentArrays)

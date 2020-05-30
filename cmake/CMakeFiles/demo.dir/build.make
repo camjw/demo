@@ -259,18 +259,18 @@ CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/cameron/demo/src/rendering/mesh_repository.cpp -o CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.s
 
-CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o: CMakeFiles/demo.dir/flags.make
-CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o: ../src/rendering/rendering_system.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/cameron/demo/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o -c /Users/cameron/demo/src/rendering/rendering_system.cpp
+CMakeFiles/demo.dir/src/rendering/renderer.cpp.o: CMakeFiles/demo.dir/flags.make
+CMakeFiles/demo.dir/src/rendering/renderer.cpp.o: ../src/rendering/renderer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/cameron/demo/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/demo.dir/src/rendering/renderer.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/demo.dir/src/rendering/renderer.cpp.o -c /Users/cameron/demo/src/rendering/renderer.cpp
 
-CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/cameron/demo/src/rendering/rendering_system.cpp > CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.i
+CMakeFiles/demo.dir/src/rendering/renderer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/demo.dir/src/rendering/renderer.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/cameron/demo/src/rendering/renderer.cpp > CMakeFiles/demo.dir/src/rendering/renderer.cpp.i
 
-CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/cameron/demo/src/rendering/rendering_system.cpp -o CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.s
+CMakeFiles/demo.dir/src/rendering/renderer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/demo.dir/src/rendering/renderer.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/cameron/demo/src/rendering/renderer.cpp -o CMakeFiles/demo.dir/src/rendering/renderer.cpp.s
 
 CMakeFiles/demo.dir/src/rendering/texture.cpp.o: CMakeFiles/demo.dir/flags.make
 CMakeFiles/demo.dir/src/rendering/texture.cpp.o: ../src/rendering/texture.cpp
@@ -340,7 +340,7 @@ demo_OBJECTS = \
 "CMakeFiles/demo.dir/src/rendering/cube_map.cpp.o" \
 "CMakeFiles/demo.dir/src/rendering/mesh.cpp.o" \
 "CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.o" \
-"CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o" \
+"CMakeFiles/demo.dir/src/rendering/renderer.cpp.o" \
 "CMakeFiles/demo.dir/src/rendering/texture.cpp.o" \
 "CMakeFiles/demo.dir/src/rendering/texture_repository.cpp.o" \
 "CMakeFiles/demo.dir/src/stb_image.cpp.o" \
@@ -363,7 +363,7 @@ demo: CMakeFiles/demo.dir/src/main.cpp.o
 demo: CMakeFiles/demo.dir/src/rendering/cube_map.cpp.o
 demo: CMakeFiles/demo.dir/src/rendering/mesh.cpp.o
 demo: CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.o
-demo: CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o
+demo: CMakeFiles/demo.dir/src/rendering/renderer.cpp.o
 demo: CMakeFiles/demo.dir/src/rendering/texture.cpp.o
 demo: CMakeFiles/demo.dir/src/rendering/texture_repository.cpp.o
 demo: CMakeFiles/demo.dir/src/stb_image.cpp.o

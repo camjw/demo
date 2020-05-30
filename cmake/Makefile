@@ -561,32 +561,32 @@ src/rendering/mesh_repository.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.s
 .PHONY : src/rendering/mesh_repository.cpp.s
 
-src/rendering/rendering_system.o: src/rendering/rendering_system.cpp.o
+src/rendering/renderer.o: src/rendering/renderer.cpp.o
 
-.PHONY : src/rendering/rendering_system.o
+.PHONY : src/rendering/renderer.o
 
 # target to build an object file
-src/rendering/rendering_system.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o
-.PHONY : src/rendering/rendering_system.cpp.o
+src/rendering/renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/renderer.cpp.o
+.PHONY : src/rendering/renderer.cpp.o
 
-src/rendering/rendering_system.i: src/rendering/rendering_system.cpp.i
+src/rendering/renderer.i: src/rendering/renderer.cpp.i
 
-.PHONY : src/rendering/rendering_system.i
+.PHONY : src/rendering/renderer.i
 
 # target to preprocess a source file
-src/rendering/rendering_system.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.i
-.PHONY : src/rendering/rendering_system.cpp.i
+src/rendering/renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/renderer.cpp.i
+.PHONY : src/rendering/renderer.cpp.i
 
-src/rendering/rendering_system.s: src/rendering/rendering_system.cpp.s
+src/rendering/renderer.s: src/rendering/renderer.cpp.s
 
-.PHONY : src/rendering/rendering_system.s
+.PHONY : src/rendering/renderer.s
 
 # target to generate assembly for a file
-src/rendering/rendering_system.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.s
-.PHONY : src/rendering/rendering_system.cpp.s
+src/rendering/renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/renderer.cpp.s
+.PHONY : src/rendering/renderer.cpp.s
 
 src/rendering/texture.o: src/rendering/texture.cpp.o
 
@@ -751,9 +751,9 @@ help:
 	@echo "... src/rendering/mesh_repository.o"
 	@echo "... src/rendering/mesh_repository.i"
 	@echo "... src/rendering/mesh_repository.s"
-	@echo "... src/rendering/rendering_system.o"
-	@echo "... src/rendering/rendering_system.i"
-	@echo "... src/rendering/rendering_system.s"
+	@echo "... src/rendering/renderer.o"
+	@echo "... src/rendering/renderer.i"
+	@echo "... src/rendering/renderer.s"
 	@echo "... src/rendering/texture.o"
 	@echo "... src/rendering/texture.i"
 	@echo "... src/rendering/texture.s"

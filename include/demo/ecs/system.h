@@ -13,11 +13,6 @@ class System
 {
     public:
         std::set<Entity> entities;
-};
-
-class UpdatableSystem: public System
-{
-    public:
         virtual void update(Time time, InputState* input) {}
         virtual void late_update(Time time, InputState* input) {}
 };

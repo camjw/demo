@@ -811,7 +811,7 @@ CMakeFiles/demo.dir/src/rendering/mesh.cpp.o: ../src/rendering/mesh.cpp
 
 CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.o: ../src/rendering/mesh_repository.cpp
 
-CMakeFiles/demo.dir/src/rendering/rendering_system.cpp.o: ../src/rendering/rendering_system.cpp
+CMakeFiles/demo.dir/src/rendering/renderer.cpp.o: ../src/rendering/renderer.cpp
 
 CMakeFiles/demo.dir/src/rendering/texture.cpp.o: ../src/rendering/texture.cpp
 

@@ -17,7 +17,7 @@ public:
     virtual void on_load() {};
     virtual void on_unload() {};
 
-    virtual std::shared_ptr<Camera> get_active_camera() = 0;
+    virtual Entity get_active_camera() = 0;
 
 protected:
     std::shared_ptr<DemoContext> context;

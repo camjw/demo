@@ -22,10 +22,13 @@
 #include <imgui/bindings/imgui_impl_opengl3.h>
 #include <imgui/imgui.h>
 
-class RenderingSystem : public System
+
+// Tried having this as an ECS system but it didn't really make sense. It renders a scene, not an abstract
+// collection of entities
+class Renderer
 {
 public:
-    void init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
+    Renderer(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
     void draw(Time time, Scene* scene);
 
 private:
@@ -34,7 +37,6 @@ private:
     void draw_entities();
     void end_draw();
 
-    Camera* camera {};
     Window* window {};
 
     std::shared_ptr<Coordinator> coordinator;

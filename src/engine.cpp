@@ -12,13 +12,17 @@ Engine::Engine()
     coordinator->register_component<TextureComponent>();
     coordinator->register_component<MeshComponent>();
     coordinator->register_component<ShaderComponent>();
+    coordinator->register_component<CameraComponent>();
 
-    rendering_system = coordinator->register_system<RenderingSystem>();
-    rendering_system->init(context, window, coordinator);
+    std::shared_ptr<CameraSystem> camera_system = coordinator->register_system<CameraSystem>();
+    Signature camera_system_signature;
+    camera_system_signature.set(coordinator->get_component_type<CameraComponent>());
+    coordinator->set_system_signature<CameraSystem>(camera_system_signature);
+
+    renderer = std::make_shared<Renderer>(context, window, coordinator);
 
     SceneManager sm = SceneManager(context, coordinator);
     scene_manager = std::make_shared<SceneManager>(sm);
-
 }
 
 Engine::~Engine()
@@ -40,7 +44,7 @@ void Engine::late_update(Time time)
 
 void Engine::draw(Time time)
 {
-    rendering_system->draw(time, scene_manager->get_current_scene());
+    renderer->draw(time, scene_manager->get_current_scene());
 }
 
 void Engine::process_input()
