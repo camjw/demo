@@ -1,18 +1,19 @@
 #include <demo/rendering/rendering_system.h>
 
-Renderer::Renderer(std::shared_ptr<DemoContext> context,
-    Window* window, std::shared_ptr<Coordinator> coordinator)
-    : window(window)
-    , coordinator(coordinator)
+void RendererSystem::init(std::shared_ptr<DemoContext> context,
+    Window* _window, std::shared_ptr<Coordinator> _coordinator)
 {
     glEnable(GL_CULL_FACE);
+
+    this->window = _window;
+    this->coordinator = _coordinator;
 
     mesh_repository = context->get_mesh_repository();
     texture_repository = context->get_texture_repository();
     shader_repository = context->get_shader_repository();
 }
 
-void Renderer::begin_draw(Time time)
+void RendererSystem::begin_draw(Time time)
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -22,11 +23,26 @@ void Renderer::begin_draw(Time time)
     shader_repository->for_all(new SetShaderProjection(window->get_projection_matrix()));
 }
 
-void Renderer::draw_entities()
+void RendererSystem::draw_entities()
 {
+    for (Entity const& entity: entities)
+    {
+        draw_entity(entity);
+    }
 }
 
-//void Renderer::draw_skybox(Skybox* skybox)
+void RendererSystem::draw_entity(Entity entity)
+{
+    if (coordinator->has_component<TextureComponent>(entity))
+    {
+        printf("The entity is textured\n");
+    }
+    else
+    {
+        printf("There is an entity\n");
+    }
+}
+//void RendererSystem::draw_skybox(Skybox* skybox)
 //{
 //    //draw skybox
 //    glDepthFunc(GL_LEQUAL);
@@ -41,18 +57,19 @@ void Renderer::draw_entities()
 //    glDepthFunc(GL_LESS);
 //}
 
-void Renderer::end_draw()
+void RendererSystem::end_draw()
 {
     //    draw_skybox();
     glfwSwapBuffers(window->get_glfw_window());
 }
 
-void Renderer::set_camera(Scene* scene)
+void RendererSystem::set_camera(Scene* scene)
 {
     Entity camera_entity = scene->get_active_camera();
 
     if (!coordinator->has_component<CameraComponent>(camera_entity))
     {
+        printf("Scene does not have a camera set\n");
         return;
     }
 
@@ -64,7 +81,7 @@ void Renderer::set_camera(Scene* scene)
         camera.get_view_matrix()));
 }
 
-void Renderer::draw(Time time, Scene* scene)
+void RendererSystem::draw(Time time, Scene* scene)
 {
     set_camera(scene);
     begin_draw(time);

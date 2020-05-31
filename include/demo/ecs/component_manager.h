@@ -13,13 +13,13 @@ public:
     void register_component()
     {
         const char* type_name = typeid(T).name();
-        assert(componentTypes.find(type_name) == componentTypes.end() && "Registering component type more than once.");
+        assert(component_types.find(type_name) == component_types.end() && "Registering component type more than once.");
 
-        componentTypes.insert({ type_name, nextComponentType });
+        component_types.insert({ type_name, next_component_type });
 
-        componentArrays.insert({ type_name, std::make_shared<ComponentArray<T>>() });
+        component_arrays.insert({ type_name, std::make_shared<ComponentArray<T>>() });
 
-        ++nextComponentType;
+        ++next_component_type;
     }
 
     template <typename T>
@@ -27,9 +27,9 @@ public:
     {
         const char* typeName = typeid(T).name();
 
-        assert(componentTypes.find(typeName) != componentTypes.end() && "Component not registered before use.");
+        assert(component_types.find(typeName) != component_types.end() && "Component not registered before use.");
 
-        return componentTypes[typeName];
+        return component_types[typeName];
     }
 
     template <typename T>
@@ -58,7 +58,7 @@ public:
 
     void on_entity_destroyed(Entity entity)
     {
-        for (auto const& pair : componentArrays)
+        for (auto const& pair : component_arrays)
         {
             auto const& component = pair.second;
 
@@ -67,18 +67,18 @@ public:
     }
 
 private:
-    std::unordered_map<const char*, ComponentType> componentTypes {};
-    std::unordered_map<const char*, std::shared_ptr<IComponentArray>> componentArrays {};
-    ComponentType nextComponentType {};
+    std::unordered_map<const char*, ComponentType> component_types {};
+    std::unordered_map<const char*, std::shared_ptr<IComponentArray>> component_arrays {};
+    ComponentType next_component_type {};
 
     template <typename T>
     std::shared_ptr<ComponentArray<T>> get_component_array()
     {
         const char* typeName = typeid(T).name();
 
-        assert(componentTypes.find(typeName) != componentTypes.end() && "Component not registered before use.");
+        assert(component_types.find(typeName) != component_types.end() && "Component not registered before use.");
 
-        return std::static_pointer_cast<ComponentArray<T>>(componentArrays[typeName]);
+        return std::static_pointer_cast<ComponentArray<T>>(component_arrays[typeName]);
     }
 };
 

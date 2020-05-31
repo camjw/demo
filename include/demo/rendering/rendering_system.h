@@ -23,18 +23,19 @@
 #include <imgui/imgui.h>
 
 
-// Tried having this as an ECS system but it didn't really make sense. It renders a scene, not an abstract
+// This is an ECS system but it doesn't really make sense. It renders a scene, not an abstract
 // collection of entities
-class Renderer
+class RendererSystem: public System
 {
 public:
-    Renderer(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
+    void init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
     void draw(Time time, Scene* scene);
 
 private:
     void begin_draw(Time time);
     void set_camera(Scene* scene);
     void draw_entities();
+    void draw_entity(Entity entity);
     void end_draw();
 
     Window* window {};

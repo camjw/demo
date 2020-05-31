@@ -9,6 +9,7 @@ struct Time
 {
     float delta_time;
     float total_time;
+    float fps;
 };
 
 struct Timer
@@ -33,7 +34,7 @@ struct Timer
 
     Time get_time()
     {
-        return { frame_milliseconds, milliseconds_since_start };
+        return { frame_milliseconds, milliseconds_since_start, 1000.0f / frame_milliseconds };
     }
 };
 

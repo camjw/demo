@@ -13,17 +13,17 @@ class EntityManager
         {
             for (Entity entity = 0; entity < MAX_ENTITIES; entity++)
             {
-                availableEntities.push(entity);
+                available_entities.push(entity);
             }
         }
 
         Entity create_entity()
         {
-            assert(livingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
+            assert(living_entity_count < MAX_ENTITIES && "Too many entities in existence.");
 
-            Entity id = availableEntities.front();
-            availableEntities.pop();
-            ++livingEntityCount;
+            Entity id = available_entities.front();
+            available_entities.pop();
+            ++living_entity_count;
 
             return id;
         }
@@ -34,8 +34,8 @@ class EntityManager
 
             signatures[entity].reset();
 
-            availableEntities.push(entity);
-            --livingEntityCount;
+            available_entities.push(entity);
+            --living_entity_count;
         }
 
         void set_signature(Entity entity, Signature signature)
@@ -53,9 +53,9 @@ class EntityManager
         }
 
     private:
-        std::queue<Entity> availableEntities;
+        std::queue<Entity> available_entities;
         std::array<Signature, MAX_ENTITIES> signatures;
-        uint32_t livingEntityCount = 0;
+        uint32_t living_entity_count = 0;
 };
 
 #endif

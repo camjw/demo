@@ -1,4 +1,5 @@
 #include <demo/engine.h>
+#include <demo/maths/transform.h>
 
 Engine::Engine()
 {
@@ -9,6 +10,7 @@ Engine::Engine()
     coordinator = std::make_shared<Coordinator>();
     coordinator->init();
 
+    coordinator->register_component<TransformComponent>();
     coordinator->register_component<TextureComponent>();
     coordinator->register_component<MeshComponent>();
     coordinator->register_component<ShaderComponent>();
@@ -19,7 +21,13 @@ Engine::Engine()
     camera_system_signature.set(coordinator->get_component_type<CameraComponent>());
     coordinator->set_system_signature<CameraSystem>(camera_system_signature);
 
-    renderer = std::make_shared<Renderer>(context, window, coordinator);
+    renderer_system = coordinator->register_system<RendererSystem>();
+    renderer_system->init(context, window, coordinator);
+    Signature renderer_system_signature;
+    renderer_system_signature.set(coordinator->get_component_type<TransformComponent>());
+    renderer_system_signature.set(coordinator->get_component_type<MeshComponent>());
+    renderer_system_signature.set(coordinator->get_component_type<ShaderComponent>());
+    coordinator->set_system_signature<RendererSystem>(renderer_system_signature);
 
     SceneManager sm = SceneManager(context, coordinator);
     scene_manager = std::make_shared<SceneManager>(sm);
@@ -44,7 +52,7 @@ void Engine::late_update(Time time)
 
 void Engine::draw(Time time)
 {
-    renderer->draw(time, scene_manager->get_current_scene());
+    renderer_system->draw(time, scene_manager->get_current_scene());
 }
 
 void Engine::process_input()

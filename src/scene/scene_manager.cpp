@@ -4,6 +4,7 @@ SceneManager::SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr
     : context(context), coordinator(coordinator)
 {
     first_scene = new FirstScene(context, coordinator);
+    first_scene->on_create();
 }
 
 void SceneManager::update(Time time, InputState* input) { }
