@@ -35,12 +35,17 @@ void RendererSystem::draw_entity(Entity entity)
 {
     if (coordinator->has_component<TextureComponent>(entity))
     {
-        printf("The entity is textured\n");
+        TextureComponent texture = coordinator->get_component<TextureComponent>(entity);
+        texture_repository->get_texture(texture.id)->bind(texture.binding_index);
     }
-    else
-    {
-        printf("There is an entity\n");
-    }
+
+    ShaderComponent shader = coordinator->get_component<ShaderComponent>(entity);
+    shader_repository->get_shader(shader.id)->bind();
+
+    MeshComponent mesh = coordinator->get_component<MeshComponent>(entity);
+    std::shared_ptr<Mesh> render_mesh = mesh_repository->get_mesh(mesh.id);
+    render_mesh->bind();
+    render_mesh->draw();
 }
 //void RendererSystem::draw_skybox(Skybox* skybox)
 //{

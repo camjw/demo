@@ -12,6 +12,7 @@ using TextureID = uint8_t;
 struct TextureComponent
 {
     TextureID id;
+    int binding_index;
 };
 
 class Texture

@@ -20,8 +20,8 @@ public:
     }
 
     MeshID get_or_create_mesh(const std::string& filename);
-    TextureID get_or_create_texture(const std::string& filename);
-    ShaderID get_or_create_shader(const std::string& vertex_filename, const std::string& fragment_filename);
+    TextureID get_or_create_texture(const std::string& texture_name, const std::string& filename);
+    ShaderID get_or_create_shader(const std::string& shader_name, const std::string& vertex_filename, const std::string& fragment_filename);
 
 private:
     std::shared_ptr<MeshRepository> mesh_repository;

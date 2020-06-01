@@ -10,7 +10,6 @@ class TextureRepository
 public:
     std::shared_ptr<Texture> get_texture(TextureID texture_id);
     TextureID get_texture_id(const std::string& texture_name);
-    TextureID create_texture(const std::string& texture_name);
     TextureID create_texture(const std::string& texture_name, const std::string& filename);
 
     void delete_texture(TextureID texture_id);

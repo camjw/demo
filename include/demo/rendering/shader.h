@@ -24,7 +24,7 @@ public:
     void init(const std::string& vertex_filepath, const std::string& fragment_filepath);
     void destroy();
 
-    void use() const
+    void bind() const
     {
         glUseProgram(ID);
     }

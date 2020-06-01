@@ -23,6 +23,10 @@ void FirstScene::on_create()
 
     MeshID cube_id = context->get_mesh_repository()->create_cube();
     coordinator->add_component(entity, MeshComponent{ .id =  cube_id });
+
+    ShaderID shader_id = context->get_shader_repository()->get_shader_id("simple");
+    coordinator->add_component(entity, ShaderComponent{ .id =  shader_id });
+
 }
 
 void FirstScene::load_textures()
@@ -34,6 +38,7 @@ void FirstScene::load_textures()
 void FirstScene::load_shaders()
 {
     context->get_shader_repository()->create_shader(
+        "simple",
         "assets/shaders/simple_shader.vert",
         "assets/shaders/simple_shader.frag");
 }
