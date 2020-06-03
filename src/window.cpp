@@ -1,4 +1,5 @@
 #include <demo/input_processor.h>
+#include <demo/utils/opengl_helpers.h>
 #include <demo/window.h>
 
 Window::Window(const std::string& window_name)
@@ -10,9 +11,11 @@ Window::Window(const std::string& window_name)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+
 
     glfw_window = glfwCreateWindow(800, 600, window_name.c_str(), nullptr, nullptr);
     if (glfw_window == nullptr)
@@ -28,7 +31,11 @@ Window::Window(const std::string& window_name)
         printf("Failed to initialize GLAD\n");
     }
 
+    glCheckError();
+
     glEnable(GL_DEPTH_TEST);
+
+    glCheckError();
 
     setup_callbacks();
 }
@@ -46,12 +53,16 @@ void Window::setup_callbacks()
     glfwSetMouseButtonCallback(glfw_window, mouse_button_callback);
     glfwSetErrorCallback(error_callback);
     glfwSetFramebufferSizeCallback(glfw_window, framebuffer_size_callback);
+
+    glCheckError();
 }
 
 void Window::keyboard_callback(GLFWwindow* window, int key, int scan_code, int action, int mods)
 {
     InputProcessor* input = reinterpret_cast<InputProcessor*>(glfwGetWindowUserPointer(window));
     input->process_keyboard_event(key, scan_code, action, mods);
+
+    glCheckError();
 }
 
 void Window::mouse_position_callback(GLFWwindow* window, double xpos, double ypos)

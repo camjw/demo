@@ -1,4 +1,5 @@
 #include <demo/context/shader_repository.h>
+#include <demo/utils/opengl_helpers.h>
 
 std::shared_ptr<Shader> ShaderRepository::get_shader(ShaderID shader_id)
 {
@@ -33,6 +34,8 @@ ShaderID ShaderRepository::create_shader(
 
     shader_name_to_shader_id.insert(std::make_pair(shader_name, current_shader_id));
     shaders.insert(std::make_pair(current_shader_id++, new_shader));
+    glCheckError();
+
     return current_shader_id;
 }
 

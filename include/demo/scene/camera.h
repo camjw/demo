@@ -48,6 +48,7 @@ class CameraSystem: public System
 {
 public:
     void update(Time time, InputState* input) override;
+    virtual ~CameraSystem() {}
 
 private:
     void update_camera_vectors(CameraComponent* camera);

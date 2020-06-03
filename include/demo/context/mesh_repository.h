@@ -12,6 +12,7 @@ public:
     MeshID get_or_create_mesh(const std::string& filename);
 
     // helper functions for common meshes
+    MeshID create_square();
     MeshID create_cube();
     MeshID create_skybox();
 

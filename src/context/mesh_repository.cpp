@@ -34,6 +34,15 @@ MeshID MeshRepository::create_mesh(
     return current_mesh_id;
 }
 
+MeshID MeshRepository::create_square()
+{
+    std::shared_ptr<Mesh> square_mesh = Mesh::square();
+    square_mesh->init();
+
+    meshes.insert(std::make_pair(++current_mesh_id, square_mesh));
+    return current_mesh_id;
+}
+
 MeshID MeshRepository::create_cube()
 {
     std::shared_ptr<Mesh> cube_mesh = Mesh::cube();

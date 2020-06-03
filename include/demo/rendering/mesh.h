@@ -21,6 +21,7 @@ class Mesh
 {
 public:
     Mesh() = default;
+    static std::shared_ptr<Mesh> square();
     static std::shared_ptr<Mesh> cube();
     static std::shared_ptr<Mesh> skybox();
     Mesh(

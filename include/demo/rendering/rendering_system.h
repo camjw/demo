@@ -30,6 +30,7 @@ class RendererSystem: public System
 public:
     void init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
     void draw(Time time, Scene* scene);
+    virtual ~RendererSystem() {}
 
 private:
     void begin_draw(Time time);
@@ -37,6 +38,9 @@ private:
     void draw_entities();
     void draw_entity(Entity entity);
     void end_draw();
+
+    void debug_screen_space_rendering();
+
 
     Window* window {};
 

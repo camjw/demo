@@ -1,4 +1,36 @@
 #include <demo/rendering/mesh.h>
+#include <demo/utils/opengl_helpers.h>
+
+std::shared_ptr<Mesh> Mesh::square()
+{
+    std::vector<float3> square_positions = {
+        float3(-0.5f, -0.5f, 0.0f),
+        float3(-0.5f, 0.5f, 0.0f),
+        float3(0.5f, 0.5f, 0.0f),
+        float3(0.5f, -0.5f, 0.0f),
+    };
+
+    std::vector<float3> square_normals = {
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f),
+        float3(0.0f, 0.0f, 1.0f)
+    };
+
+    std::vector<float2> square_uvs = {
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f)
+    };
+
+    std::vector<uint32_t> square_indices = {
+        0, 1, 2, 0, 2, 3,
+        0, 2, 1, 0, 3, 2
+    };
+
+    return std::make_shared<Mesh>(square_positions, square_normals, square_uvs, square_indices);
+}
 
 std::shared_ptr<Mesh> Mesh::cube()
 {
@@ -288,6 +320,8 @@ void Mesh::init()
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
+
+    glCheckError();
 }
 
 void Mesh::bind()

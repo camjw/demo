@@ -1,10 +1,13 @@
 #include <demo/engine.h>
 #include <demo/maths/transform.h>
+#include <demo/utils/opengl_helpers.h>
 
 Engine::Engine()
 {
     context = std::make_shared<DemoContext>();
     window = new Window("Estuary King");
+    glCheckError();
+
     input = new InputProcessor(window);
 
     coordinator = std::make_shared<Coordinator>();
@@ -23,6 +26,8 @@ Engine::Engine()
 
     renderer_system = coordinator->register_system<RendererSystem>();
     renderer_system->init(context, window, coordinator);
+    glCheckError();
+
     Signature renderer_system_signature;
     renderer_system_signature.set(coordinator->get_component_type<TransformComponent>());
     renderer_system_signature.set(coordinator->get_component_type<MeshComponent>());
@@ -31,6 +36,8 @@ Engine::Engine()
 
     SceneManager sm = SceneManager(context, coordinator);
     scene_manager = std::make_shared<SceneManager>(sm);
+    glCheckError();
+
 }
 
 Engine::~Engine()

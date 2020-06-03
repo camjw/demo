@@ -1,4 +1,5 @@
 #include <demo/context/texture_repository.h>
+#include <demo/utils/opengl_helpers.h>
 
 std::shared_ptr<Texture> TextureRepository::get_texture(TextureID texture_id)
 {
@@ -20,6 +21,8 @@ TextureID TextureRepository::create_texture(const std::string& texture_name, con
 
     texture_names_to_ids.insert(std::make_pair(texture_name, current_texture_id));
     textures.insert(std::make_pair(current_texture_id++, new_texture));
+    glCheckError();
+
     return current_texture_id;
 }
 

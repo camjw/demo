@@ -18,5 +18,4 @@ private:
     glm::mat4 view;
 };
 
-
 #endif // DEMO_SET_SHADER_CAMERA_H
