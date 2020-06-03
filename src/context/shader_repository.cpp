@@ -8,6 +8,14 @@ std::shared_ptr<Shader> ShaderRepository::get_shader(ShaderID shader_id)
     return shaders[shader_id];
 }
 
+std::shared_ptr<Shader> ShaderRepository::get_shader(const std::string& shader_name)
+{
+    assert(shader_name_to_shader_id.find(shader_name) != shader_name_to_shader_id.end() && "No shader with that name");
+
+    return shaders[shader_name_to_shader_id[shader_name]];
+}
+
+
 ShaderID ShaderRepository::get_shader_id(const std::string& shader_name)
 {
     assert(shader_name_to_shader_id.find(shader_name) != shader_name_to_shader_id.end() && "No shader with that name");

@@ -10,6 +10,7 @@ class ShaderRepository
 {
 public:
     std::shared_ptr<Shader> get_shader(ShaderID shader_id);
+    std::shared_ptr<Shader> get_shader(const std::string& shader_name);
     ShaderID get_shader_id(const std::string& shader_name);
     ShaderID create_shader(const std::string& shader_name);
     ShaderID create_shader(const std::string& shader_name, const std::string& vertex_filename, const std::string& fragment_filename);
