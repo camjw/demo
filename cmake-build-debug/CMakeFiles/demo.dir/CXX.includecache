@@ -1772,8 +1772,20 @@ intrin.h
 arm_neon.h
 -
 
+/Users/cameron/demo/src/bitmask.cpp
+demo/bitmask.hpp
+-
+
+/Users/cameron/demo/src/camera.cpp
+demo/camera.hpp
+-
+
 /Users/cameron/demo/src/engine.cpp
 demo/engine.hpp
+-
+
+/Users/cameron/demo/src/input_processor.cpp
+demo/input_processor.hpp
 -
 
 /Users/cameron/demo/src/main.cpp
@@ -1788,6 +1800,10 @@ cstdio
 thread
 -
 
+/Users/cameron/demo/src/rendering/cube_map.cpp
+demo/rendering/cube_map.hpp
+-
+
 /Users/cameron/demo/src/rendering/mesh.cpp
 demo/rendering/mesh.hpp
 -
@@ -1800,5 +1816,19 @@ demo/rendering/mesh_repository.hpp
 demo/rendering/rendering_system.hpp
 -
 random
+-
+
+/Users/cameron/demo/src/rendering/texture.cpp
+demo/rendering/texture.hpp
+-
+
+/Users/cameron/demo/src/rendering/texture_repository.cpp
+demo/rendering/texture_repository.hpp
+-
+
+/Users/cameron/demo/src/window.cpp
+demo/input_processor.hpp
+-
+demo/window.hpp
 -
 
