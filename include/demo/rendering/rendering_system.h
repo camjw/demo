@@ -39,9 +39,6 @@ private:
     void draw_entity(Entity entity);
     void end_draw();
 
-    void debug_screen_space_rendering();
-
-
     Window* window {};
 
     std::shared_ptr<Coordinator> coordinator;

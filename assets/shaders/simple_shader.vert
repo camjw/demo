@@ -4,14 +4,22 @@ layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
 
 out vec2 TexCoord;
-//
-//uniform mat4 model;
-//uniform mat4 view;
-//uniform mat4 projection;
+
+// Globals
+uniform float TOTAL_TIME;
+uniform float DELTA_TIME;
+
+uniform mat4 VIEW;
+uniform mat4 PROJECTION;
+
+uniform vec3 CAMERA_POSITION;
+uniform vec3 CAMERA_FORWARD;
+
+// Mesh specific
+uniform mat4 model;
 
 void main()
 {
-//	gl_Position = projection * view * model * vec4(aPos, 1.0);
-	gl_Position = vec4(aPos, 1.0);
+	gl_Position = PROJECTION * VIEW * model * vec4(aPos, 1.0);
 	TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 }

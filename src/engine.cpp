@@ -26,7 +26,6 @@ Engine::Engine()
 
     renderer_system = coordinator->register_system<RendererSystem>();
     renderer_system->init(context, window, coordinator);
-    glCheckError();
 
     Signature renderer_system_signature;
     renderer_system_signature.set(coordinator->get_component_type<TransformComponent>());
@@ -36,8 +35,6 @@ Engine::Engine()
 
     SceneManager sm = SceneManager(context, coordinator);
     scene_manager = std::make_shared<SceneManager>(sm);
-    glCheckError();
-
 }
 
 Engine::~Engine()

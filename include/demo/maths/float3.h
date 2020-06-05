@@ -16,10 +16,22 @@ public:
         , z(z)
     {
     }
+    float3(float t)
+        : x(t)
+        , y(t)
+        , z(t)
+    {
+    }
     float3(float2 v, float z)
         : x(v.x)
         , y(v.y)
         , z(z)
+    {
+    }
+    float3(float x, float2 v)
+        : x(x)
+        , y(v.x)
+        , z(v.y)
     {
     }
 

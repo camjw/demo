@@ -59,5 +59,4 @@ set(LIBS ${LIBS} GLAD)
 
 target_link_libraries(demo ${LIBS})
 # Copy assets
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
- 
+ADD_CUSTOM_TARGET(assets ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets) 
