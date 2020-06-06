@@ -100,6 +100,16 @@ public:
         system_manager->set_signature<T>(signature);
     }
 
+    void update_systems(Time time, InputState* input)
+    {
+        system_manager->update_systems(time, input);
+    }
+
+    void late_update_systems(Time time, InputState* input)
+    {
+        system_manager->late_update_systems(time, input);
+    }
+
 private:
     std::unique_ptr<ComponentManager> component_manager;
     std::unique_ptr<EntityManager> entity_manager;

@@ -18,6 +18,7 @@ const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
 const float LOOK_SPEED = 0.5f;
 
+// This basically contains a transform, should factor out
 struct CameraComponent
 {
     // Camera attributes
@@ -31,9 +32,9 @@ struct CameraComponent
     float pitch;
 
     // Camera options
-    float movement_speed;
-    float mouse_sensitivity;
-    float zoom;
+    float movement_speed = 0.01f;
+    float mouse_sensitivity = 0.01f;
+    float zoom = 0.01f;
     bool is_fps_camera;
 
     inline glm::mat4 get_view_matrix()
@@ -44,16 +45,21 @@ struct CameraComponent
 
 const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
-class CameraSystem: public System
+class CameraSystem : public System
 {
 public:
+    CameraSystem(std::shared_ptr<Coordinator> coordinator)
+        : System()
+        , coordinator(coordinator)
+    {
+    }
     void update(Time time, InputState* input) override;
-    virtual ~CameraSystem() {}
+    virtual ~CameraSystem() { }
 
 private:
-    void update_camera_vectors(CameraComponent* camera);
-    void process_keyboard(Time time, InputState* input, CameraComponent* camera);
-    void process_mouse_movement(Time time, InputState* input, CameraComponent* camera);
+    void update_camera_vectors(CameraComponent& camera);
+    void process_keyboard(Time time, InputState* input, CameraComponent& camera);
+    void process_mouse_movement(Time time, InputState* input, CameraComponent& camera);
 
     std::shared_ptr<Coordinator> coordinator;
 };

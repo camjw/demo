@@ -164,6 +164,16 @@ public:
         printf("(%f, %f, %f)\n", x, y, z);
     }
 
+    float3 normalise()
+    {
+        float l = length();
+        this->x /= l;
+        this->y /= l;
+        this->z /= l;
+
+        return *this;
+    }
+
     float x, y, z;
 };
 

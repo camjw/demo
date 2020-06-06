@@ -1,8 +1,8 @@
 #ifndef DEMO_MATHS_QUATERNION_HPP
 #define DEMO_MATHS_QUATERNION_HPP
 
-#include <math.h>
 #include <cstdio>
+#include <math.h>
 
 #include <demo/maths/float3.h>
 
@@ -61,13 +61,22 @@ public:
         return *this;
     }
 
+    static quaternion angle_axis(float angle, float3 axis)
+    {
+        axis.normalise();
+        float s = sin(angle / 2);
+        float c = cos(angle / 2);
+
+        return quaternion(c, s * axis.x, s * axis.y, s * axis.z);
+    }
+
     quaternion inverse()
     {
         return quaternion(w, -x, -y, -z);
     }
 
-    void print() 
-    {       
+    void print()
+    {
         printf("(%f, %f, %f, %f)\n", w, x, y, z);
     }
 

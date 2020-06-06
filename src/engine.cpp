@@ -19,10 +19,12 @@ Engine::Engine()
     coordinator->register_component<ShaderComponent>();
     coordinator->register_component<CameraComponent>();
 
-    std::shared_ptr<CameraSystem> camera_system = coordinator->register_system<CameraSystem>();
+    CameraSystem camera_system = CameraSystem(coordinator);
+    coordinator->register_system<CameraSystem>((CameraSystem&)camera_system);
     Signature camera_system_signature;
     camera_system_signature.set(coordinator->get_component_type<CameraComponent>());
     coordinator->set_system_signature<CameraSystem>(camera_system_signature);
+
 
     renderer_system = coordinator->register_system<RendererSystem>();
     renderer_system->init(context, window, coordinator);
@@ -47,11 +49,13 @@ void Engine::update(Time time)
 {
     window->update(time, input);
     scene_manager->update(time, input);
+    coordinator->update_systems(time, input);
 }
 
 void Engine::late_update(Time time)
 {
     scene_manager->late_update(time, input);
+    coordinator->late_update_systems(time, input);
 }
 
 void Engine::draw(Time time)
