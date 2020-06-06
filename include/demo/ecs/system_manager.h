@@ -21,9 +21,22 @@ public:
         assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
 
         // Create a pointer to the system and return it so it can be used externally
-        auto system = std::make_shared<T>();
-        systems.insert({ typeName, system });
-        return system;
+        auto system_ptr = std::make_shared<T>();
+        systems.insert({ typeName, system_ptr });
+        return system_ptr;
+    }
+
+    template <typename T>
+    std::shared_ptr<T> register_system(const T& system)
+    {
+        const char* typeName = typeid(T).name();
+
+        assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
+
+        // Create a pointer to the system and return it so it can be used externally
+        auto system_ptr = std::make_shared<T>(std::move(system));
+        systems.insert({ typeName, system_ptr });
+        return system_ptr;
     }
 
     template <typename T>

@@ -21,7 +21,13 @@ void FirstScene::on_create()
     TextureID texture_id = context->get_texture_repository()->get_texture_id("uv_test");
 
     coordinator->register_component<RotatingCubeComponent>();
-    coordinator->register_system<RotatingCubeSystem>();
+    RotatingCubeSystem rotating_cube_system = RotatingCubeSystem(coordinator);
+    coordinator->register_system<RotatingCubeSystem>((RotatingCubeSystem&)rotating_cube_system);
+
+    Signature rotating_cube_signature;
+    rotating_cube_signature.set(coordinator->get_component_type<TransformComponent>());
+    rotating_cube_signature.set(coordinator->get_component_type<RotatingCubeComponent>());
+    coordinator->set_system_signature<RotatingCubeSystem>(rotating_cube_signature);
 
     for (int i = 0; i < 100; i++)
     {

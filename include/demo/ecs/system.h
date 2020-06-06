@@ -11,10 +11,10 @@ class Coordinator;
 
 class System
 {
-    public:
-        std::set<Entity> entities;
-        virtual void update(Time time, InputState* input) {}
-        virtual void late_update(Time time, InputState* input) {}
+public:
+    std::set<Entity> entities;
+    virtual void update(Time time, InputState* input) { }
+    virtual void late_update(Time time, InputState* input) { }
 };
 
 #endif

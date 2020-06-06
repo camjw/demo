@@ -89,6 +89,12 @@ public:
     }
 
     template <typename T>
+    std::shared_ptr<T> register_system(T& system)
+    {
+        return system_manager->register_system<T>(system);
+    }
+
+    template <typename T>
     void set_system_signature(Signature signature)
     {
         system_manager->set_signature<T>(signature);
