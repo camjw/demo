@@ -7,14 +7,26 @@
 #include <demo/input_processor.h>
 #include <demo/timer.h>
 
-class Coordinator;
+class World;
 
 class System
 {
 public:
-    std::set<Entity> entities;
+    System(World* world) : world(world) {}
+
+    inline void set_world(World* _world)
+    {
+        this->world = _world;
+    }
+
     virtual void update(Time time, InputState* input) { }
     virtual void late_update(Time time, InputState* input) { }
+
+    std::set<Entity> entities;
+
+protected:
+    World* world;
+
 };
 
 #endif

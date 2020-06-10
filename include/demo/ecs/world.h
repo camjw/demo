@@ -6,7 +6,7 @@
 #include <demo/ecs/entity_manager.h>
 #include <demo/ecs/system_manager.h>
 
-class Coordinator
+class World
 {
 public:
     void init()
@@ -115,7 +115,7 @@ private:
     std::unique_ptr<EntityManager> entity_manager;
     std::unique_ptr<SystemManager> system_manager;
 
-    std::shared_ptr<Coordinator> self;
+    std::shared_ptr<World> self;
 };
 
 #endif
