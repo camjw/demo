@@ -2,7 +2,7 @@
 #include <demo/rendering/rendering_system.h>
 #include <demo/utils/opengl_helpers.h>
 
-void RendererSystem::init(std::shared_ptr<DemoContext> context,
+Renderer::Renderer(std::shared_ptr<DemoContext> context,
     Window* _window, std::shared_ptr<Coordinator> _coordinator)
 {
     glEnable(GL_CULL_FACE);
@@ -18,7 +18,7 @@ void RendererSystem::init(std::shared_ptr<DemoContext> context,
     shader_repository = context->get_shader_repository();
 }
 
-void RendererSystem::begin_draw(Time time)
+void Renderer::begin_draw(Time time)
 {
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -30,7 +30,7 @@ void RendererSystem::begin_draw(Time time)
     glCheckError();
 }
 
-void RendererSystem::draw_entities()
+void Renderer::draw_entities()
 {
     for (Entity const& entity: entities)
     {
@@ -38,8 +38,9 @@ void RendererSystem::draw_entities()
     }
 }
 
-void RendererSystem::draw_entity(Entity entity)
+void Renderer::draw_entity(Entity entity)
 {
+    printf("Drawing entity\n");
     if (coordinator->has_component<TextureComponent>(entity))
     {
         TextureComponent texture = coordinator->get_component<TextureComponent>(entity);
@@ -59,13 +60,13 @@ void RendererSystem::draw_entity(Entity entity)
     render_mesh->draw();
 }
 
-void RendererSystem::end_draw()
+void Renderer::end_draw()
 {
     glfwSwapBuffers(window->get_glfw_window());
     glfwPollEvents();
 }
 
-void RendererSystem::set_camera(Scene* scene)
+void Renderer::set_camera(Scene* scene)
 {
     Entity camera_entity = scene->get_active_camera();
 
@@ -82,7 +83,7 @@ void RendererSystem::set_camera(Scene* scene)
         camera.get_view_matrix()));
 }
 
-void RendererSystem::draw(Time time, Scene* scene)
+void Renderer::draw_scene(Time time, Scene* scene)
 {
     set_camera(scene);
     begin_draw(time);

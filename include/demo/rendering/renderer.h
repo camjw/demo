@@ -1,5 +1,5 @@
-#ifndef DEMO_RENDERING_RENDERING_SYSTEM_HPP
-#define DEMO_RENDERING_RENDERING_SYSTEM_HPP
+#ifndef DEMO_RENDERING_SYSTEM_HPP
+#define DEMO_RENDERING_SYSTEM_HPP
 
 #include <demo/ecs/coordinator.h>
 #include <demo/ecs/ecs.h>
@@ -25,12 +25,12 @@
 
 // This is an ECS system but it doesn't really make sense. It renders a scene, not an abstract
 // collection of entities
-class RendererSystem: public System
+class Renderer : public System
 {
 public:
-    void init(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
-    void draw(Time time, Scene* scene);
-    virtual ~RendererSystem() {}
+    Renderer(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<Coordinator> coordinator);
+    void draw_scene(Time time, Scene* scene);
+    virtual ~Renderer() {}
 
 private:
     void begin_draw(Time time);

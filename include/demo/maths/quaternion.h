@@ -4,7 +4,15 @@
 #include <cstdio>
 #include <math.h>
 
+#include <cmath>
 #include <demo/maths/float3.h>
+
+struct EulerAngles
+{
+    float roll;
+    float yaw;
+    float pitch;
+};
 
 struct quaternion
 {
@@ -69,6 +77,58 @@ public:
 
         return quaternion(c, s * axis.x, s * axis.y, s * axis.z);
     }
+
+    static quaternion from_euler_angles(float roll, float pitch, float yaw)
+    {
+        double cr = cos(roll * 0.5);
+        double sr = sin(roll * 0.5);
+        double cy = cos(yaw * 0.5);
+        double sy = sin(yaw * 0.5);
+        double cp = cos(pitch * 0.5);
+        double sp = sin(pitch * 0.5);
+
+        quaternion q;
+        q.w = cr * cp * cy + sr * sp * sy;
+        q.x = sr * cp * cy - cr * sp * sy;
+        q.y = cr * sp * cy + sr * cp * sy;
+        q.z = cr * cp * sy - sr * sp * cy;
+
+        return q;
+    }
+
+    static quaternion from_euler_angles(EulerAngles euler_angles)
+    {
+        return from_euler_angles(euler_angles.roll, euler_angles.pitch, euler_angles.yaw);
+    }
+
+    EulerAngles to_euler_angles()
+    {
+        EulerAngles angles;
+
+        // roll (x-axis rotation)
+        float sinr_cosp = 2 * (w * x + y * z);
+        float cosr_cosp = 1 - 2 * (x * x + y * y);
+        angles.roll = atan2(sinr_cosp, cosr_cosp);
+
+        // pitch (y-axis rotation)
+        float sinp = 2 * (w * y - z * x);
+        if (abs(sinp) >= 1)
+        {
+            angles.pitch = std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+        }
+        else
+        {
+            angles.pitch = std::asin(sinp);
+        }
+
+        // yaw (z-axis rotation)
+        float siny_cosp = 2 * (w * z + x * y);
+        float cosy_cosp = 1 - 2 * (y * y + z * z);
+        angles.yaw = std::atan2(siny_cosp, cosy_cosp);
+
+        return angles;
+    }
+
 
     quaternion inverse()
     {

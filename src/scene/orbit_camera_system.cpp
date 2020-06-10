@@ -1,5 +1,5 @@
 #include <demo/ecs/coordinator.h>
-#include <demo/scene/camera.h>
+#include <demo/scene/camera_component.h>
 
 void CameraSystem::update(Time time, InputState* input)
 {

@@ -85,13 +85,13 @@ public:
     template <typename T>
     std::shared_ptr<T> register_system()
     {
-        return system_manager->register_system<T>();
+        return system_manager->register_system<T>(this);
     }
 
     template <typename T>
     std::shared_ptr<T> register_system(T& system)
     {
-        return system_manager->register_system<T>(system);
+        return system_manager->register_system<T>(system, this);
     }
 
     template <typename T>
@@ -114,6 +114,8 @@ private:
     std::unique_ptr<ComponentManager> component_manager;
     std::unique_ptr<EntityManager> entity_manager;
     std::unique_ptr<SystemManager> system_manager;
+
+    std::shared_ptr<Coordinator> self;
 };
 
 #endif

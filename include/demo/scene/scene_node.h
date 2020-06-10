@@ -1,0 +1,4 @@
+#ifndef DEMO_SCENE_NODE_H
+#define DEMO_SCENE_NODE_H
+
+#endif // DEMO_SCENE_NODE_H

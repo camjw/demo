@@ -14,6 +14,46 @@ public:
         quaternion c = q.inverse() * quaternion(0, v.x, v.y, v.z) * q;
         return float3(c.x, c.y, c.z);
     }
+
+    static float mod(float value, float modulus)
+    {
+        return value - (modulus * int(value / modulus));
+    }
+
+    static float min(float first, float second)
+    {
+        if (first < second)
+        {
+            return first;
+        }
+
+        return second;
+    }
+
+    static float max(float first, float second)
+    {
+        if (first < second)
+        {
+            return second;
+        }
+
+        return first;
+    }
+
+    static float clamp(float value, float min, float max)
+    {
+        if (value < min)
+        {
+            return min;
+        }
+
+        if (value > max)
+        {
+            return max;
+        }
+
+        return value;
+    }
 };
 
 #endif

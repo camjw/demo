@@ -174,6 +174,29 @@ public:
         return *this;
     }
 
+    static float3 cross(float3 l, float3 r)
+    {
+        float3 output;
+        output.x = l.y * r.z - l.z * r.y;
+        output.y = r.x * l.z - r.z * l.x;
+        output.z = l.x * r.y - l.y * r.x;
+
+        return output;
+    }
+
+    float const& operator[](int index) const
+    {
+        switch(index)
+        {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        }
+    }
+
     float x, y, z;
 };
 
