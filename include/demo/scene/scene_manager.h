@@ -1,7 +1,7 @@
 #ifndef DEMO_SCENE_MANAGER_H
 #define DEMO_SCENE_MANAGER_H
 
-#include <demo/ecs/coordinator.h>
+#include <demo/ecs/world.h>
 #include <demo/input_processor.h>
 #include <demo/timer.h>
 #include <memory>
@@ -10,7 +10,7 @@
 class SceneManager
 {
 public:
-    SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator);
+    SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<World> coordinator);
 
     void update(Time time, InputState* input);
     void late_update(Time time, InputState* input);
@@ -21,7 +21,7 @@ private:
     Scene* first_scene;
 
     std::shared_ptr<DemoContext> context;
-    std::shared_ptr<Coordinator> coordinator;
+    std::shared_ptr<World> coordinator;
 };
 
 #endif // DEMO_SCENE_LOADER_H
