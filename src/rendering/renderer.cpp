@@ -1,9 +1,9 @@
 #include <demo/maths/transform.h>
-#include <demo/rendering/rendering_system.h>
+#include <demo/rendering/renderer.h>
 #include <demo/utils/opengl_helpers.h>
 
 Renderer::Renderer(std::shared_ptr<DemoContext> context,
-    Window* _window, std::shared_ptr<Coordinator> _coordinator)
+    Window* _window, std::shared_ptr<World> _coordinator)
 {
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
@@ -25,30 +25,27 @@ void Renderer::begin_draw(Time time)
 
     // Set common variables for shaders
     shader_repository->for_all(new SetShaderTime(time));
-    glCheckError();
     shader_repository->for_all(new SetShaderProjection(window->get_projection_matrix()));
-    glCheckError();
 }
 
 void Renderer::draw_entities()
 {
-    for (Entity const& entity: entities)
-    {
-        draw_entity(entity);
-    }
+//    for (Entity const& entity: entities)
+//    {
+//        draw_entity(entity);
+//    }
 }
 
 void Renderer::draw_entity(Entity entity)
 {
-    printf("Drawing entity\n");
     if (coordinator->has_component<TextureComponent>(entity))
     {
         TextureComponent texture = coordinator->get_component<TextureComponent>(entity);
         texture_repository->get_texture(texture.id)->bind(texture.binding_index);
     }
 
-    ShaderID shader_id = coordinator->get_component<ShaderComponent>(entity).id;
-    std::shared_ptr<Shader> shader = shader_repository->get_shader(shader_id);
+    std::string shader_name = coordinator->get_component<ShaderComponent>(entity).name;
+    std::shared_ptr<Shader> shader = shader_repository->get_shader(shader_name);
     shader->bind();
 
     TransformComponent transform = coordinator->get_component<TransformComponent>(entity);
@@ -59,6 +56,10 @@ void Renderer::draw_entity(Entity entity)
     render_mesh->bind();
     render_mesh->draw();
 }
+
+void Renderer::draw_skybox()
+{}
+
 
 void Renderer::end_draw()
 {
@@ -77,10 +78,11 @@ void Renderer::set_camera(Scene* scene)
     }
 
     CameraComponent& camera = coordinator->get_component<CameraComponent>(camera_entity);
+    TransformComponent& camera_transform = coordinator->get_component<TransformComponent>(camera_entity);
     shader_repository->for_all(new SetShaderCamera(
-        camera.position,
+        camera_transform.position,
         camera.forward,
-        camera.get_view_matrix()));
+        get_view_matrix(camera, camera_transform)));
 }
 
 void Renderer::draw_scene(Time time, Scene* scene)
@@ -89,4 +91,9 @@ void Renderer::draw_scene(Time time, Scene* scene)
     begin_draw(time);
     draw_entities();
     end_draw();
+}
+
+glm::mat4 Renderer::get_view_matrix(CameraComponent& camera, TransformComponent& transform)
+{
+    return glm::mat4();
 }
