@@ -2,14 +2,14 @@
 #define DEMO_FIRST_SCENE_H
 
 #include <demo/context/demo_context.h>
-#include <demo/ecs/coordinator.h>
+#include <demo/ecs/world.h>
 #include <demo/scene/scene.h>
 #include <memory>
 
 class FirstScene : public Scene
 {
 public:
-    FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator);
+    FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> coordinator);
 
     virtual void on_create() override;
     virtual void on_destroy() override;

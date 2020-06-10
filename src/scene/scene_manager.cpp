@@ -1,6 +1,6 @@
 #include <demo/scene/scene_manager.h>
 
-SceneManager::SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator)
+SceneManager::SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<World> coordinator)
     : context(context), coordinator(coordinator)
 {
     first_scene = new FirstScene(context, coordinator);

@@ -1,42 +1,36 @@
 #include <demo/engine.h>
 #include <demo/maths/transform.h>
+#include <demo/scene/orbit_camera_system.h>
 #include <demo/utils/opengl_helpers.h>
 
 Engine::Engine()
 {
     context = std::make_shared<DemoContext>();
     window = new Window("Estuary King");
-    glCheckError();
-
     input = new InputProcessor(window);
 
-    coordinator = std::make_shared<Coordinator>();
+    coordinator = std::make_shared<World>();
     coordinator->init();
 
+    // Register components
     coordinator->register_component<TransformComponent>();
     coordinator->register_component<TextureComponent>();
     coordinator->register_component<MeshComponent>();
     coordinator->register_component<ShaderComponent>();
     coordinator->register_component<CameraComponent>();
 
-    CameraSystem camera_system = CameraSystem(coordinator);
-    coordinator->register_system<CameraSystem>((CameraSystem&)camera_system);
+    // Init systems
+    coordinator->register_system<OrbitCameraSystem>();
     Signature camera_system_signature;
     camera_system_signature.set(coordinator->get_component_type<CameraComponent>());
-    coordinator->set_system_signature<CameraSystem>(camera_system_signature);
+    camera_system_signature.set(coordinator->get_component_type<TransformComponent>());
+    coordinator->set_system_signature<OrbitCameraSystem>(camera_system_signature);
 
+    // Init renderer
+    renderer = std::make_unique<Renderer>(context, window, coordinator);
 
-    renderer_system = coordinator->register_system<RendererSystem>();
-    renderer_system->init(context, window, coordinator);
-
-    Signature renderer_system_signature;
-    renderer_system_signature.set(coordinator->get_component_type<TransformComponent>());
-    renderer_system_signature.set(coordinator->get_component_type<MeshComponent>());
-    renderer_system_signature.set(coordinator->get_component_type<ShaderComponent>());
-    coordinator->set_system_signature<RendererSystem>(renderer_system_signature);
-
-    SceneManager sm = SceneManager(context, coordinator);
-    scene_manager = std::make_shared<SceneManager>(sm);
+    // Init scene manager
+    scene_manager = std::make_unique<SceneManager>(context, coordinator);
 }
 
 Engine::~Engine()
@@ -60,7 +54,7 @@ void Engine::late_update(Time time)
 
 void Engine::draw(Time time)
 {
-    renderer_system->draw(time, scene_manager->get_current_scene());
+    renderer->draw_scene(time, scene_manager->get_current_scene());
 }
 
 void Engine::process_input()

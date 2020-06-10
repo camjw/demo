@@ -1,61 +1,66 @@
-#include <demo/ecs/coordinator.h>
+#include <demo/ecs/world.h>
+#include <demo/maths/maths.h>
+#include <demo/maths/transform.h>
 #include <demo/scene/camera_component.h>
+#include <demo/scene/orbit_camera_system.h>
 
-void CameraSystem::update(Time time, InputState* input)
+void OrbitCameraSystem::update(Time time, InputState* input)
 {
     for (Entity const& entity : entities)
     {
-        CameraComponent& camera = coordinator->get_component<CameraComponent>(entity);
+        CameraComponent& camera = world->get_component<CameraComponent>(entity);
+        TransformComponent& transform = world->get_component<TransformComponent>(entity);
 
-        process_keyboard(time, input, camera);
-        process_mouse_movement(time, input, camera);
-
-        update_camera_vectors(camera);
+        process_keyboard(time, input, camera, transform);
+        process_mouse_movement(time, input, camera, transform);
+        update_camera_vectors(camera, transform);
     }
 }
 
-void CameraSystem::process_keyboard(Time time, InputState* input, CameraComponent& camera)
+
+void OrbitCameraSystem::process_keyboard(Time time, InputState* input,
+    CameraComponent& camera, TransformComponent& transform)
 {
     float velocity = camera.movement_speed * time.delta_time;
     if (input->is_key_pressed(Key::Up))
     {
-        camera.position += camera.forward * velocity;
+        transform.position += camera.forward * velocity;
     }
     if (input->is_key_pressed(Key::Down))
     {
-        camera.position -= camera.forward * velocity;
+        transform.position -= camera.forward * velocity;
     }
 
     if (input->is_key_pressed(Key::LeftShift) || input->is_key_pressed(Key::RightShift))
     {
         if (input->is_key_pressed(Key::Left))
         {
-            camera.position -= camera.right * velocity;
+            transform.position -= camera.right * velocity;
         }
         if (input->is_key_pressed(Key::Right))
         {
-            camera.position += camera.right * velocity;
+            transform.position += camera.right * velocity;
         }
     }
     else
     {
+        EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();
+
         if (input->is_key_pressed(Key::Left))
         {
-            camera.yaw -= LOOK_SPEED * velocity;
+            camera_euler_angles.yaw -= LOOK_SPEED * velocity;
         }
         if (input->is_key_pressed(Key::Right))
         {
-            camera.yaw += LOOK_SPEED * velocity;
+            camera_euler_angles.yaw += LOOK_SPEED * velocity;
         }
-    }
 
-    if (camera.is_fps_camera)
-    {
-        camera.position.y = 0;
+        transform.rotation = quaternion::from_euler_angles(camera_euler_angles);
     }
 }
 
-void CameraSystem::process_mouse_movement(Time time, InputState* input, CameraComponent& camera)
+void OrbitCameraSystem::process_mouse_movement(Time time, InputState* input,
+    CameraComponent& camera, TransformComponent& transform)
 {
     if (!(input->is_key_pressed(Key::LeftMouseButton) && input->is_key_pressed(Key::LeftShift)))
     {
@@ -64,32 +69,29 @@ void CameraSystem::process_mouse_movement(Time time, InputState* input, CameraCo
 
     float2 mouse_offset = input->get_mouse_offset() * camera.mouse_sensitivity;
 
-    camera.yaw += mouse_offset.x;
-    camera.pitch -= mouse_offset.y;
+    EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();
+    camera_euler_angles.pitch += mouse_offset.x;
+    camera_euler_angles.yaw -= mouse_offset.y;
 
-    if (camera.pitch > 89.0f)
-    {
-        camera.pitch = 89.0f;
-    }
+    camera_euler_angles.pitch = maths::clamp(camera_euler_angles.pitch, -89.0f, 89.0f);
 
-    if (camera.pitch < -89.0f)
-    {
-        camera.pitch = -89.0f;
-    }
+    transform.rotation = quaternion::from_euler_angles(camera_euler_angles);
 }
 
-void CameraSystem::update_camera_vectors(CameraComponent& camera)
+void OrbitCameraSystem::update_camera_vectors(CameraComponent& camera,
+    TransformComponent& transform)
 {
-    camera.yaw = glm::mod(camera.yaw, 360.0f);
+    EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();
+    camera_euler_angles.pitch = maths::mod(camera_euler_angles.pitch, 360.0f);
 
-    glm::vec3 front;
-    front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-    front.y = sin(glm::radians(camera.pitch));
-    front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+    float3 front;
+    front.x = cos(glm::radians(camera_euler_angles.yaw)) * cos(glm::radians(camera_euler_angles.pitch));
+    front.y = sin(glm::radians(camera_euler_angles.pitch));
+    front.z = sin(glm::radians(camera_euler_angles.yaw)) * cos(glm::radians(camera_euler_angles.pitch));
 
-    camera.forward = glm::normalize(front);
+    camera.forward = front;
 
     // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    camera.right = glm::normalize(glm::cross(camera.forward, WORLD_UP));
-    camera.up = glm::normalize(glm::cross(camera.right, camera.forward));
+    camera.right = float3::cross(camera.forward, WORLD_UP).normalise();
+    camera.up = float3::cross(camera.right, camera.forward).normalise();
 }

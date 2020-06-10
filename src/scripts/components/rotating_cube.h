@@ -9,22 +9,17 @@
 // Just a label really
 struct RotatingCubeComponent
 {
+    float rotation_speed;
 };
 
 class RotatingCubeSystem : public System
 {
 public:
-    RotatingCubeSystem(std::shared_ptr<Coordinator> coordinator)
-        : System()
-        , coordinator(coordinator)
-    {
-    }
+    RotatingCubeSystem(World* coordinator) : System(coordinator) {}
 
     virtual ~RotatingCubeSystem() { }
     void update(Time time, InputState* input) override;
 
-private:
-    std::shared_ptr<Coordinator> coordinator;
 };
 
 #endif // DEMO_ROTATING_CUBE_COMPONENT_H

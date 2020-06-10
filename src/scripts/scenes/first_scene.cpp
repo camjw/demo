@@ -3,7 +3,7 @@
 #include <demo/utils/opengl_helpers.h>
 #include <scripts/components/rotating_cube.h>
 
-FirstScene::FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<Coordinator> coordinator)
+FirstScene::FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> coordinator)
     : Scene(context, coordinator)
 {
 }
@@ -21,8 +21,7 @@ void FirstScene::on_create()
     TextureID texture_id = context->get_texture_repository()->get_texture_id("uv_test");
 
     coordinator->register_component<RotatingCubeComponent>();
-    RotatingCubeSystem rotating_cube_system = RotatingCubeSystem(coordinator);
-    coordinator->register_system<RotatingCubeSystem>((RotatingCubeSystem&)rotating_cube_system);
+    coordinator->register_system<RotatingCubeSystem>();
 
     Signature rotating_cube_signature;
     rotating_cube_signature.set(coordinator->get_component_type<TransformComponent>());
@@ -41,7 +40,7 @@ void FirstScene::on_create()
         coordinator->add_component(entity, TextureComponent { .id = texture_id });
         coordinator->add_component(entity, MeshComponent { .id = cube_id });
         coordinator->add_component(entity, ShaderComponent { .id = shader_id });
-        coordinator->add_component(entity, RotatingCubeComponent{});
+        coordinator->add_component(entity, RotatingCubeComponent {});
     }
 }
 
@@ -69,9 +68,13 @@ void FirstScene::build_camera()
     camera = coordinator->create_entity();
     coordinator->add_component(camera,
         CameraComponent {
-            .position = glm::vec3(1.0, -0.5, 10.0),
-            .up = glm::vec3(0.0, 1.0, 0.0),
-            .forward = glm::vec3(0.0, 0.0, -1.0),
+            .up = float3(0.0, 1.0, 0.0),
+            .forward = float3(0.0, 0.0, -1.0),
+        });
+
+    coordinator->add_component(camera,
+        TransformComponent {
+            .position = float3(1.0, -0.5, 10.0),
         });
 }
 
