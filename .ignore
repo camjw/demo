@@ -3,5 +3,5 @@ include/*
 
 cmake/
 
-src/imgui/
+lib/imgui/
 src/glad.c
