@@ -25,7 +25,6 @@ public:
     virtual void on_load() {};
     virtual void on_unload() {};
 
-
     inline Entity get_camera()
     {
         return camera;

@@ -405,10 +405,10 @@ void ImGui::ShowDemoWindow(bool* p_open)
             HelpMarker("Try opening any of the contents below in this window and then click one of the \"Log To\" button.");
             ImGui::LogButtons();
             ImGui::TextWrapped("You can also call ImGui::LogText() to output directly to the log without a visual output.");
-            if (ImGui::Button("Copy \"Hello, world!\" to clipboard"))
+            if (ImGui::Button("Copy \"Hello, m_world!\" to clipboard"))
             {
                 ImGui::LogToClipboard();
-                ImGui::LogText("Hello, world!");
+                ImGui::LogText("Hello, m_world!");
                 ImGui::LogFinish();
             }
             ImGui::TreePop();
@@ -525,7 +525,7 @@ static void ShowDemoWindowWidgets()
         {
             // To wire InputText() with std::string or any other custom string type,
             // see the "Text Input > Resize Callback" section of this demo, and the misc/cpp/imgui_stdlib.h file.
-            static char str0[128] = "Hello, world!";
+            static char str0[128] = "Hello, m_world!";
             ImGui::InputText("input text", str0, IM_ARRAYSIZE(str0));
             ImGui::SameLine(); HelpMarker("USER:\nHold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.\n\nPROGRAMMER:\nYou can use the ImGuiInputTextFlags_CallbackResize facility if you need to wire InputText() to a dynamic string type. See misc/cpp/imgui_stdlib.h for an example (this is not demonstrated in imgui_demo.cpp).");
 
@@ -2948,7 +2948,7 @@ static void ShowDemoWindowMisc()
                     "  \"xxx,yyy\"  display lines containing \"xxx\" or \"yyy\"\n"
                     "  \"-xxx\"     hide lines containing \"xxx\"");
         filter.Draw();
-        const char* lines[] = { "aaa1.c", "bbb1.c", "ccc1.c", "aaa2.cpp", "bbb2.cpp", "ccc2.cpp", "abc.h", "hello, world" };
+        const char* lines[] = { "aaa1.c", "bbb1.c", "ccc1.c", "aaa2.cpp", "bbb2.cpp", "ccc2.cpp", "abc.h", "hello, m_world" };
         for (int i = 0; i < IM_ARRAYSIZE(lines); i++)
             if (filter.PassFilter(lines[i]))
                 ImGui::BulletText("%s", lines[i]);
@@ -3988,7 +3988,7 @@ static void ShowExampleAppConsole(bool* p_open)
 
 // Usage:
 //  static ExampleAppLog my_log;
-//  my_log.AddLog("Hello %d world\n", 123);
+//  my_log.AddLog("Hello %d m_world\n", 123);
 //  my_log.Draw("title");
 struct ExampleAppLog
 {

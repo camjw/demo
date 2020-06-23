@@ -32,7 +32,7 @@ void Renderer::begin_draw(Time time)
 void Renderer::draw_scene_graph(SceneGraph* scene_graph)
 {
     glm::mat4 transform = Transform::identity().get_model_matrix();
-    draw_node(scene_graph->root_node, transform);
+    draw_node(scene_graph->m_root_node, transform);
 }
 
 void Renderer::draw_node(SceneNode* scene_node, glm::mat4 parent_transform)
@@ -46,7 +46,7 @@ void Renderer::draw_node(SceneNode* scene_node, glm::mat4 parent_transform)
     }
 
     // Draw child nodes
-    for (SceneNode* const& child_node: scene_node->child_nodes)
+    for (SceneNode* const& child_node: scene_node->m_child_nodes)
     {
         draw_node(child_node, node_transform.get_model_matrix() * parent_transform);
     }

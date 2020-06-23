@@ -205,7 +205,7 @@ CODE
          ImGui::NewFrame();
 
          // Any application code here
-         ImGui::Text("Hello, world!");
+         ImGui::Text("Hello, m_world!");
 
          // Render dear imgui into screen
          ImGui::Render();
@@ -256,8 +256,8 @@ CODE
         ImGui::NewFrame();
 
         // Most of your application code here
-        ImGui::Text("Hello, world!");
-        MyGameUpdate(); // may use any Dear ImGui functions, e.g. ImGui::Begin("My window"); ImGui::Text("Hello, world!"); ImGui::End();
+        ImGui::Text("Hello, m_world!");
+        MyGameUpdate(); // may use any Dear ImGui functions, e.g. ImGui::Begin("My window"); ImGui::Text("Hello, m_world!"); ImGui::End();
         MyGameRender(); // may use any Dear ImGui functions as well!
 
         // Render dear imgui, swap buffers
