@@ -1,9 +1,9 @@
 #ifndef DEMO_SET_SHADER_PROJECTION_H
 #define DEMO_SET_SHADER_PROJECTION_H
 
-#include <demo/templates/action.h>
-#include <demo/rendering/shader.h>
-#include <demo/constants/shader_constants.h>
+#include <constants/shader_constants.h>
+#include <templates/action.h>
+#include <rendering/shader.h>
 
 class SetShaderProjection : public Action<Shader>
 {

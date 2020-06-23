@@ -1,10 +1,10 @@
 #ifndef DEMO_SET_SHADER_TIME_H
 #define DEMO_SET_SHADER_TIME_H
 
-#include <demo/constants/shader_constants.h>
-#include <demo/rendering/shader.h>
-#include <demo/templates/action.h>
-#include <demo/timer.h>
+#include <constants/shader_constants.h>
+#include <templates/action.h>
+#include <rendering/shader.h>
+#include <timer.h>
 
 class SetShaderTime : public Action<Shader>
 {

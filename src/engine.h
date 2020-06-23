@@ -1,10 +1,10 @@
 #ifndef DEMO_ENGINE_HPP
 #define DEMO_ENGINE_HPP
 
-#include <demo/rendering/cube_map.h>
-#include <demo/rendering/renderer.h>
-#include <demo/rendering/shader.h>
-#include <demo/rendering/texture.h>
+#include <rendering/cube_map.h>
+#include <rendering/renderer.h>
+#include <rendering/shader.h>
+#include <rendering/texture.h>
 
 #include <demo/input_processor.h>
 #include <demo/scene/camera_component.h>
@@ -20,9 +20,9 @@
 
 #include <stb_image.h>
 
-#include <demo/context/demo_context.h>
-#include <vector>
+#include <context/demo_context.h>
 #include <demo/scene/scene_manager.h>
+#include <vector>
 
 class Engine
 {

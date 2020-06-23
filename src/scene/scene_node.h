@@ -2,7 +2,7 @@
 #define DEMO_SCENE_NODE_H
 
 #include <demo/ecs/ecs.h>
-#include <demo/rendering/mesh.h>
+#include <rendering/mesh.h>
 #include <vector>
 
 class SceneNode

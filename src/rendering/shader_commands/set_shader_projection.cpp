@@ -1,4 +1,4 @@
-#include <demo/rendering/shader_commands/set_shader_projection.h>
+#include <rendering/shader_commands/set_shader_projection.h>
 
 void SetShaderProjection::run(std::shared_ptr<Shader> shader)
 {

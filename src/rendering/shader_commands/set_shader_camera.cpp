@@ -1,5 +1,5 @@
-#include <demo/rendering/shader_commands/set_shader_camera.h>
-#include <demo/utils/opengl_helpers.h>
+#include <utils/opengl_helpers.h>
+#include <rendering/shader_commands/set_shader_camera.h>
 
 void SetShaderCamera::run(std::shared_ptr<Shader> shader)
 {

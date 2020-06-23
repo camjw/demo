@@ -1,4 +1,4 @@
-#include <demo/rendering/cube_map.h>
+#include <rendering/cube_map.h>
 
 CubeMap::CubeMap() = default;
 

@@ -1,4 +1,4 @@
-#include <demo/rendering/shader.h>
+#include <rendering/shader.h>
 
 void Shader::init(const std::string& vertex_filepath, const std::string& fragment_filepath)
 {

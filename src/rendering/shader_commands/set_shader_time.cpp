@@ -1,4 +1,4 @@
-#include <demo/rendering/shader_commands/set_shader_time.h>
+#include <rendering/shader_commands/set_shader_time.h>
 
 void SetShaderTime::run(std::shared_ptr<Shader> shader)
 {

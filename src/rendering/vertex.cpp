@@ -1,1 +1,1 @@
-#include "demo/rendering/vertex.h"
+#include "vertex.h"

@@ -1,5 +1,5 @@
-#include <demo/rendering/mesh.h>
-#include <demo/utils/opengl_helpers.h>
+#include <utils/opengl_helpers.h>
+#include <rendering/mesh.h>
 
 std::shared_ptr<Mesh> Mesh::square()
 {

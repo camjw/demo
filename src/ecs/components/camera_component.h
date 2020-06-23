@@ -3,10 +3,10 @@
 
 #include <vector>
 
-#include <demo/ecs/system.h>
-#include <demo/input_processor.h>
-#include <demo/maths/float3.h>
-#include <demo/timer.h>
+#include <ecs/system.h>
+#include <maths/float3.h>
+#include <input_processor.h>
+#include <timer.h>
 
 const float SPEED = 0.01f;
 const float SENSITIVITY = 0.01f;

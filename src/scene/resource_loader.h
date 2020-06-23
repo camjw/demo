@@ -1,9 +1,9 @@
 #ifndef DEMO_RESOURCE_LOADER_H
 #define DEMO_RESOURCE_LOADER_H
 
-#include <demo/context/mesh_repository.h>
-#include <demo/context/shader_repository.h>
-#include <demo/context/texture_repository.h>
+#include <context/mesh_repository.h>
+#include <context/shader_repository.h>
+#include <context/texture_repository.h>
 #include <memory>
 
 class ResourceLoader

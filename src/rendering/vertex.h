@@ -1,7 +1,7 @@
 #ifndef DEMO_VERTEX_H
 #define DEMO_VERTEX_H
 
-#include <demo/maths/maths.h>
+#include <maths/float3.h>
 
 struct Vertex
 {

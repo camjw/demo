@@ -1,10 +1,10 @@
 #ifndef DEMO_SET_SHADER_CAMERA_H
 #define DEMO_SET_SHADER_CAMERA_H
 
-#include <demo/constants/shader_constants.h>
-#include <demo/maths/float3.h>
-#include <demo/rendering/shader.h>
-#include <demo/templates/action.h>
+#include <constants/shader_constants.h>
+#include <maths/float3.h>
+#include <templates/action.h>
+#include <rendering/shader.h>
 
 class SetShaderCamera : public Action<Shader>
 {

@@ -4,8 +4,9 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-#include <demo/maths/float3.h>
 #include <fstream>
+#include <maths/float3.h>
+#include <maths/float4.h>
 #include <sstream>
 #include <string>
 
@@ -14,6 +15,7 @@ using ShaderID = uint8_t;
 struct ShaderComponent
 {
     ShaderID id;
+    std::string name;
 };
 
 // TODO: refactor so this doesn't use streams or strings
@@ -45,12 +47,12 @@ public:
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
 
-    void setVec2(const std::string& name, const glm::vec2& value) const
+    void set_float2(const std::string& name, const float2& value) const
     {
         glUniform2fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
     }
 
-    void setVec2(const std::string& name, float x, float y) const
+    void set_float2(const std::string& name, float x, float y) const
     {
         glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
     }
@@ -65,12 +67,12 @@ public:
         glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
     }
 
-    void setVec4(const std::string& name, const glm::vec4& value) const
+    void set_float4(const std::string& name, const float4& value) const
     {
         glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
     }
 
-    void setVec4(const std::string& name, float x, float y, float z, float w)
+    void set_float4(const std::string& name, float x, float y, float z, float w)
     {
         glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
     }
