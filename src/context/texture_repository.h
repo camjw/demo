@@ -1,7 +1,7 @@
 #ifndef DEMO_RENDERING_TEXTURE_REPOSITORY_HPP
 #define DEMO_RENDERING_TEXTURE_REPOSITORY_HPP
 
-#include <demo/rendering/texture.h>
+#include <rendering/texture.h>
 
 #include <unordered_map>
 

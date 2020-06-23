@@ -1,5 +1,5 @@
-#include <demo/context/shader_repository.h>
-#include <demo/utils/opengl_helpers.h>
+#include <context/shader_repository.h>
+#include <utils/opengl_helpers.h>
 
 std::shared_ptr<Shader> ShaderRepository::get_shader(ShaderID shader_id)
 {

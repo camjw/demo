@@ -1,10 +1,10 @@
 #ifndef DEMO_CONTEXT_H
 #define DEMO_CONTEXT_H
 
+#include <context/mesh_repository.h>
+#include <context/shader_repository.h>
+#include <context/texture_repository.h>
 #include <memory>
-#include <demo/context/mesh_repository.h>
-#include <demo/context/texture_repository.h>
-#include <demo/context/shader_repository.h>
 
 class DemoContext
 {

@@ -1,10 +1,10 @@
 #ifndef DEMO_SHADER_REPOSITORY_H
 #define DEMO_SHADER_REPOSITORY_H
 
-#include <demo/rendering/shader.h>
+#include <rendering/shader.h>
 
 #include <unordered_map>
-#include <demo/templates/action.h>
+#include <templates/action.h>
 
 class ShaderRepository
 {

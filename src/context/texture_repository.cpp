@@ -1,5 +1,5 @@
-#include <demo/context/texture_repository.h>
-#include <demo/utils/opengl_helpers.h>
+#include <context/texture_repository.h>
+#include <utils/opengl_helpers.h>
 
 std::shared_ptr<Texture> TextureRepository::get_texture(TextureID texture_id)
 {
