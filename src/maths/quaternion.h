@@ -5,7 +5,7 @@
 #include <math.h>
 
 #include <cmath>
-#include <demo/maths/float3.h>
+#include <maths/float3.h>
 
 struct EulerAngles
 {
@@ -67,6 +67,11 @@ public:
         z = w * other.z + x * other.y - y * other.x + z * other.x;
 
         return *this;
+    }
+
+    static quaternion identity()
+    {
+        return quaternion(1.0f, 0.0f, 0.0f, 0.0f);
     }
 
     static quaternion angle_axis(float angle, float3 axis)

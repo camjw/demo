@@ -1,10 +1,10 @@
 #ifndef DEMO_ROTATING_CUBE_COMPONENT_H
 #define DEMO_ROTATING_CUBE_COMPONENT_H
 
-#include <demo/ecs/system.h>
-#include <demo/input_processor.h>
-#include <demo/maths/transform.h>
-#include <demo/timer.h>
+#include <ecs/system.h>
+#include <maths/transform.h>
+#include <input_processor.h>
+#include <timer.h>
 
 // Just a label really
 struct RotatingCubeComponent
@@ -15,7 +15,7 @@ struct RotatingCubeComponent
 class RotatingCubeSystem : public System
 {
 public:
-    RotatingCubeSystem(World* coordinator) : System(coordinator) {}
+    RotatingCubeSystem(World* world) : System(world) {}
 
     virtual ~RotatingCubeSystem() { }
     void update(Time time, InputState* input) override;

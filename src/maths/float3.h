@@ -1,9 +1,9 @@
 #ifndef DEMO_MATHS_FLOAT_3_HPP
 #define DEMO_MATHS_FLOAT_3_HPP
 
-#include <demo/maths/float2.h>
-#include <math.h>
 #include <cstdio>
+#include <cmath>
+#include <maths/float2.h>
 
 struct float3
 {
@@ -16,18 +16,21 @@ public:
         , z(z)
     {
     }
-    float3(float t)
+
+    explicit float3(float t)
         : x(t)
         , y(t)
         , z(t)
     {
     }
+
     float3(float2 v, float z)
         : x(v.x)
         , y(v.y)
         , z(z)
     {
     }
+
     float3(float x, float2 v)
         : x(x)
         , y(v.x)
@@ -35,64 +38,94 @@ public:
     {
     }
 
-    float length()
+    float length() const
     {
         return sqrt(length_squared());
     }
 
-    float length_squared()
+    float length_squared() const
     {
         return x * x + y * y + z * z;
     }
 
-    float dot(float3 other)
+    float dot(float3 other) const
     {
         return x * other.x + y * other.y + z * other.z;
     }
 
     static float3 zero()
     {
-        return float3(0.0f, 0.0f, 0.0f);
+        return {0.0f, 0.0f, 0.0f};
     }
 
     static float3 one()
     {
-        return float3(1.0f, 1.0f, 1.0f);
+        return {1.0f, 1.0f, 1.0f};
     }
 
-    float3 operator+(float3 const& other)
+    static float3 up()
     {
-        return float3(x + other.x, y + other.y, z + other.z);
+        return {0.0f, 1.0f, 0.0f};
     }
 
-    float3 operator-(float3 const& other)
+    static float3 down()
     {
-        return float3(x - other.x, y - other.y, z - other.z);
+        return {0.0f, -1.0f, 0.0f};
     }
 
-    float3 operator*(float3 const& other)
+    static float3 left()
     {
-        return float3(x * other.x, y * other.y, z * other.z);
+        return {-1.0f, 0.0f, 0.0f};
     }
 
-    float3 operator*(const float scale)
+    static float3 right()
     {
-        return float3(x * scale, y * scale, z * scale);
+        return {1.0f, 0.0f, 0.0f};
     }
 
-    float3 operator/(float3 const& other)
+    static float3 forward()
     {
-        return float3(x / other.x, y / other.y, z / other.z);
+        return {0.0f, 0.0f, 1.0f};
     }
 
-    float3 operator/(const float scale)
+    static float3 backward()
     {
-        return float3(x / scale, y / scale, z / scale);
+        return {0.0f, 0.0f, -1.0f};
     }
 
-    float3 operator-()
+    float3 operator+(float3 const& other) const
     {
-        return float3(-x, -y, -z);
+        return {x + other.x, y + other.y, z + other.z};
+    }
+
+    float3 operator-(float3 const& other) const
+    {
+        return {x - other.x, y - other.y, z - other.z};
+    }
+
+    float3 operator*(float3 const& other) const
+    {
+        return {x * other.x, y * other.y, z * other.z};
+    }
+
+    float3 operator*(const float scale) const
+    {
+        return {x * scale, y * scale, z * scale};
+    }
+
+    float3 operator/(float3 const& other) const
+    {
+        return {x / other.x, y / other.y, z / other.z};
+    }
+
+    float3 operator/(const float scale) const
+    {
+        return {x / scale, y / scale, z / scale};
+    }
+
+    float3 operator-() const
+    {
+        return {-x, -y, -z};
     }
 
     float3 operator+=(float3 const& other)
@@ -149,17 +182,17 @@ public:
         return *this;
     }
 
-    bool operator==(float3 const& other)
+    bool operator==(float3 const& other) const
     {
         return x == other.x && y == other.y && x == other.z;
     }
 
-    bool operator!=(float3 const& other)
+    bool operator!=(float3 const& other) const
     {
         return x != other.x || y != other.y || x != other.z;
     }
 
-    void print()
+    void print() const
     {
         printf("(%f, %f, %f)\n", x, y, z);
     }
@@ -192,7 +225,7 @@ public:
             return x;
         case 1:
             return y;
-        case 2:
+        default:
             return z;
         }
     }

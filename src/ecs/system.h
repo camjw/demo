@@ -3,9 +3,9 @@
 
 #include <set>
 
-#include <demo/ecs/ecs.h>
-#include <demo/input_processor.h>
-#include <demo/timer.h>
+#include <ecs/ecs.h>
+#include <input_processor.h>
+#include <timer.h>
 
 class World;
 

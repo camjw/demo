@@ -3,8 +3,8 @@
 
 #include <typeinfo>
 
-#include <demo/ecs/component_array.h>
-#include <demo/ecs/ecs.h>
+#include <ecs/component_array.h>
+#include <ecs/ecs.h>
 
 class ComponentManager
 {
@@ -64,6 +64,11 @@ public:
 
             component->on_entity_destroyed(entity);
         }
+    }
+
+    bool has_component_registered(const char* component_name)
+    {
+        return component_types.find(component_name) != component_types.end();
     }
 
 private:

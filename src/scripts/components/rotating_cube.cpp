@@ -1,5 +1,5 @@
 #include "rotating_cube.h"
-#include <demo/ecs/world.h>
+#include <ecs/world.h>
 
 void RotatingCubeSystem::update(Time time, InputState* input)
 {
@@ -7,7 +7,7 @@ void RotatingCubeSystem::update(Time time, InputState* input)
 
     for (Entity const& entity: entities)
     {
-        TransformComponent transformComponent = world->get_component<TransformComponent>(entity);
+        Transform transformComponent = world->get_component<Transform>(entity);
 
         transformComponent.rotation *= cube_rotation;
     }

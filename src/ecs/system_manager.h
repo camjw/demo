@@ -4,37 +4,37 @@
 #include <typeinfo>
 #include <unordered_map>
 
-#include <demo/ecs/ecs.h>
-#include <demo/ecs/system.h>
+#include <ecs/ecs.h>
+#include <ecs/system.h>
 
-#include <demo/input_processor.h>
-#include <demo/timer.h>
+#include <input_processor.h>
+#include <timer.h>
 
 class SystemManager
 {
 public:
     template <typename T>
-    std::shared_ptr<T> register_system(World* coordinator)
+    std::shared_ptr<T> register_system(World* world)
     {
         const char* typeName = typeid(T).name();
 
         assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
 
         // Create a pointer to the system and return it so it can be used externally
-        auto system_ptr = std::make_shared<T>(std::move(T(coordinator)));
+        auto system_ptr = std::make_shared<T>(std::move(T(world)));
         systems.insert({ typeName, system_ptr });
         return system_ptr;
     }
 
     template <typename T>
-    std::shared_ptr<T> register_system(const T& system, World* coordinator)
+    std::shared_ptr<T> register_system(const T& system, World* world)
     {
         const char* typeName = typeid(T).name();
 
         assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
 
         // Create a pointer to the system and return it so it can be used externally
-        system.set_coordinator(coordinator);
+        system.set_world(world);
         auto system_ptr = std::make_shared<T>(std::move(system));
         systems.insert({ typeName, system_ptr });
         return system_ptr;

@@ -6,13 +6,13 @@
 #include <rendering/shader.h>
 #include <rendering/texture.h>
 
-#include <demo/input_processor.h>
-#include <demo/scene/camera_component.h>
-#include <demo/timer.h>
-#include <demo/window.h>
+#include <ecs/components/camera_component.h>
+#include <input_processor.h>
+#include <timer.h>
+#include <window.h>
 
-#include <demo/ecs/ecs.h>
-#include <demo/ecs/world.h>
+#include <ecs/ecs.h>
+#include <ecs/world.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,7 +21,7 @@
 #include <stb_image.h>
 
 #include <context/demo_context.h>
-#include <demo/scene/scene_manager.h>
+#include <scene/scene_manager.h>
 #include <vector>
 
 class Engine
@@ -43,7 +43,7 @@ private:
     Window* window = nullptr;
     InputProcessor* input = nullptr;
 
-    std::shared_ptr<World> coordinator;
+    std::shared_ptr<World> world;
     std::shared_ptr<DemoContext> context;
 
     std::unique_ptr<SceneManager> scene_manager;

@@ -1,10 +1,10 @@
 #include "first_scene.h"
-#include <demo/maths/transform.h>
-#include <demo/utils/opengl_helpers.h>
+#include <maths/transform.h>
 #include <scripts/components/rotating_cube.h>
+#include <utils/opengl_helpers.h>
 
-FirstScene::FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> coordinator)
-    : Scene(context, coordinator)
+FirstScene::FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id)
+    : Scene(context, world, scene_id)
 {
 }
 
@@ -20,27 +20,27 @@ void FirstScene::on_create()
     ShaderID shader_id = context->get_shader_repository()->get_shader_id("simple");
     TextureID texture_id = context->get_texture_repository()->get_texture_id("uv_test");
 
-    coordinator->register_component<RotatingCubeComponent>();
-    coordinator->register_system<RotatingCubeSystem>();
+    world->register_component<RotatingCubeComponent>();
+    world->register_system<RotatingCubeSystem>();
 
     Signature rotating_cube_signature;
-    rotating_cube_signature.set(coordinator->get_component_type<TransformComponent>());
-    rotating_cube_signature.set(coordinator->get_component_type<RotatingCubeComponent>());
-    coordinator->set_system_signature<RotatingCubeSystem>(rotating_cube_signature);
+    rotating_cube_signature.set(world->get_component_type<Transform>());
+    rotating_cube_signature.set(world->get_component_type<RotatingCubeComponent>());
+    world->set_system_signature<RotatingCubeSystem>(rotating_cube_signature);
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 1; i++)
     {
-        Entity entity = coordinator->create_entity();
-        coordinator->add_component(entity,
-            TransformComponent {
-                .position = float3(0, 0, 0),
-                .scale = float3(0.1),
-            });
+        Entity entity = world->create_entity()
+                            ->with(Transform {
+                                .position = float3(0, 0, 0),
+                                .scale = float3(0.1),
+                            })
+                            ->with(TextureComponent { .id = texture_id })
+                            ->with(MeshComponent { .id = cube_id })
+                            ->with(ShaderComponent { .id = shader_id })
+                            ->build();
 
-        coordinator->add_component(entity, TextureComponent { .id = texture_id });
-        coordinator->add_component(entity, MeshComponent { .id = cube_id });
-        coordinator->add_component(entity, ShaderComponent { .id = shader_id });
-        coordinator->add_component(entity, RotatingCubeComponent {});
+        world->add_component(entity, RotatingCubeComponent {});
     }
 }
 
@@ -65,25 +65,18 @@ void FirstScene::load_meshes()
 
 void FirstScene::build_camera()
 {
-    camera = coordinator->create_entity();
-    coordinator->add_component(camera,
-        CameraComponent {
-            .up = float3(0.0, 1.0, 0.0),
-            .forward = float3(0.0, 0.0, -1.0),
-        });
-
-    coordinator->add_component(camera,
-        TransformComponent {
-            .position = float3(1.0, -0.5, 10.0),
-        });
+    camera = world->create_entity()
+                 ->with(CameraComponent {
+                     .up = float3(0.0, 1.0, 0.0),
+                     .forward = float3(0.0, 0.0, -1.0),
+                 })
+                 ->with(Transform {
+                     .position = float3(0.0, 0.0, 10.0),
+                 })
+                 ->build();
 }
 
 void FirstScene::on_destroy()
 {
     // Dump all of those here
-}
-
-Entity FirstScene::get_active_camera()
-{
-    return camera;
 }

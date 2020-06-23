@@ -107,7 +107,7 @@ demo/timer.h
 -
 demo/window.h
 -
-demo/ecs/coordinator.h
+demo/ecs/world.h
 -
 demo/ecs/ecs.h
 -

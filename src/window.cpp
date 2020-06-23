@@ -1,6 +1,6 @@
-#include <demo/input_processor.h>
-#include <demo/utils/opengl_helpers.h>
-#include <demo/window.h>
+#include <utils/opengl_helpers.h>
+#include <input_processor.h>
+#include <window.h>
 
 Window::Window(const std::string& window_name)
     : width(800)

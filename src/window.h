@@ -10,8 +10,8 @@
 #include <cstdio>
 #include <string>
 
-#include <demo/maths/float2.h>
-#include <demo/timer.h>
+#include <maths/float2.h>
+#include <timer.h>
 
 class InputState;
 

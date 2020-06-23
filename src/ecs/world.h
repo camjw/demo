@@ -1,10 +1,11 @@
-#ifndef DEMO_ECS_COORDINATOR_HPP
-#define DEMO_ECS_COORDINATOR_HPP
+#ifndef DEMO_ECS_WORLD_HPP
+#define DEMO_ECS_WORLD_HPP
 
-#include <demo/ecs/component_manager.h>
-#include <demo/ecs/ecs.h>
-#include <demo/ecs/entity_manager.h>
-#include <demo/ecs/system_manager.h>
+#include "entity_builder.h"
+#include <ecs/component_manager.h>
+#include <ecs/ecs.h>
+#include <ecs/entity_manager.h>
+#include <ecs/system_manager.h>
 
 class World
 {
@@ -18,9 +19,14 @@ public:
     }
 
     // Entity methods
-    Entity create_entity()
+    Entity create_empty_entity()
     {
         return entity_manager->create_entity();
+    }
+
+    EntityBuilder* create_entity()
+    {
+        return new EntityBuilder();
     }
 
     void destroy_entity(Entity entity)
@@ -109,6 +115,17 @@ public:
     {
         system_manager->late_update_systems(time, input);
     }
+
+    std::vector<Entity> get_entities_with_signature(Signature signature)
+    {
+        return entity_manager->get_entities_with_signature(signature);
+    }
+
+    bool has_component_registered(const char* component_name)
+    {
+        return component_manager->has_component_registered(component_name);
+    }
+
 
 private:
     std::unique_ptr<ComponentManager> component_manager;

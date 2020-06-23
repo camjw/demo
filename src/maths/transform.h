@@ -1,11 +1,11 @@
 #ifndef DEMO_TRANSFORM_H
 #define DEMO_TRANSFORM_H
 
-#include <demo/maths/float3.h>
-#include <demo/maths/quaternion.h>
 #include <glm/glm.hpp>
+#include <maths/float3.h>
+#include <maths/quaternion.h>
 
-struct TransformComponent
+struct Transform
 {
     float3 position;
     quaternion rotation;
@@ -14,6 +14,15 @@ struct TransformComponent
     glm::mat4 get_model_matrix()
     {
         return glm::mat4(1.0f);
+    }
+
+    static Transform identity()
+    {
+        return Transform {
+            .position = float3::zero(),
+            .rotation = quaternion::identity(),
+            .scale = float3::one(),
+        };
     }
 };
 

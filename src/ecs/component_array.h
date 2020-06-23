@@ -1,7 +1,7 @@
 #ifndef DEMO_ECS_COMPONENT_ARRAY_HPP
 #define DEMO_ECS_COMPONENT_ARRAY_HPP
 
-#include <demo/ecs/ecs.h>
+#include <ecs/ecs.h>
 
 #include <unordered_map>
 

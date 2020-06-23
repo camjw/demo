@@ -1,5 +1,5 @@
-#include <demo/engine.h>
-#include <demo/timer.h>
+#include <engine.h>
+#include <timer.h>
 
 #include <chrono>
 #include <cstdio>

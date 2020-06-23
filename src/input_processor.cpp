@@ -1,4 +1,4 @@
-#include <demo/input_processor.h>
+#include <input_processor.h>
 
 InputProcessor::InputProcessor(Window* window)
     : this_frame_mouse(0.0f, 0.0f)

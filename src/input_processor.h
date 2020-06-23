@@ -1,10 +1,10 @@
 #ifndef DEMO_INPUT_PROCESSOR_HPP
 #define DEMO_INPUT_PROCESSOR_HPP
 
-#include <demo/bitmask.h>
-#include <demo/keys.h>
-#include <demo/maths/float2.h>
-#include <demo/window.h>
+#include <bitmask.h>
+#include <maths/float2.h>
+#include <keys.h>
+#include <window.h>
 
 #include <unordered_map>
 
