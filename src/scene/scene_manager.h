@@ -1,16 +1,19 @@
 #ifndef DEMO_SCENE_MANAGER_H
 #define DEMO_SCENE_MANAGER_H
 
-#include <demo/ecs/world.h>
-#include <demo/input_processor.h>
-#include <demo/timer.h>
+#include "scene.h"
+#include "scene_graph.h"
+#include "scene_id.h"
+#include <context/demo_context.h>
+#include <ecs/world.h>
+#include <input_processor.h>
 #include <memory>
-#include <scripts/scenes/first_scene.h>
+#include <timer.h>
 
 class SceneManager
 {
 public:
-    SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<World> coordinator);
+    SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world);
 
     void update(Time time, InputState* input);
     void late_update(Time time, InputState* input);
@@ -18,10 +21,13 @@ public:
     Scene* get_current_scene();
 
 private:
-    Scene* first_scene;
+    SceneID next_scene_id = 0;
+    SceneID current_scene_id = 0;
+
+    std::unordered_map<SceneID, Scene*> scenes;
 
     std::shared_ptr<DemoContext> context;
-    std::shared_ptr<World> coordinator;
+    std::shared_ptr<World> world;
 };
 
 #endif // DEMO_SCENE_LOADER_H

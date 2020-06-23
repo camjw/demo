@@ -1,15 +1,15 @@
-#include <demo/ecs/world.h>
-#include <demo/maths/maths.h>
-#include <demo/maths/transform.h>
-#include <demo/scene/camera_component.h>
-#include <demo/scene/orbit_camera_system.h>
+#include <ecs/components/camera_component.h>
+#include <ecs/world.h>
+#include <maths/maths.h>
+#include <maths/transform.h>
+#include <scene/orbit_camera_system.h>
 
 void OrbitCameraSystem::update(Time time, InputState* input)
 {
     for (Entity const& entity : entities)
     {
         CameraComponent& camera = world->get_component<CameraComponent>(entity);
-        TransformComponent& transform = world->get_component<TransformComponent>(entity);
+        Transform& transform = world->get_component<Transform>(entity);
 
         process_keyboard(time, input, camera, transform);
         process_mouse_movement(time, input, camera, transform);
@@ -19,7 +19,7 @@ void OrbitCameraSystem::update(Time time, InputState* input)
 
 
 void OrbitCameraSystem::process_keyboard(Time time, InputState* input,
-    CameraComponent& camera, TransformComponent& transform)
+    CameraComponent& camera, Transform& transform)
 {
     float velocity = camera.movement_speed * time.delta_time;
     if (input->is_key_pressed(Key::Up))
@@ -60,7 +60,7 @@ void OrbitCameraSystem::process_keyboard(Time time, InputState* input,
 }
 
 void OrbitCameraSystem::process_mouse_movement(Time time, InputState* input,
-    CameraComponent& camera, TransformComponent& transform)
+    CameraComponent& camera, Transform& transform)
 {
     if (!(input->is_key_pressed(Key::LeftMouseButton) && input->is_key_pressed(Key::LeftShift)))
     {
@@ -79,7 +79,7 @@ void OrbitCameraSystem::process_mouse_movement(Time time, InputState* input,
 }
 
 void OrbitCameraSystem::update_camera_vectors(CameraComponent& camera,
-    TransformComponent& transform)
+    Transform& transform)
 {
     EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();
     camera_euler_angles.pitch = maths::mod(camera_euler_angles.pitch, 360.0f);

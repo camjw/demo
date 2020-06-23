@@ -1,4 +1,4 @@
-#include <demo/scene/resource_loader.h>
+#include <scene/resource_loader.h>
 
 MeshID ResourceLoader::get_or_create_mesh(const std::string& filename)
 {

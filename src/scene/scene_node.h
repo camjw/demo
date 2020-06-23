@@ -1,7 +1,7 @@
 #ifndef DEMO_SCENE_NODE_H
 #define DEMO_SCENE_NODE_H
 
-#include <demo/ecs/ecs.h>
+#include <ecs/ecs.h>
 #include <rendering/mesh.h>
 #include <vector>
 
@@ -20,9 +20,9 @@ public:
         return parent_node->get_root_node();
     };
 
-protected:
-    std::vector<SceneNode*> child_nodes;
+    Entity entity;
 
+    std::vector<SceneNode*> child_nodes;
 };
 
 #endif // DEMO_SCENE_NODE_H
