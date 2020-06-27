@@ -9,7 +9,9 @@
 // Just a label really
 struct RotatingCubeComponent
 {
-    float rotation_speed;
+    // speed is basically in radians per millisecond
+    float speed = 0.001f;
+    float3 axis = float3(1, 1, 1);
 };
 
 class RotatingCubeSystem : public System

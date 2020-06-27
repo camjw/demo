@@ -3,17 +3,15 @@
 
 void RotatingCubeSystem::update(Time time, InputState* input)
 {
-    quaternion cube_rotation = quaternion::angle_axis(time.delta_time, float3(0, 1, 0));
 
     for (Entity const& entity : entities)
     {
-        Transform* transformComponent = &world->get_component<Transform>(entity);
+        Transform* transform = &world->get_component<Transform>(entity);
+        RotatingCubeComponent rotating_cube = world->get_component<RotatingCubeComponent>(entity);
 
-        transformComponent->rotation *= cube_rotation;
-        transformComponent->rotation.normalise();
+        quaternion cube_rotation = quaternion::angle_axis(rotating_cube.speed * time.delta_time, rotating_cube.axis.normalise());
 
-        printf("transform quaternion: %s\n", transformComponent->rotation.to_string().c_str());
-        printf("cube rotation: %s\n", cube_rotation.to_string().c_str());
-        printf("quaternion norm %f\n", transformComponent->rotation.length());
+        transform->rotation *= cube_rotation;
+        transform->rotation.normalise();
     }
 }

@@ -45,7 +45,7 @@ public:
 
     float length_squared()
     {
-        return w * w - x * x - y * y - z * z;
+        return w * w + x * x + y * y + z * z;
     }
 
     float length()
@@ -156,7 +156,7 @@ public:
 
     glm::quat to_glm() const
     {
-        return glm::quat(w, x, y, z);
+        return glm::quat(x, y, z, w);
     }
 
     float w, x, y, z;
