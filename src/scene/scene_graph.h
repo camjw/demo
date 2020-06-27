@@ -3,6 +3,7 @@
 
 #include "scene_node.h"
 #include <ecs/entity_builder.h>
+#include <ecs/world.h>
 
 class SceneGraph
 {
@@ -13,9 +14,9 @@ public:
     {
         // Set root node to have entity
         m_root_node->set_entity(
-            world->create_entity()
-                ->with(Transform {})
-                ->build());
+            m_world->create_entity()
+                .with(Transform {})
+                .build());
     }
 
     SceneNode* find_entity_in_graph(Entity entity)
@@ -23,12 +24,15 @@ public:
         return m_root_node->find_entity(entity);
     }
 
-    inline std::shared_ptr<SceneNode> get_root_node()
+    inline std::shared_ptr<SceneNode> root()
     {
         return m_root_node;
     }
 
-    EntityBuilder with_entity();
+    inline SceneNode* add_child()
+    {
+        return m_root_node->add_child();
+    }
 
 private:
     std::shared_ptr<SceneNode> m_root_node;

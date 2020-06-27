@@ -131,6 +131,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named assets
+
+# Build rule for target.
+assets: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 assets
+.PHONY : assets
+
+# fast build rule for target.
+assets/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assets.dir/build.make CMakeFiles/assets.dir/build
+.PHONY : assets/fast
+
+#=============================================================================
 # Target rules for targets named GLAD
 
 # Build rule for target.
@@ -155,6 +168,195 @@ demo: cmake_check_build_system
 demo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/build
 .PHONY : demo/fast
+
+lib/imgui/bindings/imgui_impl_glfw.o: lib/imgui/bindings/imgui_impl_glfw.cpp.o
+
+.PHONY : lib/imgui/bindings/imgui_impl_glfw.o
+
+# target to build an object file
+lib/imgui/bindings/imgui_impl_glfw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/bindings/imgui_impl_glfw.cpp.o
+.PHONY : lib/imgui/bindings/imgui_impl_glfw.cpp.o
+
+lib/imgui/bindings/imgui_impl_glfw.i: lib/imgui/bindings/imgui_impl_glfw.cpp.i
+
+.PHONY : lib/imgui/bindings/imgui_impl_glfw.i
+
+# target to preprocess a source file
+lib/imgui/bindings/imgui_impl_glfw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/bindings/imgui_impl_glfw.cpp.i
+.PHONY : lib/imgui/bindings/imgui_impl_glfw.cpp.i
+
+lib/imgui/bindings/imgui_impl_glfw.s: lib/imgui/bindings/imgui_impl_glfw.cpp.s
+
+.PHONY : lib/imgui/bindings/imgui_impl_glfw.s
+
+# target to generate assembly for a file
+lib/imgui/bindings/imgui_impl_glfw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/bindings/imgui_impl_glfw.cpp.s
+.PHONY : lib/imgui/bindings/imgui_impl_glfw.cpp.s
+
+lib/imgui/bindings/imgui_impl_opengl3.o: lib/imgui/bindings/imgui_impl_opengl3.cpp.o
+
+.PHONY : lib/imgui/bindings/imgui_impl_opengl3.o
+
+# target to build an object file
+lib/imgui/bindings/imgui_impl_opengl3.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/bindings/imgui_impl_opengl3.cpp.o
+.PHONY : lib/imgui/bindings/imgui_impl_opengl3.cpp.o
+
+lib/imgui/bindings/imgui_impl_opengl3.i: lib/imgui/bindings/imgui_impl_opengl3.cpp.i
+
+.PHONY : lib/imgui/bindings/imgui_impl_opengl3.i
+
+# target to preprocess a source file
+lib/imgui/bindings/imgui_impl_opengl3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/bindings/imgui_impl_opengl3.cpp.i
+.PHONY : lib/imgui/bindings/imgui_impl_opengl3.cpp.i
+
+lib/imgui/bindings/imgui_impl_opengl3.s: lib/imgui/bindings/imgui_impl_opengl3.cpp.s
+
+.PHONY : lib/imgui/bindings/imgui_impl_opengl3.s
+
+# target to generate assembly for a file
+lib/imgui/bindings/imgui_impl_opengl3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/bindings/imgui_impl_opengl3.cpp.s
+.PHONY : lib/imgui/bindings/imgui_impl_opengl3.cpp.s
+
+lib/imgui/imgui.o: lib/imgui/imgui.cpp.o
+
+.PHONY : lib/imgui/imgui.o
+
+# target to build an object file
+lib/imgui/imgui.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui.cpp.o
+.PHONY : lib/imgui/imgui.cpp.o
+
+lib/imgui/imgui.i: lib/imgui/imgui.cpp.i
+
+.PHONY : lib/imgui/imgui.i
+
+# target to preprocess a source file
+lib/imgui/imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui.cpp.i
+.PHONY : lib/imgui/imgui.cpp.i
+
+lib/imgui/imgui.s: lib/imgui/imgui.cpp.s
+
+.PHONY : lib/imgui/imgui.s
+
+# target to generate assembly for a file
+lib/imgui/imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui.cpp.s
+.PHONY : lib/imgui/imgui.cpp.s
+
+lib/imgui/imgui_demo.o: lib/imgui/imgui_demo.cpp.o
+
+.PHONY : lib/imgui/imgui_demo.o
+
+# target to build an object file
+lib/imgui/imgui_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_demo.cpp.o
+.PHONY : lib/imgui/imgui_demo.cpp.o
+
+lib/imgui/imgui_demo.i: lib/imgui/imgui_demo.cpp.i
+
+.PHONY : lib/imgui/imgui_demo.i
+
+# target to preprocess a source file
+lib/imgui/imgui_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_demo.cpp.i
+.PHONY : lib/imgui/imgui_demo.cpp.i
+
+lib/imgui/imgui_demo.s: lib/imgui/imgui_demo.cpp.s
+
+.PHONY : lib/imgui/imgui_demo.s
+
+# target to generate assembly for a file
+lib/imgui/imgui_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_demo.cpp.s
+.PHONY : lib/imgui/imgui_demo.cpp.s
+
+lib/imgui/imgui_draw.o: lib/imgui/imgui_draw.cpp.o
+
+.PHONY : lib/imgui/imgui_draw.o
+
+# target to build an object file
+lib/imgui/imgui_draw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_draw.cpp.o
+.PHONY : lib/imgui/imgui_draw.cpp.o
+
+lib/imgui/imgui_draw.i: lib/imgui/imgui_draw.cpp.i
+
+.PHONY : lib/imgui/imgui_draw.i
+
+# target to preprocess a source file
+lib/imgui/imgui_draw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_draw.cpp.i
+.PHONY : lib/imgui/imgui_draw.cpp.i
+
+lib/imgui/imgui_draw.s: lib/imgui/imgui_draw.cpp.s
+
+.PHONY : lib/imgui/imgui_draw.s
+
+# target to generate assembly for a file
+lib/imgui/imgui_draw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_draw.cpp.s
+.PHONY : lib/imgui/imgui_draw.cpp.s
+
+lib/imgui/imgui_widgets.o: lib/imgui/imgui_widgets.cpp.o
+
+.PHONY : lib/imgui/imgui_widgets.o
+
+# target to build an object file
+lib/imgui/imgui_widgets.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_widgets.cpp.o
+.PHONY : lib/imgui/imgui_widgets.cpp.o
+
+lib/imgui/imgui_widgets.i: lib/imgui/imgui_widgets.cpp.i
+
+.PHONY : lib/imgui/imgui_widgets.i
+
+# target to preprocess a source file
+lib/imgui/imgui_widgets.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_widgets.cpp.i
+.PHONY : lib/imgui/imgui_widgets.cpp.i
+
+lib/imgui/imgui_widgets.s: lib/imgui/imgui_widgets.cpp.s
+
+.PHONY : lib/imgui/imgui_widgets.s
+
+# target to generate assembly for a file
+lib/imgui/imgui_widgets.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/imgui/imgui_widgets.cpp.s
+.PHONY : lib/imgui/imgui_widgets.cpp.s
+
+lib/stb_image.o: lib/stb_image.cpp.o
+
+.PHONY : lib/stb_image.o
+
+# target to build an object file
+lib/stb_image.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/stb_image.cpp.o
+.PHONY : lib/stb_image.cpp.o
+
+lib/stb_image.i: lib/stb_image.cpp.i
+
+.PHONY : lib/stb_image.i
+
+# target to preprocess a source file
+lib/stb_image.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/stb_image.cpp.i
+.PHONY : lib/stb_image.cpp.i
+
+lib/stb_image.s: lib/stb_image.cpp.s
+
+.PHONY : lib/stb_image.s
+
+# target to generate assembly for a file
+lib/stb_image.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/lib/stb_image.cpp.s
+.PHONY : lib/stb_image.cpp.s
 
 src/bitmask.o: src/bitmask.cpp.o
 
@@ -183,32 +385,140 @@ src/bitmask.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/bitmask.cpp.s
 .PHONY : src/bitmask.cpp.s
 
-src/camera.o: src/camera.cpp.o
+src/context/demo_context.o: src/context/demo_context.cpp.o
 
-.PHONY : src/camera.o
+.PHONY : src/context/demo_context.o
 
 # target to build an object file
-src/camera.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/camera.cpp.o
-.PHONY : src/camera.cpp.o
+src/context/demo_context.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/demo_context.cpp.o
+.PHONY : src/context/demo_context.cpp.o
 
-src/camera.i: src/camera.cpp.i
+src/context/demo_context.i: src/context/demo_context.cpp.i
 
-.PHONY : src/camera.i
+.PHONY : src/context/demo_context.i
 
 # target to preprocess a source file
-src/camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/camera.cpp.i
-.PHONY : src/camera.cpp.i
+src/context/demo_context.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/demo_context.cpp.i
+.PHONY : src/context/demo_context.cpp.i
 
-src/camera.s: src/camera.cpp.s
+src/context/demo_context.s: src/context/demo_context.cpp.s
 
-.PHONY : src/camera.s
+.PHONY : src/context/demo_context.s
 
 # target to generate assembly for a file
-src/camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/camera.cpp.s
-.PHONY : src/camera.cpp.s
+src/context/demo_context.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/demo_context.cpp.s
+.PHONY : src/context/demo_context.cpp.s
+
+src/context/mesh_repository.o: src/context/mesh_repository.cpp.o
+
+.PHONY : src/context/mesh_repository.o
+
+# target to build an object file
+src/context/mesh_repository.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/mesh_repository.cpp.o
+.PHONY : src/context/mesh_repository.cpp.o
+
+src/context/mesh_repository.i: src/context/mesh_repository.cpp.i
+
+.PHONY : src/context/mesh_repository.i
+
+# target to preprocess a source file
+src/context/mesh_repository.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/mesh_repository.cpp.i
+.PHONY : src/context/mesh_repository.cpp.i
+
+src/context/mesh_repository.s: src/context/mesh_repository.cpp.s
+
+.PHONY : src/context/mesh_repository.s
+
+# target to generate assembly for a file
+src/context/mesh_repository.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/mesh_repository.cpp.s
+.PHONY : src/context/mesh_repository.cpp.s
+
+src/context/shader_repository.o: src/context/shader_repository.cpp.o
+
+.PHONY : src/context/shader_repository.o
+
+# target to build an object file
+src/context/shader_repository.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/shader_repository.cpp.o
+.PHONY : src/context/shader_repository.cpp.o
+
+src/context/shader_repository.i: src/context/shader_repository.cpp.i
+
+.PHONY : src/context/shader_repository.i
+
+# target to preprocess a source file
+src/context/shader_repository.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/shader_repository.cpp.i
+.PHONY : src/context/shader_repository.cpp.i
+
+src/context/shader_repository.s: src/context/shader_repository.cpp.s
+
+.PHONY : src/context/shader_repository.s
+
+# target to generate assembly for a file
+src/context/shader_repository.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/shader_repository.cpp.s
+.PHONY : src/context/shader_repository.cpp.s
+
+src/context/texture_repository.o: src/context/texture_repository.cpp.o
+
+.PHONY : src/context/texture_repository.o
+
+# target to build an object file
+src/context/texture_repository.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/texture_repository.cpp.o
+.PHONY : src/context/texture_repository.cpp.o
+
+src/context/texture_repository.i: src/context/texture_repository.cpp.i
+
+.PHONY : src/context/texture_repository.i
+
+# target to preprocess a source file
+src/context/texture_repository.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/texture_repository.cpp.i
+.PHONY : src/context/texture_repository.cpp.i
+
+src/context/texture_repository.s: src/context/texture_repository.cpp.s
+
+.PHONY : src/context/texture_repository.s
+
+# target to generate assembly for a file
+src/context/texture_repository.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/context/texture_repository.cpp.s
+.PHONY : src/context/texture_repository.cpp.s
+
+src/ecs/entity_builder.o: src/ecs/entity_builder.cpp.o
+
+.PHONY : src/ecs/entity_builder.o
+
+# target to build an object file
+src/ecs/entity_builder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/ecs/entity_builder.cpp.o
+.PHONY : src/ecs/entity_builder.cpp.o
+
+src/ecs/entity_builder.i: src/ecs/entity_builder.cpp.i
+
+.PHONY : src/ecs/entity_builder.i
+
+# target to preprocess a source file
+src/ecs/entity_builder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/ecs/entity_builder.cpp.i
+.PHONY : src/ecs/entity_builder.cpp.i
+
+src/ecs/entity_builder.s: src/ecs/entity_builder.cpp.s
+
+.PHONY : src/ecs/entity_builder.s
+
+# target to generate assembly for a file
+src/ecs/entity_builder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/ecs/entity_builder.cpp.s
+.PHONY : src/ecs/entity_builder.cpp.s
 
 src/engine.o: src/engine.cpp.o
 
@@ -263,168 +573,6 @@ src/glad.s: src/glad.c.s
 src/glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GLAD.dir/build.make CMakeFiles/GLAD.dir/src/glad.c.s
 .PHONY : src/glad.c.s
-
-src/imgui/bindings/imgui_impl_glfw.o: src/imgui/bindings/imgui_impl_glfw.cpp.o
-
-.PHONY : src/imgui/bindings/imgui_impl_glfw.o
-
-# target to build an object file
-src/imgui/bindings/imgui_impl_glfw.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/bindings/imgui_impl_glfw.cpp.o
-.PHONY : src/imgui/bindings/imgui_impl_glfw.cpp.o
-
-src/imgui/bindings/imgui_impl_glfw.i: src/imgui/bindings/imgui_impl_glfw.cpp.i
-
-.PHONY : src/imgui/bindings/imgui_impl_glfw.i
-
-# target to preprocess a source file
-src/imgui/bindings/imgui_impl_glfw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/bindings/imgui_impl_glfw.cpp.i
-.PHONY : src/imgui/bindings/imgui_impl_glfw.cpp.i
-
-src/imgui/bindings/imgui_impl_glfw.s: src/imgui/bindings/imgui_impl_glfw.cpp.s
-
-.PHONY : src/imgui/bindings/imgui_impl_glfw.s
-
-# target to generate assembly for a file
-src/imgui/bindings/imgui_impl_glfw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/bindings/imgui_impl_glfw.cpp.s
-.PHONY : src/imgui/bindings/imgui_impl_glfw.cpp.s
-
-src/imgui/bindings/imgui_impl_opengl3.o: src/imgui/bindings/imgui_impl_opengl3.cpp.o
-
-.PHONY : src/imgui/bindings/imgui_impl_opengl3.o
-
-# target to build an object file
-src/imgui/bindings/imgui_impl_opengl3.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/bindings/imgui_impl_opengl3.cpp.o
-.PHONY : src/imgui/bindings/imgui_impl_opengl3.cpp.o
-
-src/imgui/bindings/imgui_impl_opengl3.i: src/imgui/bindings/imgui_impl_opengl3.cpp.i
-
-.PHONY : src/imgui/bindings/imgui_impl_opengl3.i
-
-# target to preprocess a source file
-src/imgui/bindings/imgui_impl_opengl3.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/bindings/imgui_impl_opengl3.cpp.i
-.PHONY : src/imgui/bindings/imgui_impl_opengl3.cpp.i
-
-src/imgui/bindings/imgui_impl_opengl3.s: src/imgui/bindings/imgui_impl_opengl3.cpp.s
-
-.PHONY : src/imgui/bindings/imgui_impl_opengl3.s
-
-# target to generate assembly for a file
-src/imgui/bindings/imgui_impl_opengl3.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/bindings/imgui_impl_opengl3.cpp.s
-.PHONY : src/imgui/bindings/imgui_impl_opengl3.cpp.s
-
-src/imgui/imgui.o: src/imgui/imgui.cpp.o
-
-.PHONY : src/imgui/imgui.o
-
-# target to build an object file
-src/imgui/imgui.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui.cpp.o
-.PHONY : src/imgui/imgui.cpp.o
-
-src/imgui/imgui.i: src/imgui/imgui.cpp.i
-
-.PHONY : src/imgui/imgui.i
-
-# target to preprocess a source file
-src/imgui/imgui.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui.cpp.i
-.PHONY : src/imgui/imgui.cpp.i
-
-src/imgui/imgui.s: src/imgui/imgui.cpp.s
-
-.PHONY : src/imgui/imgui.s
-
-# target to generate assembly for a file
-src/imgui/imgui.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui.cpp.s
-.PHONY : src/imgui/imgui.cpp.s
-
-src/imgui/imgui_demo.o: src/imgui/imgui_demo.cpp.o
-
-.PHONY : src/imgui/imgui_demo.o
-
-# target to build an object file
-src/imgui/imgui_demo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_demo.cpp.o
-.PHONY : src/imgui/imgui_demo.cpp.o
-
-src/imgui/imgui_demo.i: src/imgui/imgui_demo.cpp.i
-
-.PHONY : src/imgui/imgui_demo.i
-
-# target to preprocess a source file
-src/imgui/imgui_demo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_demo.cpp.i
-.PHONY : src/imgui/imgui_demo.cpp.i
-
-src/imgui/imgui_demo.s: src/imgui/imgui_demo.cpp.s
-
-.PHONY : src/imgui/imgui_demo.s
-
-# target to generate assembly for a file
-src/imgui/imgui_demo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_demo.cpp.s
-.PHONY : src/imgui/imgui_demo.cpp.s
-
-src/imgui/imgui_draw.o: src/imgui/imgui_draw.cpp.o
-
-.PHONY : src/imgui/imgui_draw.o
-
-# target to build an object file
-src/imgui/imgui_draw.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_draw.cpp.o
-.PHONY : src/imgui/imgui_draw.cpp.o
-
-src/imgui/imgui_draw.i: src/imgui/imgui_draw.cpp.i
-
-.PHONY : src/imgui/imgui_draw.i
-
-# target to preprocess a source file
-src/imgui/imgui_draw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_draw.cpp.i
-.PHONY : src/imgui/imgui_draw.cpp.i
-
-src/imgui/imgui_draw.s: src/imgui/imgui_draw.cpp.s
-
-.PHONY : src/imgui/imgui_draw.s
-
-# target to generate assembly for a file
-src/imgui/imgui_draw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_draw.cpp.s
-.PHONY : src/imgui/imgui_draw.cpp.s
-
-src/imgui/imgui_widgets.o: src/imgui/imgui_widgets.cpp.o
-
-.PHONY : src/imgui/imgui_widgets.o
-
-# target to build an object file
-src/imgui/imgui_widgets.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_widgets.cpp.o
-.PHONY : src/imgui/imgui_widgets.cpp.o
-
-src/imgui/imgui_widgets.i: src/imgui/imgui_widgets.cpp.i
-
-.PHONY : src/imgui/imgui_widgets.i
-
-# target to preprocess a source file
-src/imgui/imgui_widgets.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_widgets.cpp.i
-.PHONY : src/imgui/imgui_widgets.cpp.i
-
-src/imgui/imgui_widgets.s: src/imgui/imgui_widgets.cpp.s
-
-.PHONY : src/imgui/imgui_widgets.s
-
-# target to generate assembly for a file
-src/imgui/imgui_widgets.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/imgui/imgui_widgets.cpp.s
-.PHONY : src/imgui/imgui_widgets.cpp.s
 
 src/input_processor.o: src/input_processor.cpp.o
 
@@ -534,33 +682,6 @@ src/rendering/mesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/mesh.cpp.s
 .PHONY : src/rendering/mesh.cpp.s
 
-src/rendering/mesh_repository.o: src/rendering/mesh_repository.cpp.o
-
-.PHONY : src/rendering/mesh_repository.o
-
-# target to build an object file
-src/rendering/mesh_repository.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.o
-.PHONY : src/rendering/mesh_repository.cpp.o
-
-src/rendering/mesh_repository.i: src/rendering/mesh_repository.cpp.i
-
-.PHONY : src/rendering/mesh_repository.i
-
-# target to preprocess a source file
-src/rendering/mesh_repository.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.i
-.PHONY : src/rendering/mesh_repository.cpp.i
-
-src/rendering/mesh_repository.s: src/rendering/mesh_repository.cpp.s
-
-.PHONY : src/rendering/mesh_repository.s
-
-# target to generate assembly for a file
-src/rendering/mesh_repository.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/mesh_repository.cpp.s
-.PHONY : src/rendering/mesh_repository.cpp.s
-
 src/rendering/renderer.o: src/rendering/renderer.cpp.o
 
 .PHONY : src/rendering/renderer.o
@@ -587,6 +708,114 @@ src/rendering/renderer.s: src/rendering/renderer.cpp.s
 src/rendering/renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/renderer.cpp.s
 .PHONY : src/rendering/renderer.cpp.s
+
+src/rendering/shader.o: src/rendering/shader.cpp.o
+
+.PHONY : src/rendering/shader.o
+
+# target to build an object file
+src/rendering/shader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader.cpp.o
+.PHONY : src/rendering/shader.cpp.o
+
+src/rendering/shader.i: src/rendering/shader.cpp.i
+
+.PHONY : src/rendering/shader.i
+
+# target to preprocess a source file
+src/rendering/shader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader.cpp.i
+.PHONY : src/rendering/shader.cpp.i
+
+src/rendering/shader.s: src/rendering/shader.cpp.s
+
+.PHONY : src/rendering/shader.s
+
+# target to generate assembly for a file
+src/rendering/shader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader.cpp.s
+.PHONY : src/rendering/shader.cpp.s
+
+src/rendering/shader_commands/set_shader_camera.o: src/rendering/shader_commands/set_shader_camera.cpp.o
+
+.PHONY : src/rendering/shader_commands/set_shader_camera.o
+
+# target to build an object file
+src/rendering/shader_commands/set_shader_camera.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_camera.cpp.o
+.PHONY : src/rendering/shader_commands/set_shader_camera.cpp.o
+
+src/rendering/shader_commands/set_shader_camera.i: src/rendering/shader_commands/set_shader_camera.cpp.i
+
+.PHONY : src/rendering/shader_commands/set_shader_camera.i
+
+# target to preprocess a source file
+src/rendering/shader_commands/set_shader_camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_camera.cpp.i
+.PHONY : src/rendering/shader_commands/set_shader_camera.cpp.i
+
+src/rendering/shader_commands/set_shader_camera.s: src/rendering/shader_commands/set_shader_camera.cpp.s
+
+.PHONY : src/rendering/shader_commands/set_shader_camera.s
+
+# target to generate assembly for a file
+src/rendering/shader_commands/set_shader_camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_camera.cpp.s
+.PHONY : src/rendering/shader_commands/set_shader_camera.cpp.s
+
+src/rendering/shader_commands/set_shader_projection.o: src/rendering/shader_commands/set_shader_projection.cpp.o
+
+.PHONY : src/rendering/shader_commands/set_shader_projection.o
+
+# target to build an object file
+src/rendering/shader_commands/set_shader_projection.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_projection.cpp.o
+.PHONY : src/rendering/shader_commands/set_shader_projection.cpp.o
+
+src/rendering/shader_commands/set_shader_projection.i: src/rendering/shader_commands/set_shader_projection.cpp.i
+
+.PHONY : src/rendering/shader_commands/set_shader_projection.i
+
+# target to preprocess a source file
+src/rendering/shader_commands/set_shader_projection.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_projection.cpp.i
+.PHONY : src/rendering/shader_commands/set_shader_projection.cpp.i
+
+src/rendering/shader_commands/set_shader_projection.s: src/rendering/shader_commands/set_shader_projection.cpp.s
+
+.PHONY : src/rendering/shader_commands/set_shader_projection.s
+
+# target to generate assembly for a file
+src/rendering/shader_commands/set_shader_projection.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_projection.cpp.s
+.PHONY : src/rendering/shader_commands/set_shader_projection.cpp.s
+
+src/rendering/shader_commands/set_shader_time.o: src/rendering/shader_commands/set_shader_time.cpp.o
+
+.PHONY : src/rendering/shader_commands/set_shader_time.o
+
+# target to build an object file
+src/rendering/shader_commands/set_shader_time.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_time.cpp.o
+.PHONY : src/rendering/shader_commands/set_shader_time.cpp.o
+
+src/rendering/shader_commands/set_shader_time.i: src/rendering/shader_commands/set_shader_time.cpp.i
+
+.PHONY : src/rendering/shader_commands/set_shader_time.i
+
+# target to preprocess a source file
+src/rendering/shader_commands/set_shader_time.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_time.cpp.i
+.PHONY : src/rendering/shader_commands/set_shader_time.cpp.i
+
+src/rendering/shader_commands/set_shader_time.s: src/rendering/shader_commands/set_shader_time.cpp.s
+
+.PHONY : src/rendering/shader_commands/set_shader_time.s
+
+# target to generate assembly for a file
+src/rendering/shader_commands/set_shader_time.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/shader_commands/set_shader_time.cpp.s
+.PHONY : src/rendering/shader_commands/set_shader_time.cpp.s
 
 src/rendering/texture.o: src/rendering/texture.cpp.o
 
@@ -615,59 +844,194 @@ src/rendering/texture.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/texture.cpp.s
 .PHONY : src/rendering/texture.cpp.s
 
-src/rendering/texture_repository.o: src/rendering/texture_repository.cpp.o
+src/rendering/vertex.o: src/rendering/vertex.cpp.o
 
-.PHONY : src/rendering/texture_repository.o
-
-# target to build an object file
-src/rendering/texture_repository.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/texture_repository.cpp.o
-.PHONY : src/rendering/texture_repository.cpp.o
-
-src/rendering/texture_repository.i: src/rendering/texture_repository.cpp.i
-
-.PHONY : src/rendering/texture_repository.i
-
-# target to preprocess a source file
-src/rendering/texture_repository.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/texture_repository.cpp.i
-.PHONY : src/rendering/texture_repository.cpp.i
-
-src/rendering/texture_repository.s: src/rendering/texture_repository.cpp.s
-
-.PHONY : src/rendering/texture_repository.s
-
-# target to generate assembly for a file
-src/rendering/texture_repository.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/texture_repository.cpp.s
-.PHONY : src/rendering/texture_repository.cpp.s
-
-src/stb_image.o: src/stb_image.cpp.o
-
-.PHONY : src/stb_image.o
+.PHONY : src/rendering/vertex.o
 
 # target to build an object file
-src/stb_image.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/stb_image.cpp.o
-.PHONY : src/stb_image.cpp.o
+src/rendering/vertex.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/vertex.cpp.o
+.PHONY : src/rendering/vertex.cpp.o
 
-src/stb_image.i: src/stb_image.cpp.i
+src/rendering/vertex.i: src/rendering/vertex.cpp.i
 
-.PHONY : src/stb_image.i
+.PHONY : src/rendering/vertex.i
 
 # target to preprocess a source file
-src/stb_image.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/stb_image.cpp.i
-.PHONY : src/stb_image.cpp.i
+src/rendering/vertex.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/vertex.cpp.i
+.PHONY : src/rendering/vertex.cpp.i
 
-src/stb_image.s: src/stb_image.cpp.s
+src/rendering/vertex.s: src/rendering/vertex.cpp.s
 
-.PHONY : src/stb_image.s
+.PHONY : src/rendering/vertex.s
 
 # target to generate assembly for a file
-src/stb_image.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/stb_image.cpp.s
-.PHONY : src/stb_image.cpp.s
+src/rendering/vertex.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/rendering/vertex.cpp.s
+.PHONY : src/rendering/vertex.cpp.s
+
+src/scene/orbit_camera_system.o: src/scene/orbit_camera_system.cpp.o
+
+.PHONY : src/scene/orbit_camera_system.o
+
+# target to build an object file
+src/scene/orbit_camera_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/orbit_camera_system.cpp.o
+.PHONY : src/scene/orbit_camera_system.cpp.o
+
+src/scene/orbit_camera_system.i: src/scene/orbit_camera_system.cpp.i
+
+.PHONY : src/scene/orbit_camera_system.i
+
+# target to preprocess a source file
+src/scene/orbit_camera_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/orbit_camera_system.cpp.i
+.PHONY : src/scene/orbit_camera_system.cpp.i
+
+src/scene/orbit_camera_system.s: src/scene/orbit_camera_system.cpp.s
+
+.PHONY : src/scene/orbit_camera_system.s
+
+# target to generate assembly for a file
+src/scene/orbit_camera_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/orbit_camera_system.cpp.s
+.PHONY : src/scene/orbit_camera_system.cpp.s
+
+src/scene/resource_loader.o: src/scene/resource_loader.cpp.o
+
+.PHONY : src/scene/resource_loader.o
+
+# target to build an object file
+src/scene/resource_loader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/resource_loader.cpp.o
+.PHONY : src/scene/resource_loader.cpp.o
+
+src/scene/resource_loader.i: src/scene/resource_loader.cpp.i
+
+.PHONY : src/scene/resource_loader.i
+
+# target to preprocess a source file
+src/scene/resource_loader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/resource_loader.cpp.i
+.PHONY : src/scene/resource_loader.cpp.i
+
+src/scene/resource_loader.s: src/scene/resource_loader.cpp.s
+
+.PHONY : src/scene/resource_loader.s
+
+# target to generate assembly for a file
+src/scene/resource_loader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/resource_loader.cpp.s
+.PHONY : src/scene/resource_loader.cpp.s
+
+src/scene/scene_builder.o: src/scene/scene_builder.cpp.o
+
+.PHONY : src/scene/scene_builder.o
+
+# target to build an object file
+src/scene/scene_builder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/scene_builder.cpp.o
+.PHONY : src/scene/scene_builder.cpp.o
+
+src/scene/scene_builder.i: src/scene/scene_builder.cpp.i
+
+.PHONY : src/scene/scene_builder.i
+
+# target to preprocess a source file
+src/scene/scene_builder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/scene_builder.cpp.i
+.PHONY : src/scene/scene_builder.cpp.i
+
+src/scene/scene_builder.s: src/scene/scene_builder.cpp.s
+
+.PHONY : src/scene/scene_builder.s
+
+# target to generate assembly for a file
+src/scene/scene_builder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/scene_builder.cpp.s
+.PHONY : src/scene/scene_builder.cpp.s
+
+src/scene/scene_manager.o: src/scene/scene_manager.cpp.o
+
+.PHONY : src/scene/scene_manager.o
+
+# target to build an object file
+src/scene/scene_manager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/scene_manager.cpp.o
+.PHONY : src/scene/scene_manager.cpp.o
+
+src/scene/scene_manager.i: src/scene/scene_manager.cpp.i
+
+.PHONY : src/scene/scene_manager.i
+
+# target to preprocess a source file
+src/scene/scene_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/scene_manager.cpp.i
+.PHONY : src/scene/scene_manager.cpp.i
+
+src/scene/scene_manager.s: src/scene/scene_manager.cpp.s
+
+.PHONY : src/scene/scene_manager.s
+
+# target to generate assembly for a file
+src/scene/scene_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scene/scene_manager.cpp.s
+.PHONY : src/scene/scene_manager.cpp.s
+
+src/scripts/components/rotating_cube.o: src/scripts/components/rotating_cube.cpp.o
+
+.PHONY : src/scripts/components/rotating_cube.o
+
+# target to build an object file
+src/scripts/components/rotating_cube.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scripts/components/rotating_cube.cpp.o
+.PHONY : src/scripts/components/rotating_cube.cpp.o
+
+src/scripts/components/rotating_cube.i: src/scripts/components/rotating_cube.cpp.i
+
+.PHONY : src/scripts/components/rotating_cube.i
+
+# target to preprocess a source file
+src/scripts/components/rotating_cube.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scripts/components/rotating_cube.cpp.i
+.PHONY : src/scripts/components/rotating_cube.cpp.i
+
+src/scripts/components/rotating_cube.s: src/scripts/components/rotating_cube.cpp.s
+
+.PHONY : src/scripts/components/rotating_cube.s
+
+# target to generate assembly for a file
+src/scripts/components/rotating_cube.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scripts/components/rotating_cube.cpp.s
+.PHONY : src/scripts/components/rotating_cube.cpp.s
+
+src/scripts/scenes/first_scene.o: src/scripts/scenes/first_scene.cpp.o
+
+.PHONY : src/scripts/scenes/first_scene.o
+
+# target to build an object file
+src/scripts/scenes/first_scene.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scripts/scenes/first_scene.cpp.o
+.PHONY : src/scripts/scenes/first_scene.cpp.o
+
+src/scripts/scenes/first_scene.i: src/scripts/scenes/first_scene.cpp.i
+
+.PHONY : src/scripts/scenes/first_scene.i
+
+# target to preprocess a source file
+src/scripts/scenes/first_scene.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scripts/scenes/first_scene.cpp.i
+.PHONY : src/scripts/scenes/first_scene.cpp.i
+
+src/scripts/scenes/first_scene.s: src/scripts/scenes/first_scene.cpp.s
+
+.PHONY : src/scripts/scenes/first_scene.s
+
+# target to generate assembly for a file
+src/scripts/scenes/first_scene.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/src/scripts/scenes/first_scene.cpp.s
+.PHONY : src/scripts/scenes/first_scene.cpp.s
 
 src/window.o: src/window.cpp.o
 
@@ -704,38 +1068,54 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... assets"
 	@echo "... GLAD"
 	@echo "... demo"
+	@echo "... lib/imgui/bindings/imgui_impl_glfw.o"
+	@echo "... lib/imgui/bindings/imgui_impl_glfw.i"
+	@echo "... lib/imgui/bindings/imgui_impl_glfw.s"
+	@echo "... lib/imgui/bindings/imgui_impl_opengl3.o"
+	@echo "... lib/imgui/bindings/imgui_impl_opengl3.i"
+	@echo "... lib/imgui/bindings/imgui_impl_opengl3.s"
+	@echo "... lib/imgui/imgui.o"
+	@echo "... lib/imgui/imgui.i"
+	@echo "... lib/imgui/imgui.s"
+	@echo "... lib/imgui/imgui_demo.o"
+	@echo "... lib/imgui/imgui_demo.i"
+	@echo "... lib/imgui/imgui_demo.s"
+	@echo "... lib/imgui/imgui_draw.o"
+	@echo "... lib/imgui/imgui_draw.i"
+	@echo "... lib/imgui/imgui_draw.s"
+	@echo "... lib/imgui/imgui_widgets.o"
+	@echo "... lib/imgui/imgui_widgets.i"
+	@echo "... lib/imgui/imgui_widgets.s"
+	@echo "... lib/stb_image.o"
+	@echo "... lib/stb_image.i"
+	@echo "... lib/stb_image.s"
 	@echo "... src/bitmask.o"
 	@echo "... src/bitmask.i"
 	@echo "... src/bitmask.s"
-	@echo "... src/camera.o"
-	@echo "... src/camera.i"
-	@echo "... src/camera.s"
+	@echo "... src/context/demo_context.o"
+	@echo "... src/context/demo_context.i"
+	@echo "... src/context/demo_context.s"
+	@echo "... src/context/mesh_repository.o"
+	@echo "... src/context/mesh_repository.i"
+	@echo "... src/context/mesh_repository.s"
+	@echo "... src/context/shader_repository.o"
+	@echo "... src/context/shader_repository.i"
+	@echo "... src/context/shader_repository.s"
+	@echo "... src/context/texture_repository.o"
+	@echo "... src/context/texture_repository.i"
+	@echo "... src/context/texture_repository.s"
+	@echo "... src/ecs/entity_builder.o"
+	@echo "... src/ecs/entity_builder.i"
+	@echo "... src/ecs/entity_builder.s"
 	@echo "... src/engine.o"
 	@echo "... src/engine.i"
 	@echo "... src/engine.s"
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
-	@echo "... src/imgui/bindings/imgui_impl_glfw.o"
-	@echo "... src/imgui/bindings/imgui_impl_glfw.i"
-	@echo "... src/imgui/bindings/imgui_impl_glfw.s"
-	@echo "... src/imgui/bindings/imgui_impl_opengl3.o"
-	@echo "... src/imgui/bindings/imgui_impl_opengl3.i"
-	@echo "... src/imgui/bindings/imgui_impl_opengl3.s"
-	@echo "... src/imgui/imgui.o"
-	@echo "... src/imgui/imgui.i"
-	@echo "... src/imgui/imgui.s"
-	@echo "... src/imgui/imgui_demo.o"
-	@echo "... src/imgui/imgui_demo.i"
-	@echo "... src/imgui/imgui_demo.s"
-	@echo "... src/imgui/imgui_draw.o"
-	@echo "... src/imgui/imgui_draw.i"
-	@echo "... src/imgui/imgui_draw.s"
-	@echo "... src/imgui/imgui_widgets.o"
-	@echo "... src/imgui/imgui_widgets.i"
-	@echo "... src/imgui/imgui_widgets.s"
 	@echo "... src/input_processor.o"
 	@echo "... src/input_processor.i"
 	@echo "... src/input_processor.s"
@@ -748,21 +1128,45 @@ help:
 	@echo "... src/rendering/mesh.o"
 	@echo "... src/rendering/mesh.i"
 	@echo "... src/rendering/mesh.s"
-	@echo "... src/rendering/mesh_repository.o"
-	@echo "... src/rendering/mesh_repository.i"
-	@echo "... src/rendering/mesh_repository.s"
 	@echo "... src/rendering/renderer.o"
 	@echo "... src/rendering/renderer.i"
 	@echo "... src/rendering/renderer.s"
+	@echo "... src/rendering/shader.o"
+	@echo "... src/rendering/shader.i"
+	@echo "... src/rendering/shader.s"
+	@echo "... src/rendering/shader_commands/set_shader_camera.o"
+	@echo "... src/rendering/shader_commands/set_shader_camera.i"
+	@echo "... src/rendering/shader_commands/set_shader_camera.s"
+	@echo "... src/rendering/shader_commands/set_shader_projection.o"
+	@echo "... src/rendering/shader_commands/set_shader_projection.i"
+	@echo "... src/rendering/shader_commands/set_shader_projection.s"
+	@echo "... src/rendering/shader_commands/set_shader_time.o"
+	@echo "... src/rendering/shader_commands/set_shader_time.i"
+	@echo "... src/rendering/shader_commands/set_shader_time.s"
 	@echo "... src/rendering/texture.o"
 	@echo "... src/rendering/texture.i"
 	@echo "... src/rendering/texture.s"
-	@echo "... src/rendering/texture_repository.o"
-	@echo "... src/rendering/texture_repository.i"
-	@echo "... src/rendering/texture_repository.s"
-	@echo "... src/stb_image.o"
-	@echo "... src/stb_image.i"
-	@echo "... src/stb_image.s"
+	@echo "... src/rendering/vertex.o"
+	@echo "... src/rendering/vertex.i"
+	@echo "... src/rendering/vertex.s"
+	@echo "... src/scene/orbit_camera_system.o"
+	@echo "... src/scene/orbit_camera_system.i"
+	@echo "... src/scene/orbit_camera_system.s"
+	@echo "... src/scene/resource_loader.o"
+	@echo "... src/scene/resource_loader.i"
+	@echo "... src/scene/resource_loader.s"
+	@echo "... src/scene/scene_builder.o"
+	@echo "... src/scene/scene_builder.i"
+	@echo "... src/scene/scene_builder.s"
+	@echo "... src/scene/scene_manager.o"
+	@echo "... src/scene/scene_manager.i"
+	@echo "... src/scene/scene_manager.s"
+	@echo "... src/scripts/components/rotating_cube.o"
+	@echo "... src/scripts/components/rotating_cube.i"
+	@echo "... src/scripts/components/rotating_cube.s"
+	@echo "... src/scripts/scenes/first_scene.o"
+	@echo "... src/scripts/scenes/first_scene.i"
+	@echo "... src/scripts/scenes/first_scene.s"
 	@echo "... src/window.o"
 	@echo "... src/window.i"
 	@echo "... src/window.s"

@@ -5,7 +5,10 @@
 #include <math.h>
 
 #include <cmath>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 #include <maths/float3.h>
+#include <sstream>
 
 struct EulerAngles
 {
@@ -134,15 +137,26 @@ public:
         return angles;
     }
 
-
     quaternion inverse()
     {
         return quaternion(w, -x, -y, -z);
     }
 
+    std::string to_string()
+    {
+        std::stringstream output;
+        output << "(" << w << ", " << x << ", " << y << ", " << z << ")";
+        return output.str();
+    }
+
     void print()
     {
-        printf("(%f, %f, %f, %f)\n", w, x, y, z);
+        printf("%s", to_string().c_str());
+    }
+
+    glm::quat to_glm() const
+    {
+        return glm::quat(w, x, y, z);
     }
 
     float w, x, y, z;

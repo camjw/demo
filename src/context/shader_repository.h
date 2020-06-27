@@ -19,6 +19,8 @@ public:
     void clear();
     void for_all(Action<Shader>* action);
 
+    ShaderComponent get_shader_component(const std::string& shader_name);
+
 private:
     std::unordered_map<std::string, ShaderID> shader_name_to_shader_id;
     std::unordered_map<ShaderID, std::shared_ptr<Shader>> shaders;

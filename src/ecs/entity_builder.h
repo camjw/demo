@@ -1,7 +1,6 @@
 #ifndef DEMO_ENTITY_BUILDER_H
 #define DEMO_ENTITY_BUILDER_H
 
-#include "world.h"
 #include <ecs/components/camera_component.h>
 #include <ecs/components/hierarchy_component.h>
 #include <maths/transform.h>
@@ -10,6 +9,7 @@
 #include <rendering/shader.h>
 #include <rendering/texture.h>
 
+class World;
 class EntityBuilder
 {
 public:
@@ -18,105 +18,74 @@ public:
     {
     }
 
-    EntityBuilder* with(Transform data)
+    EntityBuilder with(Transform data)
     {
-        m_texture = &data;
-        return this;
+        m_transform = data;
+        transform_set = true;
+        return *this;
     }
 
-    EntityBuilder* with(MeshComponent data)
+    EntityBuilder with(MeshComponent data)
     {
-        m_mesh = &data;
-        return this;
+        m_mesh = data;
+        mesh_set = true;
+        return *this;
     };
 
-    EntityBuilder* with(ShaderComponent data)
+    EntityBuilder with(ShaderComponent data)
     {
-        m_shader = &data;
-        return this;
+        m_shader = data;
+        shader_set = true;
+        return *this;
     };
 
-    EntityBuilder* with(CameraComponent data)
+    EntityBuilder with(CameraComponent data)
     {
-        m_camera = &data;
-        return this;
+        m_camera = data;
+        camera_set = true;
+        return *this;
     };
 
-    EntityBuilder* with(TextureComponent data)
+    EntityBuilder with(TextureComponent data)
     {
-        m_texture = &data;
-        return this;
+        m_texture = data;
+        texture_set = true;
+        return *this;
     };
 
-    EntityBuilder* with(HierarchyComponent data)
+    EntityBuilder with(HierarchyComponent data)
     {
-        m_hierarchy = &data;
-        return this;
+        m_hierarchy = data;
+        hierarchy_set = true;
+        return *this;
     };
 
-    EntityBuilder* with(RotatingCubeComponent data)
-    {
-        m_rotating_cube = &data;
-        return this;
-    };
-
-    EntityBuilder* with_parent(Entity parent)
+    EntityBuilder with_parent(Entity parent)
     {
         HierarchyComponent hierarchy_component = HierarchyComponent { .parent = parent };
-        m_hierarchy = &hierarchy_component;
-        return this;
+        m_hierarchy = hierarchy_component;
+        hierarchy_set = true;
+        return *this;
     }
 
-    Entity build()
-    {
-        Entity entity = m_world->create_empty_entity();
-
-        if (m_transform != nullptr)
-        {
-            m_world->add_component(entity, *m_transform);
-        }
-
-        if (m_texture != nullptr)
-        {
-            m_world->add_component(entity, *m_texture);
-        }
-
-        if (m_mesh != nullptr)
-        {
-            m_world->add_component(entity, *m_mesh);
-        }
-
-        if (m_shader != nullptr)
-        {
-            m_world->add_component(entity, *m_shader);
-        }
-
-        if (m_camera != nullptr)
-        {
-            m_world->add_component(entity, *m_camera);
-        }
-
-        if (m_hierarchy != nullptr)
-        {
-            m_world->add_component(entity, *m_hierarchy);
-        }
-
-        if (m_rotating_cube != nullptr)
-        {
-            m_world->add_component(entity, *m_rotating_cube);
-        }
-    }
+    Entity build();
 
 private:
     std::shared_ptr<World> m_world;
 
-    Transform* m_transform = nullptr;
-    TextureComponent* m_texture = nullptr;
-    MeshComponent* m_mesh = nullptr;
-    ShaderComponent* m_shader = nullptr;
-    CameraComponent* m_camera = nullptr;
-    HierarchyComponent* m_hierarchy = nullptr;
-    RotatingCubeComponent* m_rotating_cube = nullptr;
+    Transform m_transform;
+    TextureComponent m_texture;
+    MeshComponent m_mesh;
+    ShaderComponent m_shader;
+    CameraComponent m_camera;
+    HierarchyComponent m_hierarchy;
+
+    bool transform_set = false;
+    bool texture_set = false;
+    bool mesh_set = false;
+    bool shader_set = false;
+    bool camera_set = false;
+    bool hierarchy_set = false;
 };
 
 #endif //DEMO_ENTITY_BUILDER_H

@@ -27,8 +27,8 @@ ShaderID ShaderRepository::create_shader(const std::string& shader_name)
 {
     std::shared_ptr<Shader> new_shader = std::make_shared<Shader>();
 
-    shader_name_to_shader_id.insert(std::make_pair(shader_name, current_shader_id));
-    shaders.insert(std::make_pair(current_shader_id++, new_shader));
+    shader_name_to_shader_id.insert(std::make_pair(shader_name, ++current_shader_id));
+    shaders.insert(std::make_pair(current_shader_id, new_shader));
     return current_shader_id;
 }
 
@@ -40,8 +40,8 @@ ShaderID ShaderRepository::create_shader(
     std::shared_ptr<Shader> new_shader = std::make_shared<Shader>();
     new_shader->init(vertex_filename, fragment_filename);
 
-    shader_name_to_shader_id.insert(std::make_pair(shader_name, current_shader_id));
-    shaders.insert(std::make_pair(current_shader_id++, new_shader));
+    shader_name_to_shader_id.insert(std::make_pair(shader_name, ++current_shader_id));
+    shaders.insert(std::make_pair(current_shader_id, new_shader));
     glCheckError();
 
     return current_shader_id;
@@ -71,3 +71,15 @@ void ShaderRepository::for_all(Action<Shader>* action)
         action->run(shader.second);
     }
 }
+
+ShaderComponent ShaderRepository::get_shader_component(const std::string& shader_name)
+{
+    assert(shader_name_to_shader_id.find(shader_name) != shader_name_to_shader_id.end() && "No shader with that name");
+
+    return ShaderComponent {
+        .id = shader_name_to_shader_id[shader_name],
+        .name = shader_name,
+    };
+}
+
+

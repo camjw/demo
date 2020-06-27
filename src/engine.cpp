@@ -11,7 +11,7 @@ Engine::Engine()
     input = new InputProcessor(window);
 
     world = std::make_shared<World>();
-    world->init();
+    world->init(world);
 
     // Register components
     world->register_component<Transform>();
@@ -29,7 +29,7 @@ Engine::Engine()
     world->set_system_signature<OrbitCameraSystem>(camera_system_signature);
 
     // Init renderer
-    renderer = std::make_unique<Renderer>(context, window, world);
+    renderer = std::make_unique<OpenGLRenderer>(context, window, world);
 
     // Init scene manager
     scene_manager = std::make_unique<SceneManager>(context, world);
@@ -56,7 +56,7 @@ void Engine::late_update(Time time)
 
 void Engine::draw(Time time)
 {
-    renderer->draw_scene(time, scene_manager->get_current_scene_graph());
+    renderer->draw_scene(time, scene_manager->get_current_scene());
 }
 
 void Engine::process_input()

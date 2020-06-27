@@ -2,7 +2,7 @@
 #define DEMO_ENGINE_HPP
 
 #include <rendering/cube_map.h>
-#include <rendering/renderer.h>
+#include <rendering/opengl_renderer.h>
 #include <rendering/shader.h>
 #include <rendering/texture.h>
 
@@ -47,6 +47,6 @@ private:
     std::shared_ptr<DemoContext> context;
 
     std::unique_ptr<SceneManager> scene_manager;
-    std::unique_ptr<Renderer> renderer;
+    std::unique_ptr<OpenGLRenderer> renderer;
 };
 #endif

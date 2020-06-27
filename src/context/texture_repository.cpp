@@ -19,8 +19,8 @@ TextureID TextureRepository::create_texture(const std::string& texture_name, con
 {
     std::shared_ptr<Texture> new_texture = std::make_shared<Texture>(filename);
 
-    texture_names_to_ids.insert(std::make_pair(texture_name, current_texture_id));
-    textures.insert(std::make_pair(current_texture_id++, new_texture));
+    texture_names_to_ids.insert(std::make_pair(texture_name, ++current_texture_id));
+    textures.insert(std::make_pair(current_texture_id, new_texture));
     glCheckError();
 
     return current_texture_id;

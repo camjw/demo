@@ -10,12 +10,14 @@
 class World
 {
 public:
-    void init()
+    void init(std::shared_ptr<World> self)
     {
         // Create pointers to each manager
         component_manager = std::make_unique<ComponentManager>();
         entity_manager = std::make_unique<EntityManager>();
         system_manager = std::make_unique<SystemManager>();
+
+        this->self = self;
     }
 
     // Entity methods
@@ -24,9 +26,9 @@ public:
         return entity_manager->create_entity();
     }
 
-    EntityBuilder* create_entity()
+    EntityBuilder create_entity()
     {
-        return new EntityBuilder();
+        return EntityBuilder(self);
     }
 
     void destroy_entity(Entity entity)

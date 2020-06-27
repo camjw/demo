@@ -73,6 +73,7 @@ CMAKE_BINARY_DIR = /Users/cameron/demo/cmake
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/assets.dir/all
 all: CMakeFiles/GLAD.dir/all
 all: CMakeFiles/demo.dir/all
 
@@ -84,10 +85,38 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/assets.dir/clean
 clean: CMakeFiles/GLAD.dir/clean
 clean: CMakeFiles/demo.dir/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/assets.dir
+
+# All Build rule for target.
+CMakeFiles/assets.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assets.dir/build.make CMakeFiles/assets.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assets.dir/build.make CMakeFiles/assets.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/cameron/demo/cmake/CMakeFiles --progress-num= "Built target assets"
+.PHONY : CMakeFiles/assets.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/assets.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/cameron/demo/cmake/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/assets.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/cameron/demo/cmake/CMakeFiles 0
+.PHONY : CMakeFiles/assets.dir/rule
+
+# Convenience name for target.
+assets: CMakeFiles/assets.dir/rule
+
+.PHONY : assets
+
+# clean rule for target.
+CMakeFiles/assets.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assets.dir/build.make CMakeFiles/assets.dir/clean
+.PHONY : CMakeFiles/assets.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/GLAD.dir
@@ -123,12 +152,12 @@ CMakeFiles/GLAD.dir/clean:
 CMakeFiles/demo.dir/all: CMakeFiles/GLAD.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/cameron/demo/cmake/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 "Built target demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/cameron/demo/cmake/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 "Built target demo"
 .PHONY : CMakeFiles/demo.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/demo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/cameron/demo/cmake/CMakeFiles 22
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/cameron/demo/cmake/CMakeFiles 35
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/demo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/cameron/demo/cmake/CMakeFiles 0
 .PHONY : CMakeFiles/demo.dir/rule

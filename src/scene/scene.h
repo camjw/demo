@@ -12,9 +12,9 @@ class Scene
 {
 public:
     Scene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id)
-        : context(std::move(context))
-        , world(std::move(world))
-        , graph(std::make_unique<SceneGraph>())
+        : context(context)
+        , world(world)
+        , graph(std::make_unique<SceneGraph>(world))
         , scene_id(scene_id)
     {
     }
@@ -30,7 +30,7 @@ public:
         return camera;
     };
 
-    inline Entity set_camera(Entity camera)
+    inline void set_camera(Entity camera)
     {
         this->camera = camera;
     };
@@ -38,6 +38,11 @@ public:
     inline SceneID get_scene_id() const
     {
         return scene_id;
+    }
+
+    inline SceneNode* get_root_node() const
+    {
+        return graph->root().get();
     }
 
 protected:

@@ -31,16 +31,18 @@ void FirstScene::on_create()
     for (int i = 0; i < 1; i++)
     {
         Entity entity = world->create_entity()
-                            ->with(Transform {
+                            .with(Transform {
                                 .position = float3(0, 0, 0),
-                                .scale = float3(0.1),
+                                .scale = float3(1.0f),
                             })
-                            ->with(TextureComponent { .id = texture_id })
-                            ->with(MeshComponent { .id = cube_id })
-                            ->with(ShaderComponent { .id = shader_id })
-                            ->build();
+                            .with(TextureComponent { .id = texture_id })
+                            .with(MeshComponent { .id = cube_id })
+                            .with(context->get_shader_repository()->get_shader_component("simple"))
+                            .build();
 
         world->add_component(entity, RotatingCubeComponent {});
+
+        graph->add_child()->set_entity(entity);
     }
 }
 
@@ -66,14 +68,14 @@ void FirstScene::load_meshes()
 void FirstScene::build_camera()
 {
     camera = world->create_entity()
-                 ->with(CameraComponent {
+                 .with(CameraComponent {
                      .up = float3(0.0, 1.0, 0.0),
                      .forward = float3(0.0, 0.0, -1.0),
                  })
-                 ->with(Transform {
+                 .with(Transform {
                      .position = float3(0.0, 0.0, 10.0),
                  })
-                 ->build();
+                 .build();
 }
 
 void FirstScene::on_destroy()

@@ -6,10 +6,10 @@ SceneManager::SceneManager(std::shared_ptr<DemoContext> context, std::shared_ptr
     : context(context)
     , world(world)
 {
-    Scene* first_scene = new FirstScene(context, world, current_scene_id);
+    Scene* first_scene = new FirstScene(context, world, next_scene_id);
     first_scene->on_create();
 
-    scenes.insert(std::pair<SceneID, Scene*>(current_scene_id++, first_scene));
+    scenes.insert(std::pair<SceneID, Scene*>(next_scene_id++, first_scene));
 }
 
 void SceneManager::update(Time time, InputState* input) { }

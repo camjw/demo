@@ -1,8 +1,9 @@
 #ifndef DEMO_MATHS_FLOAT_3_HPP
 #define DEMO_MATHS_FLOAT_3_HPP
 
-#include <cstdio>
 #include <cmath>
+#include <cstdio>
+#include <glm/vec3.hpp>
 #include <maths/float2.h>
 
 struct float3
@@ -228,6 +229,11 @@ public:
         default:
             return z;
         }
+    }
+
+    glm::vec3 to_glm() const
+    {
+        return glm::vec3(x, y, z);
     }
 
     float x, y, z;

@@ -36,10 +36,12 @@ static GLenum glCheckError_(const char* file, int line)
         }
 
         printf("%s | %s (%d)\n", error.c_str(), file, line);
+        return errorCode;
     }
 
     return errorCode;
 }
+
 #define glCheckError() glCheckError_(__FILE__, __LINE__)
 
 #endif // DEMO_OPENGL_HELPERS_H

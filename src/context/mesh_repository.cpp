@@ -16,8 +16,9 @@ MeshID MeshRepository::get_or_create_mesh(const std::string &filename)
     }
 
     std::shared_ptr<Mesh> new_mesh = std::make_shared<Mesh>();
+    filename_to_mesh_id.insert(std::make_pair(filename, ++current_mesh_id));
 
-    meshes.insert(std::make_pair(++current_mesh_id, new_mesh));
+    meshes.insert(std::make_pair(current_mesh_id, new_mesh));
     return current_mesh_id;
 }
 

@@ -8,23 +8,31 @@
 class SceneNode
 {
 public:
-    SceneNode* parent_node;
+    SceneNode() { }
+    SceneNode(SceneNode* parent)
+        : m_parent_node(parent)
+    {
+    }
 
     inline SceneNode* get_root_node()
     {
-        if (parent_node == nullptr)
+        if (m_parent_node == nullptr)
         {
             return this;
         }
 
-        return parent_node->get_root_node();
+        return m_parent_node->get_root_node();
     };
-
 
     inline void set_entity(Entity entity)
     {
         m_entity = entity;
         // TODO: maybe should notify children here or something
+    }
+
+    inline Entity get_entity() const
+    {
+        return m_entity;
     }
 
     SceneNode* find_entity(Entity entity)
@@ -34,7 +42,7 @@ public:
             return this;
         }
 
-        for (SceneNode* child: m_child_nodes)
+        for (SceneNode* child : m_child_nodes)
         {
             SceneNode* find_in_child = child->find_entity(entity);
             if (find_in_child != nullptr)
@@ -46,10 +54,31 @@ public:
         return nullptr;
     }
 
+    inline SceneNode* add_child()
+    {
+        SceneNode* new_node = new SceneNode(this);
+        m_child_nodes.push_back(new_node);
+        return new_node;
+    }
+
+    inline SceneNode* add_child(Entity entity)
+    {
+        SceneNode* new_node = new SceneNode(this);
+        new_node->set_entity(entity);
+        m_child_nodes.push_back(new_node);
+        return new_node;
+    }
+
+    inline const std::vector<SceneNode*> get_children() const
+    {
+        return m_child_nodes;
+    }
+
+
 private:
     Entity m_entity;
     std::vector<SceneNode*> m_child_nodes;
-
+    SceneNode* m_parent_node = nullptr;
 };
 
 #endif // DEMO_SCENE_NODE_H
