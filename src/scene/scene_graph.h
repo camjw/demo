@@ -15,7 +15,7 @@ public:
         // Set root node to have entity
         m_root_node->set_entity(
             m_world->create_entity()
-                .with(Transform {})
+                .with(Transform::identity())
                 .build());
     }
 

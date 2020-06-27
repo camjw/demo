@@ -156,7 +156,7 @@ public:
 
     glm::quat to_glm() const
     {
-        return glm::quat(x, y, z, w);
+        return glm::quat(w, x, y, z);
     }
 
     float w, x, y, z;

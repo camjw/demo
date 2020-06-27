@@ -49,7 +49,7 @@ void OpenGLRenderer::draw_node(SceneNode* scene_node, glm::mat4 parent_transform
     // Draw child nodes
     for (SceneNode* const& child_node: scene_node->get_children())
     {
-        draw_node(child_node, node_transform.get_model_matrix() * parent_transform);
+        draw_node(child_node, node_transform.get_model_matrix());
     }
 }
 
@@ -71,7 +71,7 @@ void OpenGLRenderer::draw_entity(Entity entity, glm::mat4 parent_transform)
     shader->bind();
 
     Transform transform = world->get_component<Transform>(entity);
-    shader->setMat4("model", transform.get_model_matrix());
+    shader->setMat4("model", transform.get_model_matrix() * parent_transform);
 
     MeshComponent mesh = world->get_component<MeshComponent>(entity);
     std::shared_ptr<Mesh> render_mesh = mesh_repository->get_mesh(mesh.id);

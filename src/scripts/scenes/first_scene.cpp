@@ -17,7 +17,6 @@ void FirstScene::on_create()
     build_camera();
 
     MeshID cube_id = context->get_mesh_repository()->create_cube();
-    ShaderID shader_id = context->get_shader_repository()->get_shader_id("simple");
     TextureID texture_id = context->get_texture_repository()->get_texture_id("uv_test");
 
     world->register_component<RotatingCubeComponent>();
@@ -28,22 +27,33 @@ void FirstScene::on_create()
     rotating_cube_signature.set(world->get_component_type<RotatingCubeComponent>());
     world->set_system_signature<RotatingCubeSystem>(rotating_cube_signature);
 
-    for (int i = 0; i < 1; i++)
-    {
-        Entity entity = world->create_entity()
-                            .with(Transform {
-                                .position = float3(0, 0, 0),
-                                .scale = float3(1.0f),
-                            })
-                            .with(TextureComponent { .id = texture_id })
-                            .with(MeshComponent { .id = cube_id })
-                            .with(context->get_shader_repository()->get_shader_component("simple"))
-                            .build();
+    Entity parent_entity = world->create_entity()
+                               .with(Transform {
+                                   .position = float3(0, 0, 0),
+                                   .scale = float3(1.0f),
+                               })
+                               .with(TextureComponent { .id = texture_id })
+                               .with(MeshComponent { .id = cube_id })
+                               .with(context->get_shader_repository()->get_shader_component("simple"))
+                               .build();
 
-        world->add_component(entity, RotatingCubeComponent {});
+    world->add_component(parent_entity, RotatingCubeComponent {});
 
-        graph->add_child()->set_entity(entity);
-    }
+    SceneNode* parent_node = graph->add_child();
+    parent_node->set_entity(parent_entity);
+
+    Entity child_entity = world->create_entity()
+                              .with(Transform {
+                                  .position = float3(0, 5.0f, 0),
+                                  .scale = float3(0.5f),
+                              })
+                              .with(TextureComponent { .id = texture_id })
+                              .with(MeshComponent { .id = cube_id })
+                              .with(context->get_shader_repository()->get_shader_component("simple"))
+                              .with_parent(parent_entity)
+                              .build();
+
+    parent_node->add_child()->set_entity(child_entity);
 }
 
 void FirstScene::load_textures()

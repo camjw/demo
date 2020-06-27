@@ -7,9 +7,9 @@
 
 struct Transform
 {
-    float3 position;
-    quaternion rotation;
-    float3 scale;
+    float3 position = float3::zero();
+    quaternion rotation = quaternion::identity();
+    float3 scale = float3::one();
 
     glm::mat4 get_model_matrix()
     {
