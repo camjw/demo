@@ -8,6 +8,9 @@ Engine::Engine()
 {
     context = std::make_shared<DemoContext>();
     window = new Window("Estuary King");
+    #ifdef WINDOWS
+    window->load_icon("./assets/icon.png");
+    #endif
     input = new InputProcessor(window);
 
     world = std::make_shared<World>();

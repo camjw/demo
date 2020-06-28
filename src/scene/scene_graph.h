@@ -34,6 +34,11 @@ public:
         return m_root_node->add_child();
     }
 
+    inline SceneNode* add_child(Entity entity)
+    {
+        return m_root_node->add_child(entity);
+    }
+
 private:
     std::shared_ptr<SceneNode> m_root_node;
     std::shared_ptr<World> m_world;

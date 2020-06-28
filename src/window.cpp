@@ -1,5 +1,5 @@
-#include <utils/opengl_helpers.h>
 #include <input_processor.h>
+#include <utils/opengl_helpers.h>
 #include <window.h>
 
 Window::Window(const std::string& window_name)
@@ -96,4 +96,11 @@ void Window::update(Time time, InputState* input)
     height = framebuffer_size.y;
 
     close_window = input->is_key_pressed(Key::Esc);
+}
+
+void Window::load_icon(const std::string& icon_path) {
+    GLFWimage images[1];
+    images[0].pixels = stbi_load(icon_path.c_str(), &images[0].width, &images[0].height, 0, 4); //rgba channels
+    glfwSetWindowIcon(glfw_window, 1, images);
+    stbi_image_free(images[0].pixels);
 }

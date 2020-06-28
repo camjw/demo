@@ -27,25 +27,42 @@ void FirstScene::on_create()
     rotating_cube_signature.set(world->get_component_type<RotatingCubeComponent>());
     world->set_system_signature<RotatingCubeSystem>(rotating_cube_signature);
 
+    Entity grandparent_entity = world->create_entity()
+                                    .with(Transform {
+                                        .position = float3(0, 0, 0),
+                                        .scale = float3(1.0f),
+                                    })
+                                    .with(TextureComponent { .id = texture_id })
+                                    .with(MeshComponent { .id = cube_id })
+                                    .with(context->get_shader_repository()->get_shader_component("simple"))
+                                    .build();
+
+    world->add_component(grandparent_entity, RotatingCubeComponent {});
+
+    SceneNode* grandparent_node = graph->add_child(grandparent_entity);
+
     Entity parent_entity = world->create_entity()
                                .with(Transform {
-                                   .position = float3(0, 0, 0),
-                                   .scale = float3(1.0f),
+                                   .position = float3(0, 5.0f, 0),
+                                   .scale = float3(0.5f),
                                })
                                .with(TextureComponent { .id = texture_id })
                                .with(MeshComponent { .id = cube_id })
                                .with(context->get_shader_repository()->get_shader_component("simple"))
+                               .with_parent(grandparent_entity)
                                .build();
 
-    world->add_component(parent_entity, RotatingCubeComponent {});
+    world->add_component(parent_entity, RotatingCubeComponent {
+                                            .speed = 0.001f,
+                                            .axis = float3(0, 0, 1),
+                                        });
 
-    SceneNode* parent_node = graph->add_child();
-    parent_node->set_entity(parent_entity);
+    SceneNode* parent_node = grandparent_node->add_child(parent_entity);
 
     Entity child_entity = world->create_entity()
                               .with(Transform {
-                                  .position = float3(0, 5.0f, 0),
-                                  .scale = float3(0.5f),
+                                  .position = float3(0, 0.0f, 10.0f),
+                                  .scale = float3(0.2f),
                               })
                               .with(TextureComponent { .id = texture_id })
                               .with(MeshComponent { .id = cube_id })
@@ -53,7 +70,7 @@ void FirstScene::on_create()
                               .with_parent(parent_entity)
                               .build();
 
-    parent_node->add_child()->set_entity(child_entity);
+    parent_node->add_child(child_entity);
 }
 
 void FirstScene::load_textures()
