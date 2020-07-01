@@ -1,3 +1,4 @@
+#include "material.h"
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
@@ -47,7 +48,7 @@ void OpenGLRenderer::draw_node(SceneNode* scene_node, glm::mat4 parent_transform
     }
 
     // Draw child nodes
-    for (SceneNode* const& child_node: scene_node->get_children())
+    for (SceneNode* const& child_node : scene_node->get_children())
     {
         draw_node(child_node, parent_transform * node_transform.get_model_matrix());
     }
@@ -70,8 +71,11 @@ void OpenGLRenderer::draw_entity(Entity entity, glm::mat4 parent_transform)
     std::shared_ptr<Shader> shader = shader_repository->get_shader(shader_name);
     shader->bind();
 
+    Material material = world->has_component<Material>(entity) ? world->get_component<Material>(entity) : DEFAULT_MATERIAL;
+    material.bind(shader);
+
     Transform transform = world->get_component<Transform>(entity);
-    shader->setMat4("model", parent_transform * transform.get_model_matrix());
+    shader->set_mat4("model", parent_transform * transform.get_model_matrix());
 
     MeshComponent mesh = world->get_component<MeshComponent>(entity);
     std::shared_ptr<Mesh> render_mesh = mesh_repository->get_mesh(mesh.id);

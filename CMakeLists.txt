@@ -22,7 +22,7 @@ include_directories(demo
 file(GLOB_RECURSE SOURCES "src/*.cpp" "lib/*.cpp")
 
 # Create executable
-add_executable(demo ${SOURCES} src/ecs/entity_builder.cpp src/ecs/entity_builder.h src/ecs/components/components.h)
+add_executable(demo ${SOURCES} src/ecs/entity_builder.cpp src/ecs/entity_builder.h src/ecs/components/components.h src/rendering/point_light.cpp src/rendering/point_light.h src/rendering/material.h)
 
 find_package(GLM REQUIRED)
 message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")

@@ -1,6 +1,8 @@
 #include <ecs/components/hierarchy_component.h>
 #include <engine.h>
 #include <maths/transform.h>
+#include <rendering/material.h>
+#include <rendering/point_light.h>
 #include <scene/orbit_camera_system.h>
 #include <utils/opengl_helpers.h>
 
@@ -23,6 +25,8 @@ Engine::Engine()
     world->register_component<ShaderComponent>();
     world->register_component<CameraComponent>();
     world->register_component<HierarchyComponent>();
+    world->register_component<Material>();
+    world->register_component<PointLight>();
 
     // Init systems
     world->register_system<OrbitCameraSystem>();

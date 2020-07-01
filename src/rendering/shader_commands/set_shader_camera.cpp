@@ -7,5 +7,5 @@ void SetShaderCamera::run(std::shared_ptr<Shader> shader)
 
     shader->set_float3(DEMO_CONSTANTS_CAMERA_POSITION, position);
     shader->set_float3(DEMO_CONSTANTS_CAMERA_FORWARD, forward);
-    shader->setMat4(DEMO_CONSTANTS_VIEW, view);
+    shader->set_mat4(DEMO_CONSTANTS_VIEW, view);
 }

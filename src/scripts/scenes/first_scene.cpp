@@ -34,7 +34,7 @@ void FirstScene::on_create()
                                     })
                                     .with(TextureComponent { .id = texture_id })
                                     .with(MeshComponent { .id = cube_id })
-                                    .with(context->get_shader_repository()->get_shader_component("simple"))
+                                    .with(context->get_shader_repository()->get_shader_component("lighting"))
                                     .build();
 
     world->add_component(grandparent_entity, RotatingCubeComponent {
@@ -51,7 +51,7 @@ void FirstScene::on_create()
                                })
                                .with(TextureComponent { .id = texture_id })
                                .with(MeshComponent { .id = cube_id })
-                               .with(context->get_shader_repository()->get_shader_component("simple"))
+                               .with(context->get_shader_repository()->get_shader_component("lighting"))
                                .with_parent(grandparent_entity)
                                .build();
 
@@ -69,7 +69,7 @@ void FirstScene::on_create()
                               })
                               .with(TextureComponent { .id = texture_id })
                               .with(MeshComponent { .id = cube_id })
-                              .with(context->get_shader_repository()->get_shader_component("simple"))
+                              .with(context->get_shader_repository()->get_shader_component("lighting"))
                               .with_parent(parent_entity)
                               .build();
 
@@ -88,6 +88,11 @@ void FirstScene::load_shaders()
         "simple",
         "../assets/shaders/simple_shader.vert",
         "../assets/shaders/simple_shader.frag");
+
+    context->get_shader_repository()->create_shader(
+        "lighting",
+        "../assets/shaders/lighting_shader.vert",
+        "../assets/shaders/lighting_shader.frag");
 }
 
 void FirstScene::load_meshes()
