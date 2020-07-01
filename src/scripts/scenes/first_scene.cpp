@@ -37,7 +37,10 @@ void FirstScene::on_create()
                                     .with(context->get_shader_repository()->get_shader_component("simple"))
                                     .build();
 
-    world->add_component(grandparent_entity, RotatingCubeComponent {});
+    world->add_component(grandparent_entity, RotatingCubeComponent {
+                                                 .speed = 0.001f,
+                                                 .axis = float3(1, 0, 0),
+                                             });
 
     SceneNode* grandparent_node = graph->add_child(grandparent_entity);
 
@@ -53,15 +56,15 @@ void FirstScene::on_create()
                                .build();
 
     world->add_component(parent_entity, RotatingCubeComponent {
-                                            .speed = 0.001f,
-                                            .axis = float3(0, 0, 1),
-                                        });
+        .speed = 0.002f,
+        .axis = float3(0, 1, 0),
+    });
 
     SceneNode* parent_node = grandparent_node->add_child(parent_entity);
 
     Entity child_entity = world->create_entity()
                               .with(Transform {
-                                  .position = float3(0, 0.0f, 10.0f),
+                                  .position = float3(10.0f, 0.0f, 0.0f),
                                   .scale = float3(0.2f),
                               })
                               .with(TextureComponent { .id = texture_id })
