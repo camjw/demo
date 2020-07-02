@@ -15,6 +15,11 @@ Entity EntityBuilder::build()
         m_world->add_component(entity, m_texture);
     }
 
+    if (material_set)
+    {
+        m_world->add_component(entity, m_material);
+    }
+
     if (mesh_set)
     {
         m_world->add_component(entity, m_mesh);

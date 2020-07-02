@@ -5,6 +5,7 @@
 #include <ecs/components/hierarchy_component.h>
 #include <maths/transform.h>
 #include <memory>
+#include <rendering/material.h>
 #include <rendering/mesh.h>
 #include <rendering/shader.h>
 #include <rendering/texture.h>
@@ -29,6 +30,13 @@ public:
     {
         m_mesh = data;
         mesh_set = true;
+        return *this;
+    };
+
+    EntityBuilder with(Material data)
+    {
+        m_material = data;
+        material_set = true;
         return *this;
     };
 
@@ -75,6 +83,7 @@ private:
 
     Transform m_transform;
     TextureComponent m_texture;
+    Material m_material;
     MeshComponent m_mesh;
     ShaderComponent m_shader;
     CameraComponent m_camera;
@@ -82,6 +91,7 @@ private:
 
     bool transform_set = false;
     bool texture_set = false;
+    bool material_set = false;
     bool mesh_set = false;
     bool shader_set = false;
     bool camera_set = false;

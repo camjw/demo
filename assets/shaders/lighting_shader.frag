@@ -41,9 +41,12 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 
-uniform vec3 viewPos;
+uniform vec3 CAMERA_POSITION;
+uniform vec3 CAMERA_FORWARD;
+
 uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform PointLight testLight;
 uniform Material material;
 
 // function prototypes
@@ -54,7 +57,7 @@ void main()
 {    
     // properties
     vec3 norm = normalize(Normal);
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 viewDir = normalize(CAMERA_POSITION - FragPos);
 
     // phase 1: directional lighting
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
@@ -64,8 +67,9 @@ void main()
     {
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     }
-    
-    FragColor = vec4(result, 1.0);
+
+    float distance = length(pointLights[0].position - FragPos);
+    FragColor = vec4(distance, distance, distance, 1.0);
 }
 
 // calculates the color when using a directional light.

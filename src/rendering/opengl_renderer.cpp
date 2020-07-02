@@ -1,5 +1,5 @@
-#include "material.h"
-#include "point_light.h"
+#include "rendering/material.h"
+#include "rendering/point_light.h"
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
@@ -20,7 +20,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
 void OpenGLRenderer::begin_draw(Time time)
 {
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Set common variables for shaders

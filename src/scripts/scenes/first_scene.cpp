@@ -35,6 +35,7 @@ void FirstScene::on_create()
                                         .scale = float3(1.0f),
                                     })
                                     .with(TextureComponent { .id = texture_id })
+                                    .with(TURQUOISE_MATERIAL)
                                     .with(MeshComponent { .id = cube_id })
                                     .with(context->get_shader_repository()->get_shader_component("lighting"))
                                     .build();
@@ -52,6 +53,7 @@ void FirstScene::on_create()
                                    .scale = float3(0.5f),
                                })
                                .with(TextureComponent { .id = texture_id })
+                               .with(EMERALD_MATERIAL)
                                .with(MeshComponent { .id = cube_id })
                                .with(context->get_shader_repository()->get_shader_component("lighting"))
                                .with_parent(grandparent_entity)
@@ -70,6 +72,7 @@ void FirstScene::on_create()
                                   .scale = float3(0.2f),
                               })
                               .with(TextureComponent { .id = texture_id })
+                              .with(RUBY_MATERIAL)
                               .with(MeshComponent { .id = cube_id })
                               .with(context->get_shader_repository()->get_shader_component("lighting"))
                               .with_parent(parent_entity)
@@ -83,17 +86,18 @@ void FirstScene::on_create()
                                   .scale = float3(0.1f),
                               })
                               .with(MeshComponent { .id = cube_id })
+                              .with(PEWTER_MATERIAL)
                               .with(context->get_shader_repository()->get_shader_component("lamp"))
                               .build();
 
     world->add_component(light_entity, PointLight {
                                            .colour = float3(0.8, 0.8, 0.8),
-                                           .constant = 10,
-                                           .linear = 0.1,
-                                           .quadratic = 0.1,
-                                           .ambient = float3(0.8, 0.8, 0.8),
-                                           .diffuse = float3(0.8, 0.8, 0.8),
-                                           .specular = float3(0.8, 0.8, 0.8),
+                                           .constant = 1.0f,
+                                           .linear = 0.9f,
+                                           .quadratic = 0.032f,
+                                           .ambient = float3(0.05f, 0.05f, 0.05f),
+                                           .diffuse = float3(0.8f, 0.8f, 0.8f),
+                                           .specular = float3(1.0f, 1.0f, 1.0f),
                                        });
 
     graph->add_child(light_entity);

@@ -76,7 +76,23 @@ public:
         std::vector<Entity> output;
         for (int i = 0; i < living_entity_count; i++)
         {
-            if (signatures[living_entities[i]] == signature)
+            Signature entity_signature = signatures[living_entities[i]];
+            if ((entity_signature & signature) == signature)
+            {
+                output.push_back(living_entities[i]);
+            }
+        }
+
+        return output;
+    }
+
+    std::vector<Entity> get_entities_with_exact_signature(Signature signature)
+    {
+        std::vector<Entity> output;
+        for (int i = 0; i < living_entity_count; i++)
+        {
+            Signature entity_signature = signatures[living_entities[i]];
+            if (entity_signature == signature)
             {
                 output.push_back(living_entities[i]);
             }

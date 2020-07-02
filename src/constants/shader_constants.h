@@ -15,6 +15,4 @@ static const std::string DEMO_CONSTANTS_NORMAL_MODEL = "NORMAL_MODEL";
 static const std::string DEMO_CONSTANTS_CAMERA_POSITION = "CAMERA_POSITION";
 static const std::string DEMO_CONSTANTS_CAMERA_FORWARD = "CAMERA_FORWARD";
 
-
-
 #endif // DEMO_SHADER_CONSTANTS_H
