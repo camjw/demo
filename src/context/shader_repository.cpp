@@ -1,5 +1,6 @@
 #include <context/shader_repository.h>
 #include <utils/opengl_helpers.h>
+#include <vector>
 
 std::shared_ptr<Shader> ShaderRepository::get_shader(ShaderID shader_id)
 {
@@ -64,7 +65,7 @@ void ShaderRepository::clear()
     }
 }
 
-void ShaderRepository::for_all(Action<Shader>* action)
+void ShaderRepository::for_each(Action<Shader>* action)
 {
     for (auto shader : shaders)
     {
@@ -81,5 +82,14 @@ ShaderComponent ShaderRepository::get_shader_component(const std::string& shader
         .name = shader_name,
     };
 }
+std::vector<std::shared_ptr<Shader>> ShaderRepository::get_all()
+{
+    std::vector<std::shared_ptr<Shader>> output;
 
+    for (auto shader: shaders)
+    {
+        output.push_back(shader.second);
+    }
 
+    return output;
+}

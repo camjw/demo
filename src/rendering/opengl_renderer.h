@@ -32,6 +32,7 @@ public:
 private:
     void begin_draw(Time time);
     void set_camera(Entity camera_entity);
+    void process_lights(Scene* scene);
     void draw_scene_graph(Scene* scene);
     void draw_node(SceneNode* scene_node, glm::mat4 parent_transform);
     void draw_entity(Entity entity, glm::mat4 parent_transform);

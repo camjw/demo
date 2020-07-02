@@ -7,17 +7,22 @@ out vec3 FragPos;
 out vec3 Normal;
 out vec2 TexCoords;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform float TOTAL_TIME;
+uniform float DELTA_TIME;
 
-uniform mat3 normalModel;
+uniform mat4 MODEL;
+uniform mat3 NORMAL_MODEL;
+uniform mat4 VIEW;
+uniform mat4 PROJECTION;
+
+uniform vec3 CAMERA_POSITION;
+uniform vec3 CAMERA_FORWARD;
 
 void main()
 {
 	TexCoords = vec2(aTexCoord.x, aTexCoord.y);
-    Normal = normalModel * aNormal;  
+    Normal = NORMAL_MODEL * aNormal;
 
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    gl_Position = projection * view * vec4(FragPos, 1.0);
+    FragPos = vec3(MODEL * vec4(aPos, 1.0));
+    gl_Position = PROJECTION * VIEW * vec4(FragPos, 1.0);
 }

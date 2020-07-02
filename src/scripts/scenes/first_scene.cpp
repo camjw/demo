@@ -1,5 +1,6 @@
 #include "first_scene.h"
 #include <maths/transform.h>
+#include <rendering/point_light.h>
 #include <scripts/components/rotating_cube.h>
 #include <utils/opengl_helpers.h>
 
@@ -30,6 +31,7 @@ void FirstScene::on_create()
     Entity grandparent_entity = world->create_entity()
                                     .with(Transform {
                                         .position = float3(0, 0, 0),
+                                        .rotation = quaternion(1.0, 0.0, 1.0, 0.0).normalise(),
                                         .scale = float3(1.0f),
                                     })
                                     .with(TextureComponent { .id = texture_id })
@@ -56,9 +58,9 @@ void FirstScene::on_create()
                                .build();
 
     world->add_component(parent_entity, RotatingCubeComponent {
-        .speed = 0.002f,
-        .axis = float3(0, 1, 0),
-    });
+                                            .speed = 0.002f,
+                                            .axis = float3(0, 1, 0),
+                                        });
 
     SceneNode* parent_node = grandparent_node->add_child(parent_entity);
 
@@ -74,6 +76,27 @@ void FirstScene::on_create()
                               .build();
 
     parent_node->add_child(child_entity);
+
+    Entity light_entity = world->create_entity()
+                              .with(Transform {
+                                  .position = float3(20.0f, 0.0f, 0.0f),
+                                  .scale = float3(0.1f),
+                              })
+                              .with(MeshComponent { .id = cube_id })
+                              .with(context->get_shader_repository()->get_shader_component("lamp"))
+                              .build();
+
+    world->add_component(light_entity, PointLight {
+                                           .colour = float3(0.8, 0.8, 0.8),
+                                           .constant = 10,
+                                           .linear = 0.1,
+                                           .quadratic = 0.1,
+                                           .ambient = float3(0.8, 0.8, 0.8),
+                                           .diffuse = float3(0.8, 0.8, 0.8),
+                                           .specular = float3(0.8, 0.8, 0.8),
+                                       });
+
+    graph->add_child(light_entity);
 }
 
 void FirstScene::load_textures()
@@ -93,6 +116,11 @@ void FirstScene::load_shaders()
         "lighting",
         "../assets/shaders/lighting_shader.vert",
         "../assets/shaders/lighting_shader.frag");
+
+    context->get_shader_repository()->create_shader(
+        "lamp",
+        "../assets/shaders/lamp_shader.vert",
+        "../assets/shaders/lamp_shader.frag");
 }
 
 void FirstScene::load_meshes()

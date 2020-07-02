@@ -17,7 +17,9 @@ public:
 
     void delete_shader(ShaderID mesh_id);
     void clear();
-    void for_all(Action<Shader>* action);
+    void for_each(Action<Shader>* action);
+
+    std::vector<std::shared_ptr<Shader>> get_all();
 
     ShaderComponent get_shader_component(const std::string& shader_name);
 
