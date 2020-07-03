@@ -148,4 +148,6 @@ void OpenGLRenderer::process_lights(Scene* scene)
 
         point_light.bind(lighting_shader, j, transform.position);
     }
+
+    lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 }

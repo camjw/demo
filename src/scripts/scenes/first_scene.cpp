@@ -80,27 +80,10 @@ void FirstScene::on_create()
 
     parent_node->add_child(child_entity);
 
-    Entity light_entity = world->create_entity()
-                              .with(Transform {
-                                  .position = float3(20.0f, 0.0f, 0.0f),
-                                  .scale = float3(0.1f),
-                              })
-                              .with(MeshComponent { .id = cube_id })
-                              .with(PEWTER_MATERIAL)
-                              .with(context->get_shader_repository()->get_shader_component("lamp"))
-                              .build();
-
-    world->add_component(light_entity, PointLight {
-                                           .colour = float3(0.8, 0.8, 0.8),
-                                           .constant = 1.0f,
-                                           .linear = 0.9f,
-                                           .quadratic = 0.032f,
-                                           .ambient = float3(0.05f, 0.05f, 0.05f),
-                                           .diffuse = float3(0.8f, 0.8f, 0.8f),
-                                           .specular = float3(1.0f, 1.0f, 1.0f),
-                                       });
-
-    graph->add_child(light_entity);
+    CreateLightEntityWithPosition(float3(20.0f, 0.0f, 20.0f), cube_id);
+    CreateLightEntityWithPosition(float3(20.0f, 0.0f, 0.0f), cube_id);
+    CreateLightEntityWithPosition(float3(20.0f, 0.0f, 20.0f), cube_id);
+    CreateLightEntityWithPosition(float3(40.0f, 0.0f, 00.0f), cube_id);
 }
 
 void FirstScene::load_textures()
@@ -148,4 +131,29 @@ void FirstScene::build_camera()
 void FirstScene::on_destroy()
 {
     // Dump all of those here
+}
+
+void FirstScene::CreateLightEntityWithPosition(float3 position, MeshID mesh_id)
+{
+    Entity light_entity = world->create_entity()
+        .with(Transform {
+            .position = position,
+            .scale = float3(0.1f),
+        })
+        .with(MeshComponent { .id = mesh_id })
+        .with(PEWTER_MATERIAL)
+        .with(context->get_shader_repository()->get_shader_component("lamp"))
+        .build();
+
+    world->add_component(light_entity, PointLight {
+        .colour = float3(0.8, 0.8, 0.8),
+        .constant = 0.001f,
+        .linear = 0.009f,
+        .quadratic = 0.00032f,
+        .ambient = float3(0.05f, 0.05f, 0.05f),
+        .diffuse = float3(0.8f, 0.8f, 0.8f),
+        .specular = float3(1.0f, 1.0f, 1.0f),
+    });
+
+    graph->add_child(light_entity);
 }

@@ -35,7 +35,7 @@ struct PointLight {
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 4
+#define MAX_NUM_POINT_LIGHTS 4
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -45,9 +45,11 @@ uniform vec3 CAMERA_POSITION;
 uniform vec3 CAMERA_FORWARD;
 
 uniform DirLight dirLight;
-uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform PointLight pointLights[MAX_NUM_POINT_LIGHTS];
 uniform PointLight testLight;
 uniform Material material;
+
+uniform int NUM_ACTIVE_POINT_LIGHTS;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -63,13 +65,12 @@ void main()
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
     // phase 2: point lights
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
     {
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     }
 
-    float distance = length(pointLights[0].position - FragPos);
-    FragColor = vec4(distance, distance, distance, 1.0);
+    FragColor = vec4(result, 1.0);
 }
 
 // calculates the color when using a directional light.
@@ -104,9 +105,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * diff * material.diffuse;
     vec3 specular = light.specular * spec * material.specular;
-    ambient *= attenuation;
-    diffuse *= attenuation;
-    specular *= attenuation;
 
     return light.colour * (ambient + diffuse + specular);
 }
