@@ -14,7 +14,7 @@ struct Material {
     float shininess;
 };
 
-struct DirLight {
+struct DirectionalLight {
     vec3 direction;
 	
     vec3 ambient;
@@ -44,9 +44,8 @@ in vec2 TexCoords;
 uniform vec3 CAMERA_POSITION;
 uniform vec3 CAMERA_FORWARD;
 
-uniform DirLight dirLight;
+uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_NUM_POINT_LIGHTS];
-uniform PointLight testLight;
 uniform Material material;
 
 uniform int NUM_ACTIVE_POINT_LIGHTS;
@@ -77,11 +76,14 @@ void main()
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(-light.direction);
+
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
+
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+
     // combine results
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * diff * material.diffuse;
@@ -93,14 +95,18 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
+
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
+
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+
     // attenuation
     float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+
     // combine results
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * diff * material.diffuse;

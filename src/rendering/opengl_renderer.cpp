@@ -1,5 +1,6 @@
 #include "rendering/material.h"
 #include "rendering/point_light.h"
+#include "rendering/directional_light.h"
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
@@ -139,6 +140,18 @@ void OpenGLRenderer::process_lights(Scene* scene)
 
     std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
 
+    process_point_lights(scene, point_lights);
+
+    Signature directional_light = Signature();
+    directional_light.set(world->get_component_type<DirectionalLight>());
+
+    std::vector<Entity> directional_lights = world->get_entities_with_signature(directional_light);
+
+    process_directional_lights(scene, directional_lights);
+}
+
+void OpenGLRenderer::process_point_lights(Scene* scene, std::vector<Entity> point_lights)
+{
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
     for (int j = 0; j < point_lights.size(); j++)
@@ -151,3 +164,19 @@ void OpenGLRenderer::process_lights(Scene* scene)
 
     lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 }
+
+void OpenGLRenderer::process_directional_lights(Scene* scene, std::vector<Entity> directional_lights)
+{
+    std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
+
+    for (int j = 0; j < directional_lights.size(); j++)
+    {
+        DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[j]);
+
+        directional_light.bind(lighting_shader, j);
+    }
+
+    lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
+}
+
+

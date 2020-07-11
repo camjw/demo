@@ -4,15 +4,17 @@
 #include <ecs/ecs.h>
 
 #include <array>
+#include <memory>
 #include <queue>
 
 class EntityManager
 {
 public:
-    EntityManager()
+    EntityManager(std::array<Signature, MAX_ENTITIES> signatures): signatures(signatures)
     {
         for (Entity entity = 0; entity < MAX_ENTITIES; entity++)
         {
+
             available_entities.push(entity);
         }
     }
