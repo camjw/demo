@@ -11,4 +11,6 @@ const Entity INVALID_ENTITY = UINT32_MAX;
 using ComponentType = std::uint8_t;
 const ComponentType MAX_COMPONENTS = 32;
 
+using Signature = std::bitset<MAX_COMPONENTS>;
+
 #endif

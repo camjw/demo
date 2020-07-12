@@ -7,6 +7,8 @@
 #include <ecs/entity_manager.h>
 #include <ecs/system_manager.h>
 
+class SignatureBuilder;
+
 class World
 {
 public:
@@ -127,6 +129,8 @@ public:
     {
         return component_manager->has_component_registered(component_name);
     }
+
+    SignatureBuilder get_signature_builder();
 
 
 private:

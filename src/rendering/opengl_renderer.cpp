@@ -2,6 +2,7 @@
 #include "rendering/point_light.h"
 #include "rendering/directional_light.h"
 #include <rendering/opengl_renderer.h>
+#include <ecs/signature_builder.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
     Window* _window, std::shared_ptr<World> _world)
@@ -134,16 +135,18 @@ glm::mat4 OpenGLRenderer::get_view_matrix(CameraComponent& cameraComponent, Tran
 // a maximum number
 void OpenGLRenderer::process_lights(Scene* scene)
 {
-    Signature point_light_and_transform = Signature();
-    point_light_and_transform.set(world->get_component_type<Transform>());
-    point_light_and_transform.set(world->get_component_type<PointLight>());
+    Signature point_light_and_transform = world->get_signature_builder()
+        .with<Transform>()
+        .with<PointLight>()
+        .build();
 
     std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
 
     process_point_lights(scene, point_lights);
 
-    Signature directional_light = Signature();
-    directional_light.set(world->get_component_type<DirectionalLight>());
+    Signature directional_light = world->get_signature_builder()
+        .with<DirectionalLight>()
+        .build();
 
     std::vector<Entity> directional_lights = world->get_entities_with_signature(directional_light);
 
