@@ -1,8 +1,8 @@
+#include "rendering/directional_light.h"
 #include "rendering/material.h"
 #include "rendering/point_light.h"
-#include "rendering/directional_light.h"
-#include <rendering/opengl_renderer.h>
 #include <ecs/signature_builder.h>
+#include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
     Window* _window, std::shared_ptr<World> _world)
@@ -112,7 +112,7 @@ void OpenGLRenderer::set_camera(Entity camera_entity)
     Transform& camera_transform = world->get_component<Transform>(camera_entity);
     shader_repository->for_each(new SetShaderCamera(
         camera_transform.position,
-        camera.forward,
+        camera_transform.position + camera.forward,
         get_view_matrix(camera, camera_transform)));
 
     isCameraSet = true;
@@ -128,7 +128,10 @@ void OpenGLRenderer::draw_scene(Time time, Scene* scene)
 
 glm::mat4 OpenGLRenderer::get_view_matrix(CameraComponent& cameraComponent, Transform& transform)
 {
-    return glm::lookAt(transform.position.to_glm(), cameraComponent.forward.to_glm(), cameraComponent.up.to_glm());
+    return glm::lookAt(
+        transform.position.to_glm(),
+        transform.position.to_glm() + cameraComponent.forward.to_glm(),
+        cameraComponent.up.to_glm());
 }
 
 // TODO: should probably refactor this so that it only gets the active lights in a scene up to
@@ -136,24 +139,24 @@ glm::mat4 OpenGLRenderer::get_view_matrix(CameraComponent& cameraComponent, Tran
 void OpenGLRenderer::process_lights(Scene* scene)
 {
     Signature point_light_and_transform = world->get_signature_builder()
-        .with<Transform>()
-        .with<PointLight>()
-        .build();
+                                              .with<Transform>()
+                                              .with<PointLight>()
+                                              .build();
 
     std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
 
-    process_point_lights(scene, point_lights);
+    process_point_lights(point_lights);
 
     Signature directional_light = world->get_signature_builder()
-        .with<DirectionalLight>()
-        .build();
+                                      .with<DirectionalLight>()
+                                      .build();
 
     std::vector<Entity> directional_lights = world->get_entities_with_signature(directional_light);
 
-    process_directional_lights(scene, directional_lights);
+    process_directional_lights(directional_lights);
 }
 
-void OpenGLRenderer::process_point_lights(Scene* scene, std::vector<Entity> point_lights)
+void OpenGLRenderer::process_point_lights(std::vector<Entity> point_lights)
 {
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
@@ -169,17 +172,14 @@ void OpenGLRenderer::process_point_lights(Scene* scene, std::vector<Entity> poin
     lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 }
 
-void OpenGLRenderer::process_directional_lights(Scene* scene, std::vector<Entity> directional_lights)
+void OpenGLRenderer::process_directional_lights(std::vector<Entity> directional_lights)
 {
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
     for (int i = 0; i < directional_lights.size(); i++)
     {
-        printf("Processing %lu directional lights\n", directional_lights.size());
         DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[i]);
 
         directional_light.bind(lighting_shader);
     }
 }
-
-

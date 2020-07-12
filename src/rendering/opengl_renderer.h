@@ -33,8 +33,8 @@ private:
     void begin_draw(Time time);
     void set_camera(Entity camera_entity);
     void process_lights(Scene* scene);
-    void process_point_lights(Scene* scene, std::vector<Entity> point_lights);
-    void process_directional_lights(Scene* scene, std::vector<Entity> directional_lights);
+    void process_point_lights(std::vector<Entity> point_lights);
+    void process_directional_lights(std::vector<Entity> directional_lights);
     void draw_scene_graph(Scene* scene);
     void draw_node(SceneNode* scene_node, glm::mat4 parent_transform);
     void draw_entity(Entity entity, glm::mat4 parent_transform);

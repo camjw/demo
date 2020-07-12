@@ -125,6 +125,7 @@ void FirstScene::build_camera()
                  })
                  .with(Transform {
                      .position = float3(0.0, 0.0, 10.0),
+                     .rotation = quaternion(0, 1, 0, 0),
                  })
                  .build();
 }

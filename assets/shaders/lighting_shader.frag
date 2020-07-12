@@ -64,14 +64,12 @@ void main()
     vec3 result = CalcDirectionalLight(directionalLight, norm, viewDir);
 
     // phase 2: point lights
-    //for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
-    //{
-        //result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
-    //}
+    for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
+    {
+        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+    }
 
     FragColor = vec4(result, 1.0);
-    //FragColor = vec4(directionalLight.direction, 1.0);
-    FragColor = vec4(directionalLight.ambient);
 }
 
 // calculates the color when using a directional light.

@@ -48,11 +48,11 @@ void OrbitCameraSystem::process_keyboard(Time time, InputState* input,
 
         if (input->is_key_pressed(Key::Left))
         {
-            camera_euler_angles.yaw -= LOOK_SPEED * velocity;
+            camera_euler_angles.yaw -= camera.look_speed * velocity;
         }
         if (input->is_key_pressed(Key::Right))
         {
-            camera_euler_angles.yaw += LOOK_SPEED * velocity;
+            camera_euler_angles.yaw += camera.look_speed * velocity;
         }
 
         transform.rotation = quaternion::from_euler_angles(camera_euler_angles);
@@ -85,9 +85,9 @@ void OrbitCameraSystem::update_camera_vectors(CameraComponent& camera,
     camera_euler_angles.pitch = maths::mod(camera_euler_angles.pitch, 360.0f);
 
     float3 front;
-    front.x = cos(glm::radians(camera_euler_angles.yaw)) * cos(glm::radians(camera_euler_angles.pitch));
-    front.y = sin(glm::radians(camera_euler_angles.pitch));
-    front.z = sin(glm::radians(camera_euler_angles.yaw)) * cos(glm::radians(camera_euler_angles.pitch));
+    front.x = cos(camera_euler_angles.yaw) * cos(camera_euler_angles.pitch);
+    front.y = sin(camera_euler_angles.pitch);
+    front.z = sin(camera_euler_angles.yaw) * cos(camera_euler_angles.pitch);
 
     camera.forward = front;
 
