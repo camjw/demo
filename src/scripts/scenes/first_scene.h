@@ -21,7 +21,8 @@ private:
     void build_camera();
 
     void build_entities();
-    void CreateLightEntityWithPosition(float3 position, MeshID mesh_id);
+    void create_light_entity_with_position(float3 position, MeshID mesh_id);
+    void create_directional_light_entity();
 };
 
 #endif // DEMO_FIRST_SCENE_H

@@ -80,10 +80,11 @@ void FirstScene::on_create()
 
     parent_node->add_child(child_entity);
 
-    CreateLightEntityWithPosition(float3(20.0f, 0.0f, 20.0f), cube_id);
-    CreateLightEntityWithPosition(float3(20.0f, 0.0f, 0.0f), cube_id);
-    CreateLightEntityWithPosition(float3(20.0f, 0.0f, 20.0f), cube_id);
-    CreateLightEntityWithPosition(float3(40.0f, 0.0f, 00.0f), cube_id);
+    create_light_entity_with_position(float3(20.0f, 0.0f, 20.0f), cube_id);
+    create_light_entity_with_position(float3(20.0f, 0.0f, 0.0f), cube_id);
+    create_light_entity_with_position(float3(20.0f, 0.0f, 20.0f), cube_id);
+    create_light_entity_with_position(float3(40.0f, 0.0f, 00.0f), cube_id);
+    create_directional_light_entity();
 }
 
 void FirstScene::load_textures()
@@ -133,7 +134,7 @@ void FirstScene::on_destroy()
     // Dump all of those here
 }
 
-void FirstScene::CreateLightEntityWithPosition(float3 position, MeshID mesh_id)
+void FirstScene::create_light_entity_with_position(float3 position, MeshID mesh_id)
 {
     Entity light_entity = world->create_entity()
         .with(Transform {
@@ -143,17 +144,30 @@ void FirstScene::CreateLightEntityWithPosition(float3 position, MeshID mesh_id)
         .with(MeshComponent { .id = mesh_id })
         .with(PEWTER_MATERIAL)
         .with(context->get_shader_repository()->get_shader_component("lamp"))
+        .with(PointLight {
+            .colour = float3(0.8, 0.8, 0.8),
+            .constant = 0.001f,
+            .linear = 0.009f,
+            .quadratic = 0.00032f,
+            .ambient = float3(0.05f, 0.05f, 0.05f),
+            .diffuse = float3(0.8f, 0.8f, 0.8f),
+            .specular = float3(1.0f, 1.0f, 1.0f),
+        })
         .build();
 
-    world->add_component(light_entity, PointLight {
-        .colour = float3(0.8, 0.8, 0.8),
-        .constant = 0.001f,
-        .linear = 0.009f,
-        .quadratic = 0.00032f,
-        .ambient = float3(0.05f, 0.05f, 0.05f),
-        .diffuse = float3(0.8f, 0.8f, 0.8f),
-        .specular = float3(1.0f, 1.0f, 1.0f),
-    });
-
     graph->add_child(light_entity);
+}
+
+void FirstScene::create_directional_light_entity()
+{
+    Entity directional_light_entity = world->create_entity()
+        .with(DirectionalLight {
+            .direction = float3(-0.2, -0.3, -0.4),
+            .ambient = float3(0.1, 0.1, 0.1),
+            .diffuse = float3(0.1, 0.1, 0.1),
+            .specular = float3(0.1, 0.1, 0.1),
+        })
+        .build();
+
+    graph->add_child(directional_light_entity);
 }

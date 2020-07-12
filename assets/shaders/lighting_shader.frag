@@ -51,7 +51,7 @@ uniform Material material;
 uniform int NUM_ACTIVE_POINT_LIGHTS;
 
 // function prototypes
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
@@ -61,19 +61,21 @@ void main()
     vec3 viewDir = normalize(CAMERA_POSITION - FragPos);
 
     // phase 1: directional lighting
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+    vec3 result = CalcDirectionalLight(directionalLight, norm, viewDir);
 
     // phase 2: point lights
-    for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
-    {
-        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
-    }
+    //for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
+    //{
+        //result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+    //}
 
     FragColor = vec4(result, 1.0);
+    //FragColor = vec4(directionalLight.direction, 1.0);
+    FragColor = vec4(directionalLight.ambient);
 }
 
 // calculates the color when using a directional light.
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(-light.direction);
 

@@ -10,7 +10,7 @@
 class EntityManager
 {
 public:
-    EntityManager(std::array<Signature, MAX_ENTITIES> signatures): signatures(signatures)
+    EntityManager()
     {
         for (Entity entity = 0; entity < MAX_ENTITIES; entity++)
         {

@@ -40,6 +40,16 @@ Entity EntityBuilder::build()
         m_world->add_component(entity, m_hierarchy);
     }
 
+    if (point_light_set)
+    {
+        m_world->add_component(entity, m_point_light);
+    }
+
+    if (directional_light_set)
+    {
+        m_world->add_component(entity, m_directional_light);
+    }
+
     return entity;
 }
 

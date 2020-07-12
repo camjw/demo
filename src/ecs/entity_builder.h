@@ -9,6 +9,8 @@
 #include <rendering/mesh.h>
 #include <rendering/shader.h>
 #include <rendering/texture.h>
+#include <rendering/directional_light.h>
+#include <rendering/point_light.h>
 
 class World;
 class EntityBuilder
@@ -68,6 +70,20 @@ public:
         return *this;
     };
 
+    EntityBuilder with(PointLight data)
+    {
+        m_point_light = data;
+        point_light_set = true;
+        return *this;
+    };
+
+    EntityBuilder with(DirectionalLight data)
+    {
+        m_directional_light = data;
+        directional_light_set = true;
+        return *this;
+    };
+
     EntityBuilder with_parent(Entity parent)
     {
         HierarchyComponent hierarchy_component = HierarchyComponent { .parent = parent };
@@ -88,6 +104,8 @@ private:
     ShaderComponent m_shader;
     CameraComponent m_camera;
     HierarchyComponent m_hierarchy;
+    PointLight m_point_light;
+    DirectionalLight m_directional_light;
 
     bool transform_set = false;
     bool texture_set = false;
@@ -96,6 +114,8 @@ private:
     bool shader_set = false;
     bool camera_set = false;
     bool hierarchy_set = false;
+    bool point_light_set = false;
+    bool directional_light_set = false;
 };
 
 #endif //DEMO_ENTITY_BUILDER_H

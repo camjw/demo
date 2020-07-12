@@ -157,14 +157,15 @@ void OpenGLRenderer::process_point_lights(Scene* scene, std::vector<Entity> poin
 {
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
-    for (int j = 0; j < point_lights.size(); j++)
+    for (int i = 0; i < point_lights.size(); i++)
     {
-        PointLight point_light = world->get_component<PointLight>(point_lights[j]);
-        Transform transform = world->get_component<Transform>(point_lights[j]);
+        PointLight point_light = world->get_component<PointLight>(point_lights[i]);
+        Transform transform = world->get_component<Transform>(point_lights[i]);
 
-        point_light.bind(lighting_shader, j, transform.position);
+        point_light.bind(lighting_shader, i, transform.position);
     }
 
+    lighting_shader->bind();
     lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 }
 
@@ -172,14 +173,13 @@ void OpenGLRenderer::process_directional_lights(Scene* scene, std::vector<Entity
 {
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
-    for (int j = 0; j < directional_lights.size(); j++)
+    for (int i = 0; i < directional_lights.size(); i++)
     {
-        DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[j]);
+        printf("Processing %lu directional lights\n", directional_lights.size());
+        DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[i]);
 
-        directional_light.bind(lighting_shader, j);
+        directional_light.bind(lighting_shader);
     }
-
-    lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
 }
 
 
