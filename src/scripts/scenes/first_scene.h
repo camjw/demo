@@ -9,7 +9,7 @@
 class FirstScene : public Scene
 {
 public:
-    FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id);
+    FirstScene(std::shared_ptr<DemoContext> context, const std::shared_ptr<World>& world, SceneID scene_id);
 
     void on_create() override;
     void on_destroy() override;

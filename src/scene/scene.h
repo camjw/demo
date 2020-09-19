@@ -11,9 +11,9 @@
 class Scene
 {
 public:
-    Scene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id)
+    Scene(std::shared_ptr<DemoContext> context, const std::shared_ptr<World>& world, SceneID scene_id)
         : context(std::move(context))
-        , world(std::move(world))
+        , world(world)
         , graph(std::make_unique<SceneGraph>(world))
         , scene_id(scene_id)
     {

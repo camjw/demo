@@ -5,8 +5,8 @@
 
 #include <utility>
 
-FirstScene::FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id)
-    : Scene(std::move(context), std::move(world), scene_id)
+FirstScene::FirstScene(std::shared_ptr<DemoContext> context, const std::shared_ptr<World>& world, SceneID scene_id)
+    : Scene(std::move(context), world, scene_id)
 {
 }
 

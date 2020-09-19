@@ -16,7 +16,10 @@ void FBXImporter::load_fbx(const std::string& filename, SceneNode* scene_node)
 
 void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID>& mesh_ids, std::vector<TextureID>& texture_ids)
 {
-    world->add_component(scene_node->get_entity(), MeshComponent(mesh_ids[assimp_node->mMeshes[0]]));
+    if (assimp_node->mNumMeshes > 0)
+    {
+        world->add_component(scene_node->get_entity(), MeshComponent(mesh_ids[assimp_node->mMeshes[0]]));
+    }
 
     for (unsigned int i = 0; i < assimp_node->mNumChildren; i++)
     {
