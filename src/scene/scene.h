@@ -12,8 +12,8 @@ class Scene
 {
 public:
     Scene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id)
-        : context(context)
-        , world(world)
+        : context(std::move(context))
+        , world(std::move(world))
         , graph(std::make_unique<SceneGraph>(world))
         , scene_id(scene_id)
     {
@@ -25,7 +25,7 @@ public:
     virtual void on_load() {};
     virtual void on_unload() {};
 
-    inline Entity get_camera()
+    inline Entity get_camera() const
     {
         return camera;
     };

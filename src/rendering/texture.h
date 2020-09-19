@@ -13,6 +13,8 @@ struct TextureComponent
 {
     TextureID id;
     int binding_index;
+    explicit TextureComponent() = default;
+    TextureComponent(TextureID id, int binding_index) : id(id), binding_index(binding_index) {};
 };
 
 class Texture
@@ -29,6 +31,14 @@ public:
         : ID(other.ID)
     {
         other.ID = 0;
+        other.width = 0;
+        other.height = 0;
+        other.internal_format = 0;
+        other.image_format = 0;
+        other.wrap_s = 0;
+        other.wrap_t = 0;
+        other.filter_min = 0;
+        other.filter_max = 0;
     }
 
     Texture& operator=(Texture&& other) noexcept
@@ -52,13 +62,14 @@ private:
         glDeleteTextures(1, &ID);
         ID = 0;
     }
+
     GLuint width, height;
-    GLuint Internal_Format;
-    GLuint Image_Format;
-    GLuint Wrap_S;
-    GLuint Wrap_T;
-    GLuint Filter_Min;
-    GLuint Filter_Max;
+    GLuint internal_format;
+    GLuint image_format;
+    GLuint wrap_s;
+    GLuint wrap_t;
+    GLuint filter_min;
+    GLuint filter_max;
 };
 
 #endif

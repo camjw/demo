@@ -3,15 +3,24 @@
 
 #include <constants/shader_constants.h>
 #include <maths/float3.h>
-#include <templates/action.h>
 #include <rendering/shader.h>
+#include <templates/action.h>
 
 class SetShaderCamera : public Action<Shader>
 {
 public:
     SetShaderCamera(float3 position, float3 forward, glm::mat4 view)
-        : position(position), forward(forward), view(view) {};
-    void run(std::shared_ptr<Shader> shader);
+        : position(position)
+        , forward(forward)
+        , view(view) {};
+    inline void run(std::shared_ptr<Shader> shader)
+    {
+        shader->bind();
+
+        shader->set_float3(DEMO_CONSTANTS_CAMERA_POSITION, position);
+        shader->set_float3(DEMO_CONSTANTS_CAMERA_FORWARD, forward);
+        shader->set_mat4(DEMO_CONSTANTS_VIEW, view);
+    }
 
 private:
     float3 position;

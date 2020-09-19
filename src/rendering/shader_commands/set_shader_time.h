@@ -2,15 +2,22 @@
 #define DEMO_SET_SHADER_TIME_H
 
 #include <constants/shader_constants.h>
-#include <templates/action.h>
 #include <rendering/shader.h>
+#include <templates/action.h>
 #include <timer.h>
 
 class SetShaderTime : public Action<Shader>
 {
 public:
-    SetShaderTime(Time time): time(time) {};
-    void run(std::shared_ptr<Shader> shader);
+    SetShaderTime(Time time)
+        : time(time) {};
+
+    inline void run(std::shared_ptr<Shader> shader)
+    {
+        shader->bind();
+        shader->set_float(DEMO_CONSTANTS_TOTAL_TIME, time.total_time);
+        shader->set_float(DEMO_CONSTANTS_DELTA_TIME, time.delta_time);
+    }
 
 private:
     Time time;

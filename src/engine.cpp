@@ -9,7 +9,6 @@
 
 Engine::Engine()
 {
-    context = std::make_shared<DemoContext>();
     window = new Window("Estuary King");
     #ifdef WINDOWS
     window->load_icon("./assets/icon.png");
@@ -18,6 +17,8 @@ Engine::Engine()
 
     world = std::make_shared<World>();
     world->init(world);
+
+    context = std::make_shared<DemoContext>(world);
 
     // Register components
     world->register_component<Transform>();
@@ -48,6 +49,38 @@ Engine::~Engine()
 {
     delete input;
     delete window;
+}
+
+void Engine::run()
+{
+    const int UPDATE_FREQUENCY = 60;
+    const float CYCLE_TIME = 1000.0f / UPDATE_FREQUENCY;
+
+    static Timer system_timer;
+    static Timer physics_timer;
+
+    float accumulated_milliseconds = 0.0f;
+
+    while (is_running())
+    {
+        system_timer.tick();
+        process_input();
+        accumulated_milliseconds += system_timer.get_time().delta_time;
+
+        if (accumulated_milliseconds >= CYCLE_TIME)
+        {
+            accumulated_milliseconds -= CYCLE_TIME;
+
+            physics_timer.tick();
+
+            Time time = physics_timer.get_time();
+            update(time);
+
+            late_update(time);
+
+            draw(time);
+        }
+    }
 }
 
 void Engine::update(Time time)

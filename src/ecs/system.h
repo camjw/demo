@@ -4,7 +4,7 @@
 #include <set>
 
 #include <ecs/ecs.h>
-#include <input_processor.h>
+#include <input/input_processor.h>
 #include <timer.h>
 
 class World;

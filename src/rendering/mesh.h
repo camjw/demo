@@ -15,6 +15,8 @@ using MeshID = uint8_t;
 struct MeshComponent
 {
     MeshID id;
+    explicit MeshComponent() = default;
+    explicit MeshComponent(MeshID id) : id(id) {};
 };
 
 class Mesh

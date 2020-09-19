@@ -1,23 +1,9 @@
-#include <context/demo_context.h>
+#include "demo_context.h"
 
-DemoContext::DemoContext()
+DemoContext::DemoContext(std::shared_ptr<World> world)
 {
     mesh_repository = std::make_shared<MeshRepository>();
     texture_repository = std::make_shared<TextureRepository>();
     shader_repository = std::make_shared<ShaderRepository>();
-}
-
-std::shared_ptr<MeshRepository> DemoContext::get_mesh_repository()
-{
-    return mesh_repository;
-}
-
-std::shared_ptr<TextureRepository> DemoContext::get_texture_repository()
-{
-    return texture_repository;
-}
-
-std::shared_ptr<ShaderRepository> DemoContext::get_shader_repository()
-{
-    return shader_repository;
+    fbx_importer = std::make_shared<FBXImporter>(mesh_repository, texture_repository, world);
 }

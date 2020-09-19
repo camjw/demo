@@ -9,13 +9,15 @@
 #include <maths/float4.h>
 #include <sstream>
 #include <string>
+#include <utility>
 
 using ShaderID = uint8_t;
 
 struct ShaderComponent
 {
     ShaderID id;
-    std::string name;
+    explicit ShaderComponent() = default;
+    explicit ShaderComponent(ShaderID id) : id(id) {};
 };
 
 // TODO: refactor so this doesn't use streams or strings

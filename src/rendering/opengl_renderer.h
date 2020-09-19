@@ -6,9 +6,9 @@
 #include <ecs/world.h>
 
 #include <context/demo_context.h>
-#include <context/mesh_repository.h>
-#include <context/shader_repository.h>
-#include <context/texture_repository.h>
+#include <resources/mesh_repository.h>
+#include <resources/shader_repository.h>
+#include <resources/texture_repository.h>
 #include <ecs/components/camera_component.h>
 #include <imgui/bindings/imgui_impl_glfw.h>
 #include <imgui/bindings/imgui_impl_opengl3.h>

@@ -2,7 +2,7 @@
 #define DEMO_ROTATING_CUBE_COMPONENT_H
 
 #include <ecs/system.h>
-#include <input_processor.h>
+#include <input/input_processor.h>
 #include <maths/transform.h>
 #include <timer.h>
 

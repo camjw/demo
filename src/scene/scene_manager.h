@@ -6,7 +6,7 @@
 #include "scene_id.h"
 #include <context/demo_context.h>
 #include <ecs/world.h>
-#include <input_processor.h>
+#include <input/input_processor.h>
 #include <memory>
 #include <timer.h>
 

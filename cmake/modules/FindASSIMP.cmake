@@ -8,8 +8,9 @@ FIND_PATH( ASSIMP_INCLUDE_DIR assimp/mesh.h
 	/usr/include
 	/usr/local/include
 	/opt/local/include
-	${CMAKE_SOURCE_DIR}/includes
+	${CMAKE_SOURCE_DIR}/include
 )
+
 FIND_LIBRARY( ASSIMP_LIBRARY assimp
 	/usr/lib64
 	/usr/lib

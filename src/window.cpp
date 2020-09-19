@@ -1,4 +1,4 @@
-#include <input_processor.h>
+#include <input/input_processor.h>
 #include <utils/opengl_helpers.h>
 #include <window.h>
 

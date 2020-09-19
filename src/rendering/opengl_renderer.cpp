@@ -70,8 +70,8 @@ void OpenGLRenderer::draw_entity(Entity entity, glm::mat4 parent_transform)
         texture_repository->get_texture(texture.id)->bind(texture.binding_index);
     }
 
-    std::string shader_name = world->get_component<ShaderComponent>(entity).name;
-    std::shared_ptr<Shader> shader = shader_repository->get_shader(shader_name);
+    ShaderID shader_id = world->get_component<ShaderComponent>(entity).id;
+    std::shared_ptr<Shader> shader = shader_repository->get_shader(shader_id);
     shader->bind();
 
     if (world->has_component<Material>(entity))

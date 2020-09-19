@@ -11,18 +11,11 @@ class FirstScene : public Scene
 public:
     FirstScene(std::shared_ptr<DemoContext> context, std::shared_ptr<World> world, SceneID scene_id);
 
-    virtual void on_create() override;
-    virtual void on_destroy() override;
+    void on_create() override;
+    void on_destroy() override;
 
 private:
-    void load_textures();
-    void load_shaders();
-    void load_meshes();
     void build_camera();
-
-    void build_entities();
-    void create_light_entity_with_position(float3 position, MeshID mesh_id);
-    void create_directional_light_entity();
 };
 
 #endif // DEMO_FIRST_SCENE_H

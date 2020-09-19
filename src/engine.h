@@ -1,28 +1,26 @@
 #ifndef DEMO_ENGINE_HPP
 #define DEMO_ENGINE_HPP
 
+#include <chrono>
+#include <context/demo_context.h>
+#include <cstdio>
+#include <ecs/components/camera_component.h>
+#include <ecs/ecs.h>
+#include <ecs/world.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <input/input_processor.h>
 #include <rendering/cube_map.h>
 #include <rendering/opengl_renderer.h>
 #include <rendering/shader.h>
 #include <rendering/texture.h>
-
-#include <ecs/components/camera_component.h>
-#include <input_processor.h>
-#include <timer.h>
-#include <window.h>
-
-#include <ecs/ecs.h>
-#include <ecs/world.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <stb_image.h>
-
-#include <context/demo_context.h>
 #include <scene/scene_manager.h>
+#include <stb_image.h>
+#include <thread>
+#include <timer.h>
 #include <vector>
+#include <window.h>
 
 class Engine
 {
@@ -31,6 +29,9 @@ public:
     Engine();
     ~Engine();
 
+    void run();
+
+private:
     void process_input();
 
     void update(Time time);
@@ -39,7 +40,6 @@ public:
 
     bool is_running();
 
-private:
     Window* window = nullptr;
     InputProcessor* input = nullptr;
 

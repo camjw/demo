@@ -7,7 +7,7 @@
 #include <ecs/ecs.h>
 #include <ecs/system.h>
 
-#include <input_processor.h>
+#include <input/input_processor.h>
 #include <timer.h>
 
 class SystemManager

@@ -5,12 +5,14 @@
 #include <ecs/entity_builder.h>
 #include <ecs/world.h>
 
+#include <utility>
+
 class SceneGraph
 {
 public:
-    SceneGraph(std::shared_ptr<World> world)
+    explicit SceneGraph(std::shared_ptr<World> world)
         : m_root_node(std::make_shared<SceneNode>())
-        , m_world(world)
+        , m_world(std::move(world))
     {
         // Set root node to have entity
         m_root_node->set_entity(
