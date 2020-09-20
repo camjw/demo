@@ -5,7 +5,7 @@ layout (location = 2) in vec2 aTexCoord;
 
 out vec3 FragPos;
 out vec3 Normal;
-out vec2 TexCoord;
+out vec2 TexCoords;
 
 uniform float TOTAL_TIME;
 uniform float DELTA_TIME;
@@ -21,7 +21,7 @@ uniform vec3 CAMERA_FORWARD;
 
 void main()
 {
-	TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+	TexCoords = vec2(aTexCoord.x, aTexCoord.y);
     Normal = NORMAL_MODEL * aNormal;
 
     FragPos = vec3(MODEL * vec4(aPos, 1.0));

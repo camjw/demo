@@ -8,7 +8,7 @@ struct Material {
     float shininess;
 };
 
-in vec2 TexCoord;
+in vec2 TexCoords;
 
 uniform vec3 lightColour;
 

@@ -1,10 +1,10 @@
 #include <ecs/components/hierarchy_component.h>
+#include <ecs/systems/orbit_camera_system.h>
 #include <engine.h>
 #include <maths/transform.h>
+#include <rendering/directional_light.h>
 #include <rendering/material.h>
 #include <rendering/point_light.h>
-#include <rendering/directional_light.h>
-#include <scene/orbit_camera_system.h>
 #include <utils/opengl_helpers.h>
 
 Engine::Engine()
@@ -18,7 +18,15 @@ Engine::Engine()
     world = std::make_shared<World>();
     world->init(world);
 
+    // Init shaders
     context = std::make_shared<DemoContext>(world);
+    context->get_shader_repository()->create_shader("lamp");
+    context->get_shader_repository()->create_shader("lighting");
+    context->get_shader_repository()->create_shader("pixel");
+    context->get_shader_repository()->create_shader("simple");
+    context->get_shader_repository()->create_shader("skybox");
+    context->get_shader_repository()->create_shader("uv_test");
+
 
     // Register components
     world->register_component<Transform>();
@@ -32,11 +40,11 @@ Engine::Engine()
     world->register_component<DirectionalLight>();
 
     // Init systems
-    world->register_system<OrbitCameraSystem>();
-    Signature camera_system_signature;
-    camera_system_signature.set(world->get_component_type<CameraComponent>());
-    camera_system_signature.set(world->get_component_type<Transform>());
-    world->set_system_signature<OrbitCameraSystem>(camera_system_signature);
+//    world->register_system<OrbitCameraSystem>();
+//    Signature camera_system_signature;
+//    camera_system_signature.set(world->get_component_type<CameraComponent>());
+//    camera_system_signature.set(world->get_component_type<Transform>());
+//    world->set_system_signature<OrbitCameraSystem>(camera_system_signature);
 
     // Init renderer
     renderer = std::make_unique<OpenGLRenderer>(context, window, world);

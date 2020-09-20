@@ -3,20 +3,20 @@
 
 #include "scene_graph.h"
 #include "scene_id.h"
-#include <context/demo_context.h>
 #include <ecs/components/camera_component.h>
 #include <memory>
 #include <utility>
 
+class DemoContext;
 class Scene
 {
 public:
     Scene(std::shared_ptr<DemoContext> context, const std::shared_ptr<World>& world, SceneID scene_id)
         : context(std::move(context))
         , world(world)
-        , graph(std::make_unique<SceneGraph>(world))
         , scene_id(scene_id)
     {
+        graph = std::make_unique<SceneGraph>(world, this, scene_id);
     }
 
     virtual void on_create() = 0;

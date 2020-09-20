@@ -20,3 +20,10 @@ Scene* SceneManager::get_current_scene()
 {
     return scenes[current_scene_id];
 }
+
+Scene* SceneManager::get_scene(SceneID scene_id)
+{
+    assert(scenes.find(scene_id) != scenes.end() && "No scene with that ID");
+
+    return scenes[scene_id];
+}

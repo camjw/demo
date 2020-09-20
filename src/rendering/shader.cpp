@@ -24,13 +24,13 @@ void Shader::init(const std::string& vertex_filepath, const std::string& fragmen
 
     // vertex shader
     vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vShaderCode, NULL);
+    glShaderSource(vertex, 1, &vShaderCode, nullptr);
     glCompileShader(vertex);
     check_compile_errors(vertex, "VERTEX");
 
     // fragment Shader
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fShaderCode, NULL);
+    glShaderSource(fragment, 1, &fShaderCode, nullptr);
     glCompileShader(fragment);
     check_compile_errors(fragment, "FRAGMENT");
 
@@ -44,7 +44,7 @@ void Shader::init(const std::string& vertex_filepath, const std::string& fragmen
     glDeleteShader(fragment);
 }
 
-void Shader::destroy()
+void Shader::destroy() const
 {
     glDeleteProgram(ID);
 }

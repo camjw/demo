@@ -1,7 +1,3 @@
-#include "rendering/directional_light.h"
-#include "rendering/material.h"
-#include "rendering/point_light.h"
-#include <ecs/signature_builder.h>
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
@@ -22,7 +18,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
 void OpenGLRenderer::begin_draw(Time time)
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Set common variables for shaders
@@ -94,6 +90,7 @@ void OpenGLRenderer::draw_entity(Entity entity, glm::mat4 parent_transform)
     std::shared_ptr<Mesh> render_mesh = mesh_repository->get_mesh(mesh.id);
     render_mesh->bind();
     render_mesh->draw();
+    glCheckError();
 }
 
 void OpenGLRenderer::draw_skybox()
@@ -121,7 +118,7 @@ void OpenGLRenderer::set_camera(Entity camera_entity)
 void OpenGLRenderer::draw_scene(Time time, Scene* scene)
 {
     begin_draw(time);
-    process_lights(scene);
+    process_lights();
     draw_scene_graph(scene);
     end_draw();
 }
@@ -136,7 +133,7 @@ glm::mat4 OpenGLRenderer::get_view_matrix(CameraComponent& cameraComponent, Tran
 
 // TODO: should probably refactor this so that it only gets the active lights in a scene up to
 // a maximum number
-void OpenGLRenderer::process_lights(Scene* scene)
+void OpenGLRenderer::process_lights()
 {
     Signature point_light_and_transform = world->get_signature_builder()
                                               .with<Transform>()

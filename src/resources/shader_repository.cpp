@@ -1,6 +1,4 @@
-#include <resources/shader_repository.h>
-#include <utils/opengl_helpers.h>
-#include <vector>
+#include "shader_repository.h"
 
 std::shared_ptr<Shader> ShaderRepository::get_shader(ShaderID shader_id)
 {
@@ -28,6 +26,14 @@ const std::string& ShaderRepository::get_shader_name(ShaderID shader_id)
     assert(shader_id_to_shader_name.find(shader_id) != shader_id_to_shader_name.end() && "No shader with that ID");
 
     return shader_id_to_shader_name[shader_id];
+}
+
+ShaderID ShaderRepository::create_shader(const std::string& shader_name)
+{
+    const std::string& vertex_filename = DEMO_CONSTANTS_SHADERS_FOLDER + shader_name + "_shader.vert";
+    const std::string& fragment_filename = DEMO_CONSTANTS_SHADERS_FOLDER + shader_name + "_shader.frag";
+
+    return create_shader(shader_name, vertex_filename, fragment_filename);
 }
 
 ShaderID ShaderRepository::create_shader(

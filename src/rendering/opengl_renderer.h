@@ -1,23 +1,26 @@
 #ifndef DEMO_OPENGL_RENDERER_HPP
 #define DEMO_OPENGL_RENDERER_HPP
 
+#include <context/demo_context.h>
+#include <ecs/components/camera_component.h>
 #include <ecs/ecs.h>
+#include <ecs/signature_builder.h>
 #include <ecs/system.h>
 #include <ecs/world.h>
-
-#include <context/demo_context.h>
-#include <resources/mesh_repository.h>
-#include <resources/shader_repository.h>
-#include <resources/texture_repository.h>
-#include <ecs/components/camera_component.h>
 #include <imgui/bindings/imgui_impl_glfw.h>
 #include <imgui/bindings/imgui_impl_opengl3.h>
 #include <imgui/imgui.h>
 #include <maths/transform.h>
 #include <rendering/cube_map.h>
+#include <rendering/directional_light.h>
+#include <rendering/material.h>
+#include <rendering/point_light.h>
 #include <rendering/shader.h>
 #include <rendering/shader_commands/shader_commands.h>
 #include <rendering/texture.h>
+#include <resources/mesh_repository.h>
+#include <resources/shader_repository.h>
+#include <resources/texture_repository.h>
 #include <scene/scene.h>
 #include <scene/scene_graph.h>
 #include <utils/opengl_helpers.h>
@@ -32,7 +35,7 @@ public:
 private:
     void begin_draw(Time time);
     void set_camera(Entity camera_entity);
-    void process_lights(Scene* scene);
+    void process_lights();
     void process_point_lights(std::vector<Entity> point_lights);
     void process_directional_lights(std::vector<Entity> directional_lights);
     void draw_scene_graph(Scene* scene);

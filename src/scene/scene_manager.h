@@ -19,6 +19,7 @@ public:
     void late_update(Time time, InputState* input);
 
     Scene* get_current_scene();
+    Scene* get_scene(SceneID scene_id);
 
 private:
     SceneID next_scene_id = 0;
