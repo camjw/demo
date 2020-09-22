@@ -8,9 +8,13 @@
 
 struct float3
 {
-
 public:
-    float3(): x(0.0f), y(0.0f), z(0.0f) {}
+    float3()
+        : x(0.0f)
+        , y(0.0f)
+        , z(0.0f)
+    {
+    }
     float3(float x, float y, float z)
         : x(x)
         , y(y)
@@ -56,77 +60,77 @@ public:
 
     static float3 zero()
     {
-        return {0.0f, 0.0f, 0.0f};
+        return { 0.0f, 0.0f, 0.0f };
     }
 
     static float3 one()
     {
-        return {1.0f, 1.0f, 1.0f};
+        return { 1.0f, 1.0f, 1.0f };
     }
 
     static float3 up()
     {
-        return {0.0f, 1.0f, 0.0f};
+        return { 0.0f, 1.0f, 0.0f };
     }
 
     static float3 down()
     {
-        return {0.0f, -1.0f, 0.0f};
+        return { 0.0f, -1.0f, 0.0f };
     }
 
     static float3 left()
     {
-        return {-1.0f, 0.0f, 0.0f};
+        return { -1.0f, 0.0f, 0.0f };
     }
 
     static float3 right()
     {
-        return {1.0f, 0.0f, 0.0f};
+        return { 1.0f, 0.0f, 0.0f };
     }
 
     static float3 forward()
     {
-        return {0.0f, 0.0f, 1.0f};
+        return { 0.0f, 0.0f, 1.0f };
     }
 
     static float3 backward()
     {
-        return {0.0f, 0.0f, -1.0f};
+        return { 0.0f, 0.0f, -1.0f };
     }
 
     float3 operator+(float3 const& other) const
     {
-        return {x + other.x, y + other.y, z + other.z};
+        return { x + other.x, y + other.y, z + other.z };
     }
 
     float3 operator-(float3 const& other) const
     {
-        return {x - other.x, y - other.y, z - other.z};
+        return { x - other.x, y - other.y, z - other.z };
     }
 
     float3 operator*(float3 const& other) const
     {
-        return {x * other.x, y * other.y, z * other.z};
+        return { x * other.x, y * other.y, z * other.z };
     }
 
     float3 operator*(const float scale) const
     {
-        return {x * scale, y * scale, z * scale};
+        return { x * scale, y * scale, z * scale };
     }
 
     float3 operator/(float3 const& other) const
     {
-        return {x / other.x, y / other.y, z / other.z};
+        return { x / other.x, y / other.y, z / other.z };
     }
 
     float3 operator/(const float scale) const
     {
-        return {x / scale, y / scale, z / scale};
+        return { x / scale, y / scale, z / scale };
     }
 
     float3 operator-() const
     {
-        return {-x, -y, -z};
+        return { -x, -y, -z };
     }
 
     float3 operator+=(float3 const& other)
@@ -152,7 +156,7 @@ public:
         x *= other.x;
         y *= other.y;
         z *= other.z;
-        
+
         return *this;
     }
 
@@ -220,7 +224,7 @@ public:
 
     float const& operator[](int index) const
     {
-        switch(index)
+        switch (index)
         {
         case 0:
             return x;
@@ -238,5 +242,15 @@ public:
 
     float x, y, z;
 };
+
+inline float3 operator*(const float& s, const float3& v)
+{
+    return v * s;
+}
+
+inline float3 operator/(const float& s, const float3& v)
+{
+    return v / s;
+}
 
 #endif

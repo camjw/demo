@@ -4,7 +4,7 @@
 
 void FBXImporter::load_fbx(const std::string& filename, SceneNode* scene_node, FBXImportOptions import_options)
 {
-    const aiScene* assimp_scene = assimp_importer.ReadFile(filename.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* assimp_scene = assimp_importer.ReadFile(filename.c_str(), aiProcess_Triangulate);
 
     if (assimp_scene == nullptr)
     {
@@ -59,25 +59,45 @@ void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNo
     }
 
     for (unsigned int i = 0; i < assimp_node->mNumChildren; i++)
-
-    //    unsigned int minNumChildren = 2 < assimp_node->mNumChildren ? 2 : assimp_node->mNumChildren;
-    //    for (unsigned int i = 0; i < minNumChildren; i++)
     {
         SceneNode* child_node = scene_node->add_child(world->create_empty_entity());
         attach_assimp_node_to_scene(assimp_node->mChildren[i], child_node, mesh_ids, texture_ids);
+    }
+
+    aiVector3D position;
+    aiQuaternion rotation;
+    aiVector3D scale;
+
+    aiMatrix4x4 assimp_transform = assimp_node->mTransformation;
+    assimp_transform.Decompose(scale, rotation, position);
+
+    Transform node_transform = Transform {
+        .position = float3(position.x, position.y, position.z),
+        .rotation = quaternion(rotation.w, rotation.x, rotation.y, rotation.z),
+        .scale = float3(scale.x, scale.y, scale.z)
+    };
+    if (world->has_component<Transform>(scene_node->get_entity()))
+    {
+        world->get_component<Transform>(scene_node->get_entity()) = node_transform;
+    }
+    else
+    {
+        world->add_component<Transform>(scene_node->get_entity(), node_transform);
     }
 }
 
 void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID> mesh_ids)
 {
-    Entity node_entity = world->create_entity()
-                             .with(MeshComponent(mesh_ids[assimp_node->mMeshes[0]]))
-                             .with(Transform::identity())
-                             .with(ShaderComponent(shader_repository->get_shader_id("simple")))
-                             //                             .with_parent()
-                             .build();
-
-    scene_node->set_entity(node_entity);
+    int num_meshes = assimp_node->mNumMeshes;
+    for (int i = 0; i < num_meshes; i++)
+    {
+        scene_node->add_child(world->create_entity()
+                                  .with(MeshComponent(mesh_ids[assimp_node->mMeshes[i]]))
+                                  .with(Transform::identity())
+                                  .with(ShaderComponent(shader_repository->get_shader_id("lighting")))
+                                  .with(PEWTER_MATERIAL)
+                                  .build());
+    }
 }
 
 // TODO: implement texture importing
@@ -114,7 +134,7 @@ std::vector<MeshID> FBXImporter::build_meshes(const aiScene* assimp_scene)
             const aiVector3D vertex = mesh->mVertices[j];
             const aiVector3D normal = mesh->mNormals[j];
 
-            vertices[j] = float3(vertex.x, vertex.y, vertex.z);
+            vertices[j] = 0.01f * float3(vertex.x, vertex.y, vertex.z);
             normals[j] = float3(normal.x, normal.y, normal.z);
         }
 

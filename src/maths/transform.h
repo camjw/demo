@@ -27,11 +27,7 @@ struct Transform
 
     static Transform identity()
     {
-        return Transform {
-            .position = float3::zero(),
-            .rotation = quaternion::identity(),
-            .scale = float3::one(),
-        };
+        return Transform();
     }
 };
 

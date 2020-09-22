@@ -40,11 +40,11 @@ Engine::Engine()
     world->register_component<DirectionalLight>();
 
     // Init systems
-//    world->register_system<OrbitCameraSystem>();
-//    Signature camera_system_signature;
-//    camera_system_signature.set(world->get_component_type<CameraComponent>());
-//    camera_system_signature.set(world->get_component_type<Transform>());
-//    world->set_system_signature<OrbitCameraSystem>(camera_system_signature);
+    world->register_system<OrbitCameraSystem>();
+    Signature camera_system_signature;
+    camera_system_signature.set(world->get_component_type<CameraComponent>());
+    camera_system_signature.set(world->get_component_type<Transform>());
+    world->set_system_signature<OrbitCameraSystem>(camera_system_signature);
 
     // Init renderer
     renderer = std::make_unique<OpenGLRenderer>(context, window, world);

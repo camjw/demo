@@ -1,14 +1,20 @@
 #ifndef DEMO_ORBIT_CAMERA_SYSTEM_H
 #define DEMO_ORBIT_CAMERA_SYSTEM_H
 
-#include <ecs/system.h>
-#include <maths/transform.h>
+#include <cmath>
 #include <ecs/components/camera_component.h>
+#include <ecs/system.h>
+#include <ecs/world.h>
+#include <maths/maths.h>
+#include <maths/transform.h>
 
-class OrbitCameraSystem: public System
+class OrbitCameraSystem : public System
 {
 public:
-    OrbitCameraSystem(World* world) : System(world) {}
+    OrbitCameraSystem(World* world)
+        : System(world)
+    {
+    }
 
     void update(Time time, InputState* input) override;
     virtual ~OrbitCameraSystem() { }

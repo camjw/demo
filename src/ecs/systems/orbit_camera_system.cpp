@@ -1,8 +1,4 @@
-#include <ecs/components/camera_component.h>
 #include <ecs/systems/orbit_camera_system.h>
-#include <ecs/world.h>
-#include <maths/maths.h>
-#include <maths/transform.h>
 
 void OrbitCameraSystem::update(Time time, InputState* input)
 {
@@ -11,17 +7,11 @@ void OrbitCameraSystem::update(Time time, InputState* input)
         CameraComponent& camera = world->get_component<CameraComponent>(entity);
         Transform& transform = world->get_component<Transform>(entity);
 
-        bool camera_updated = process_keyboard(time, input, camera, transform);
-        camera_updated |= process_mouse_movement(time, input, camera, transform);
+        process_keyboard(time, input, camera, transform);
+        process_mouse_movement(time, input, camera, transform);
         update_camera_vectors(camera, transform);
-
-        if (camera_updated)
-        {
-            printf("Camera updated\n");
-        }
     }
 }
-
 
 bool OrbitCameraSystem::process_keyboard(Time time, InputState* input,
     CameraComponent& camera, Transform& transform)
@@ -84,10 +74,10 @@ bool OrbitCameraSystem::process_mouse_movement(Time time, InputState* input,
     float2 mouse_offset = input->get_mouse_offset() * camera.mouse_sensitivity;
 
     EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();
-    camera_euler_angles.pitch += mouse_offset.x;
-    camera_euler_angles.yaw -= mouse_offset.y;
+    camera_euler_angles.yaw += mouse_offset.x;
+    camera_euler_angles.pitch -= mouse_offset.y;
 
-    camera_euler_angles.pitch = maths::clamp(camera_euler_angles.pitch, -89.0f, 89.0f);
+//    camera_euler_angles.pitch = fmod(camera_euler_angles.pitch, 360.0f);
 
     transform.rotation = quaternion::from_euler_angles(camera_euler_angles);
 

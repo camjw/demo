@@ -14,16 +14,18 @@ void FirstScene::on_create()
 {
     build_camera();
 
-    context->get_fbx_importer()->load_fbx("../assets/models/fountain.fbx", graph->root().get());
-
-//    MeshID cube_id = context->get_mesh_repository()->create_cube();
-//    ShaderID simple_shader_id = context->get_shader_repository()->get_shader_id("simple");
-//
-//    graph->add_child(world->create_entity()
-//        .with(Transform::identity())
-//        .with(MeshComponent(cube_id))
-//        .with(ShaderComponent(simple_shader_id))
-//        .build());
+    context->get_fbx_importer()->load_fbx("../assets/models/sponza.fbx", graph->root().get());
+    graph->add_child(world->create_entity()
+                         .with(Transform {
+                             .position = float3(0, 10, 0),
+                         })
+                         .with(DirectionalLight {
+                             .direction = float3(0, -1, 0),
+                             .ambient = float3(1, 1, 1),
+                             .diffuse = float3(1, 1, 1),
+                             .specular = float3(1, 1, 1),
+                         })
+                         .build());
 }
 
 void FirstScene::on_destroy()
@@ -36,10 +38,10 @@ void FirstScene::build_camera()
     camera = world->create_entity()
                  .with(CameraComponent {
                      .up = float3(0.0, 1.0, 0.0),
-                     .forward = float3(-1.0, -1.0, -3.0).normalise(),
+                     .forward = float3(1.0, 0.0, 0.0).normalise(),
                  })
                  .with(Transform {
-                     .position = float3(1.0, 1.0, 3.0),
+                     .position = float3(-7.0, 1.0, 0.0),
                  })
                  .build();
 }
