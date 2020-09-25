@@ -11,7 +11,7 @@
 #include <string>
 #include <utility>
 
-using ShaderID = uint8_t;
+using ShaderID = uint32_t;
 
 struct ShaderComponent
 {

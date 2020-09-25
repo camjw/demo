@@ -10,7 +10,7 @@ class Scene;
 class SceneNode
 {
 public:
-    SceneNode(SceneNode* parent_node, Scene* scene, SceneID scene_id)
+    SceneNode(SceneNode* parent_node, Scene& scene, SceneID scene_id)
         : parent_node(parent_node), scene(scene), scene_id(scene_id)
     {
     }
@@ -25,7 +25,7 @@ public:
         return parent_node->get_root_node();
     };
 
-    inline void set_entity(Entity entity)
+    inline void set_entity(const Entity entity)
     {
         m_entity = entity;
         // TODO: maybe should notify children here or something
@@ -36,7 +36,7 @@ public:
         return m_entity;
     }
 
-    SceneNode* find_entity(Entity entity)
+    SceneNode* find_entity(const Entity entity)
     {
         if (m_entity == entity)
         {
@@ -62,7 +62,7 @@ public:
         return new_node;
     }
 
-    inline SceneNode* add_child(Entity entity)
+    inline SceneNode* add_child(const Entity entity)
     {
         SceneNode* new_node = new SceneNode(this, scene, scene_id);
         new_node->set_entity(entity);
@@ -80,7 +80,7 @@ public:
         return scene_id;
     }
 
-    inline const Scene* get_scene() const
+    inline const Scene& get_scene() const
     {
         return scene;
     }
@@ -89,7 +89,7 @@ private:
     Entity m_entity;
     std::vector<SceneNode*> m_child_nodes;
     SceneNode* parent_node = nullptr;
-    Scene* scene = nullptr;
+    Scene& scene;
     SceneID scene_id;
 };
 

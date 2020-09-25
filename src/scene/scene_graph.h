@@ -2,9 +2,9 @@
 #define DEMO_SCENE_GRAPH_H
 
 #include "scene_node.h"
+#include <ecs/components/name_component.h>
 #include <ecs/entity_builder.h>
 #include <ecs/world.h>
-
 #include <utility>
 
 struct NameCheckerCallback
@@ -20,7 +20,12 @@ struct NameCheckerCallback
 
     bool operator()(const SceneNode* node)
     {
-        return world->get_component<NameComponent>(node->get_entity()).name == name;
+        if (world->has_component<NameComponent>(node->get_entity()))
+        {
+            return world->get_component<NameComponent>(node->get_entity()).name == name;
+        }
+
+        return false;
     }
 };
 
@@ -28,7 +33,7 @@ class Scene;
 class SceneGraph
 {
 public:
-    explicit SceneGraph(std::shared_ptr<World> world, Scene* scene, SceneID scene_id)
+    explicit SceneGraph(std::shared_ptr<World> world, Scene& scene, SceneID scene_id)
         : root_node(std::make_shared<SceneNode>(nullptr, scene, scene_id))
         , world(world)
     {
@@ -60,14 +65,11 @@ public:
     }
 
     SceneNode* find_named_node(const std::string& node_name) const;
-    bool depth_first_search(SceneNode* current_node, const std::function<bool(const SceneNode*)> searcher, SceneNode* output) const;
-
+    bool depth_first_search(SceneNode* current_node, std::function<bool(const SceneNode*)> searcher, SceneNode*& output) const;
 
 private:
-
     std::shared_ptr<SceneNode> root_node;
     std::shared_ptr<World> world;
-    bool node_has_matching_name(const std::string& name, const SceneNode* node) const;
 };
 
 #endif //DEMO_SCENE_GRAPH_H

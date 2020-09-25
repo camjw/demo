@@ -30,19 +30,20 @@ class OpenGLRenderer
 {
 public:
     OpenGLRenderer(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<World> world);
-    void draw_scene(Time time, Scene* scene);
+    void draw_scene(const Time time, const Scene* scene);
 
 private:
-    void begin_draw(Time time);
-    void set_camera(Entity camera_entity);
-    void process_lights();
-    void process_point_lights(std::vector<Entity> point_lights);
-    void process_directional_lights(std::vector<Entity> directional_lights);
-    void draw_scene_graph(Scene* scene);
-    void draw_node(SceneNode* scene_node, glm::mat4 parent_transform);
-    void draw_entity(Entity entity, glm::mat4 parent_transform);
-    void draw_skybox();
-    void end_draw();
+    void begin_draw(const Time time);
+    void set_camera(const Entity camera_entity);
+    void process_lights() const;
+    void process_point_lights(const std::vector<Entity> point_lights) const ;
+    void process_directional_lights(const std::vector<Entity> directional_lights) const;
+    void draw_scene_graph(const Scene* scene);
+    void draw_node(const SceneNode* scene_node, glm::mat4 parent_transform) const;
+    void draw_entity(const Entity entity, glm::mat4 parent_transform) const;
+    void draw_skybox() const;
+    void end_draw() const ;
+    glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
 
     Window* window {};
 
@@ -51,7 +52,6 @@ private:
     std::shared_ptr<TextureRepository> texture_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
 
-    glm::mat4 get_view_matrix(CameraComponent& cameraComponent, Transform& transform);
 
     bool isCameraSet;
 };

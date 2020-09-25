@@ -10,7 +10,7 @@
 
 #include <maths/maths.h>
 
-using MeshID = uint8_t;
+using MeshID = uint32_t;
 
 struct MeshComponent
 {

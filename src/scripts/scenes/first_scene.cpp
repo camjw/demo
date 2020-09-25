@@ -20,7 +20,7 @@ void FirstScene::on_create()
                              .position = float3(0, 10, 0),
                          })
                          .with(DirectionalLight {
-                             .direction = float3(0, -1, 0),
+                             .direction = float3(-1, -1, 0).normalise(),
                              .ambient = float3(1, 1, 1),
                              .diffuse = float3(1, 1, 1),
                              .specular = float3(1, 1, 1),

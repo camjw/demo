@@ -16,7 +16,7 @@ public:
         , world(world)
         , scene_id(scene_id)
     {
-        graph = std::make_unique<SceneGraph>(world, this, scene_id);
+        graph = std::make_unique<SceneGraph>(world, *this, scene_id);
     }
 
     virtual void on_create() = 0;
@@ -45,11 +45,11 @@ public:
         return graph->root().get();
     }
 
+    std::unique_ptr<SceneGraph> graph;
+
 protected:
     std::shared_ptr<DemoContext> context;
     std::shared_ptr<World> world;
-
-    std::unique_ptr<SceneGraph> graph;
 
     Entity camera = INVALID_ENTITY;
     SceneID scene_id;

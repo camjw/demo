@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <string>
 
-using TextureID = uint8_t;
+using TextureID = uint32_t;
 
 struct TextureComponent
 {

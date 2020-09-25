@@ -5,8 +5,8 @@
 #include <rendering/shader.h>
 #include <resources/shader_repository.h>
 #include <templates/action.h>
-#include <unordered_map>
 #include <utils/opengl_helpers.h>
+#include <unordered_map>
 #include <vector>
 
 class ShaderRepository

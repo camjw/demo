@@ -16,7 +16,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
     shader_repository = context->get_shader_repository();
 }
 
-void OpenGLRenderer::begin_draw(Time time)
+void OpenGLRenderer::begin_draw(const Time time)
 {
     glClearColor(0, 0, 0, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -29,14 +29,14 @@ void OpenGLRenderer::begin_draw(Time time)
     isCameraSet = false;
 }
 
-void OpenGLRenderer::draw_scene_graph(Scene* scene)
+void OpenGLRenderer::draw_scene_graph(const Scene* scene)
 {
     set_camera(scene->get_camera());
     glm::mat4 transform = Transform::identity().get_model_matrix();
     draw_node(scene->get_root_node(), transform);
 }
 
-void OpenGLRenderer::draw_node(SceneNode* scene_node, glm::mat4 parent_transform)
+void OpenGLRenderer::draw_node(const SceneNode* scene_node, glm::mat4 parent_transform) const
 {
     Transform node_transform = Transform::identity();
     if (world->has_component<Transform>(scene_node->get_entity()))
@@ -53,7 +53,7 @@ void OpenGLRenderer::draw_node(SceneNode* scene_node, glm::mat4 parent_transform
     }
 }
 
-void OpenGLRenderer::draw_entity(Entity entity, glm::mat4 parent_transform)
+void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform) const
 {
     if (!world->has_component<ShaderComponent>(entity))
     {
@@ -93,17 +93,17 @@ void OpenGLRenderer::draw_entity(Entity entity, glm::mat4 parent_transform)
     glCheckError();
 }
 
-void OpenGLRenderer::draw_skybox()
+void OpenGLRenderer::draw_skybox() const
 {
 }
 
-void OpenGLRenderer::end_draw()
+void OpenGLRenderer::end_draw() const
 {
     glfwSwapBuffers(window->get_glfw_window());
     glfwPollEvents();
 }
 
-void OpenGLRenderer::set_camera(Entity camera_entity)
+void OpenGLRenderer::set_camera(const Entity camera_entity)
 {
     CameraComponent& camera = world->get_component<CameraComponent>(camera_entity);
     Transform& camera_transform = world->get_component<Transform>(camera_entity);
@@ -115,7 +115,7 @@ void OpenGLRenderer::set_camera(Entity camera_entity)
     isCameraSet = true;
 }
 
-void OpenGLRenderer::draw_scene(Time time, Scene* scene)
+void OpenGLRenderer::draw_scene(const Time time, const Scene* scene)
 {
     begin_draw(time);
     process_lights();
@@ -123,7 +123,7 @@ void OpenGLRenderer::draw_scene(Time time, Scene* scene)
     end_draw();
 }
 
-glm::mat4 OpenGLRenderer::get_view_matrix(CameraComponent& cameraComponent, Transform& transform)
+glm::mat4 OpenGLRenderer::get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const
 {
     return glm::lookAt(
         transform.position.to_glm(),
@@ -133,7 +133,7 @@ glm::mat4 OpenGLRenderer::get_view_matrix(CameraComponent& cameraComponent, Tran
 
 // TODO: should probably refactor this so that it only gets the active lights in a scene up to
 // a maximum number
-void OpenGLRenderer::process_lights()
+void OpenGLRenderer::process_lights() const
 {
     Signature point_light_and_transform = world->get_signature_builder()
                                               .with<Transform>()
@@ -153,7 +153,7 @@ void OpenGLRenderer::process_lights()
     process_directional_lights(directional_lights);
 }
 
-void OpenGLRenderer::process_point_lights(std::vector<Entity> point_lights)
+void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights) const
 {
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
@@ -169,7 +169,7 @@ void OpenGLRenderer::process_point_lights(std::vector<Entity> point_lights)
     lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 }
 
-void OpenGLRenderer::process_directional_lights(std::vector<Entity> directional_lights)
+void OpenGLRenderer::process_directional_lights(const std::vector<Entity> directional_lights) const
 {
     std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
 
