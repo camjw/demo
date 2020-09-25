@@ -7,6 +7,23 @@
 
 #include <utility>
 
+struct NameCheckerCallback
+{
+    std::string name;
+    std::shared_ptr<World> world;
+
+    NameCheckerCallback(const std::string& name, std::shared_ptr<World> world)
+        : name(name)
+        , world(world)
+    {
+    }
+
+    bool operator()(const SceneNode* node)
+    {
+        return world->get_component<NameComponent>(node->get_entity()).name == name;
+    }
+};
+
 class Scene;
 class SceneGraph
 {
@@ -42,9 +59,15 @@ public:
         return root_node->add_child(entity);
     }
 
+    SceneNode* find_named_node(const std::string& node_name) const;
+    bool depth_first_search(SceneNode* current_node, const std::function<bool(const SceneNode*)> searcher, SceneNode* output) const;
+
+
 private:
+
     std::shared_ptr<SceneNode> root_node;
     std::shared_ptr<World> world;
+    bool node_has_matching_name(const std::string& name, const SceneNode* node) const;
 };
 
 #endif //DEMO_SCENE_GRAPH_H

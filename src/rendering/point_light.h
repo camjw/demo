@@ -16,10 +16,10 @@ struct PointLight
     float3 diffuse;
     float3 specular;
 
-    void bind(std::shared_ptr<Shader> shader, int index, float3 position)
+    inline void bind(std::shared_ptr<Shader> shader, int index, float3 position)
     {
         shader->bind();
-        shader->set_float3("pointLights[" + std::to_string(index) + "].position", float3(1, 1, 1));
+        shader->set_float3("pointLights[" + std::to_string(index) + "].position", position);
         shader->set_float3("pointLights[" + std::to_string(index) + "].colour", colour);
         shader->set_float("pointLights[" + std::to_string(index) + "].constant", constant);
         shader->set_float("pointLights[" + std::to_string(index) + "].linear", linear);

@@ -13,6 +13,7 @@
 #include <scene/scene.h>
 #include <scene/scene_node.h>
 #include <string>
+#include <unordered_set>
 #include <utility>
 
 struct FBXImportOptions
@@ -46,7 +47,8 @@ public:
     };
 
 private:
-    void attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID>& mesh_ids, std::vector<TextureID>& texture_ids);
+    void attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID>& mesh_ids,
+        std::vector<TextureID>& texture_ids, std::unordered_set<MeshID>& used_meshes);
     void update_scene_camera(const aiScene* assimp_scene, SceneNode* scene_node);
     std::vector<MeshID> build_meshes(const aiScene* assimp_scene);
     std::vector<TextureID> build_textures(const aiScene* assimp_scene);
@@ -57,7 +59,7 @@ private:
     std::shared_ptr<World> world;
 
     Assimp::Importer assimp_importer;
-    void populate_node(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID> mesh_ids);
+    void populate_node(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID> mesh_ids, std::unordered_set<MeshID>& used_meshes);
 };
 
 #endif //DEMO_FBX_IMPORTER_H

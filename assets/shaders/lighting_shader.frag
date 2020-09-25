@@ -35,7 +35,8 @@ struct PointLight {
     vec3 specular;
 };
 
-#define MAX_NUM_POINT_LIGHTS 4
+#define MAX_NUM_DIRECTIONAL_LIGHTS 4
+#define MAX_NUM_POINT_LIGHTS 10
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -44,10 +45,11 @@ in vec2 TexCoords;
 uniform vec3 CAMERA_POSITION;
 uniform vec3 CAMERA_FORWARD;
 
-uniform DirectionalLight directionalLight;
+uniform DirectionalLight directionalLights[MAX_NUM_DIRECTIONAL_LIGHTS];
 uniform PointLight pointLights[MAX_NUM_POINT_LIGHTS];
 uniform Material material;
 
+uniform int NUM_ACTIVE_DIRECTIONAL_LIGHTS;
 uniform int NUM_ACTIVE_POINT_LIGHTS;
 
 // function prototypes
@@ -60,9 +62,12 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(CAMERA_POSITION - FragPos);
 
+    vec3 result = vec3(0);
     // phase 1: directional lighting
-    vec3 result = CalcDirectionalLight(directionalLight, norm, viewDir);
-
+    for (int i = 0; i < NUM_ACTIVE_DIRECTIONAL_LIGHTS; i++)
+    {
+        result += CalcDirectionalLight(directionalLights[i], norm, viewDir);
+    }
     // phase 2: point lights
     for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
     {

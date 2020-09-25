@@ -1,6 +1,6 @@
-#include <ecs/systems/orbit_camera_system.h>
+#include <ecs/systems/first_person_camera_system.h>
 
-void OrbitCameraSystem::update(Time time, InputState* input)
+void FirstPersonCameraSystem::update(Time time, InputState* input)
 {
     for (Entity const& entity : entities)
     {
@@ -13,7 +13,7 @@ void OrbitCameraSystem::update(Time time, InputState* input)
     }
 }
 
-bool OrbitCameraSystem::process_keyboard(Time time, InputState* input,
+bool FirstPersonCameraSystem::process_keyboard(Time time, InputState* input,
     CameraComponent& camera, Transform& transform)
 {
     bool has_updated = false;
@@ -63,10 +63,10 @@ bool OrbitCameraSystem::process_keyboard(Time time, InputState* input,
     return has_updated;
 }
 
-bool OrbitCameraSystem::process_mouse_movement(Time time, InputState* input,
+bool FirstPersonCameraSystem::process_mouse_movement(Time time, InputState* input,
     CameraComponent& camera, Transform& transform)
 {
-    if (!(input->is_key_pressed(Key::LeftMouseButton) && input->is_key_pressed(Key::LeftShift)))
+    if (!(input->is_key_pressed(Key::LeftMouseButton)))
     {
         return false;
     }
@@ -77,14 +77,12 @@ bool OrbitCameraSystem::process_mouse_movement(Time time, InputState* input,
     camera_euler_angles.yaw += mouse_offset.x;
     camera_euler_angles.pitch -= mouse_offset.y;
 
-//    camera_euler_angles.pitch = fmod(camera_euler_angles.pitch, 360.0f);
-
     transform.rotation = quaternion::from_euler_angles(camera_euler_angles);
 
     return true;
 }
 
-void OrbitCameraSystem::update_camera_vectors(CameraComponent& camera,
+void FirstPersonCameraSystem::update_camera_vectors(CameraComponent& camera,
     Transform& transform)
 {
     EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();

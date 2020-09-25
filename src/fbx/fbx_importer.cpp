@@ -1,5 +1,6 @@
 #include "fbx_importer.h"
 
+#include <ecs/components/name_component.h>
 #include <utility>
 
 void FBXImporter::load_fbx(const std::string& filename, SceneNode* scene_node, FBXImportOptions import_options)
@@ -13,9 +14,13 @@ void FBXImporter::load_fbx(const std::string& filename, SceneNode* scene_node, F
     }
 
     std::vector<MeshID> mesh_ids = build_meshes(assimp_scene);
+    printf("Imported %lu meshes from fbx\n", mesh_ids.size());
     std::vector<TextureID> texture_ids = build_textures(assimp_scene);
 
-    attach_assimp_node_to_scene(assimp_scene->mRootNode, scene_node, mesh_ids, texture_ids);
+    std::unordered_set<MeshID> used_meshes;
+    attach_assimp_node_to_scene(assimp_scene->mRootNode, scene_node, mesh_ids, texture_ids, used_meshes);
+
+    printf("Used %lu meshes from fbx\n", used_meshes.size());
 
     if (import_options.import_camera)
     {
@@ -51,17 +56,19 @@ void FBXImporter::update_scene_camera(const aiScene* assimp_scene, SceneNode* sc
     scene_camera_transform.position = float3(camera_position.x, camera_position.y, camera_position.z);
 }
 
-void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID>& mesh_ids, std::vector<TextureID>& texture_ids)
+void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID>& mesh_ids,
+    std::vector<TextureID>& texture_ids, std::unordered_set<MeshID>& used_meshes)
 {
+    printf("Assimp node: %s\n", assimp_node->mName.C_Str());
     if (assimp_node->mNumMeshes > 0)
     {
-        populate_node(assimp_node, scene_node, mesh_ids);
+        populate_node(assimp_node, scene_node, mesh_ids, used_meshes);
     }
 
     for (unsigned int i = 0; i < assimp_node->mNumChildren; i++)
     {
         SceneNode* child_node = scene_node->add_child(world->create_empty_entity());
-        attach_assimp_node_to_scene(assimp_node->mChildren[i], child_node, mesh_ids, texture_ids);
+        attach_assimp_node_to_scene(assimp_node->mChildren[i], child_node, mesh_ids, texture_ids, used_meshes);
     }
 
     aiVector3D position;
@@ -76,6 +83,7 @@ void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNo
         .rotation = quaternion(rotation.w, rotation.x, rotation.y, rotation.z),
         .scale = float3(scale.x, scale.y, scale.z)
     };
+
     if (world->has_component<Transform>(scene_node->get_entity()))
     {
         world->get_component<Transform>(scene_node->get_entity()) = node_transform;
@@ -86,7 +94,7 @@ void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNo
     }
 }
 
-void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID> mesh_ids)
+void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID> mesh_ids, std::unordered_set<MeshID>& used_meshes)
 {
     int num_meshes = assimp_node->mNumMeshes;
     for (int i = 0; i < num_meshes; i++)
@@ -97,8 +105,15 @@ void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node
                                   .with(ShaderComponent(shader_repository->get_shader_id("lighting")))
                                   .with(PEWTER_MATERIAL)
                                   .build());
+
+        used_meshes.insert(mesh_ids[assimp_node->mMeshes[i]]);
     }
+
+    world->add_component(scene_node->get_entity(), NameComponent {
+                                                       .name = assimp_node->mName.C_Str(),
+                                                   });
 }
+
 
 // TODO: implement texture importing
 std::vector<TextureID> FBXImporter::build_textures(const aiScene* assimp_scene)

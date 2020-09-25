@@ -1,5 +1,6 @@
 #include <ecs/components/hierarchy_component.h>
-#include <ecs/systems/orbit_camera_system.h>
+#include <ecs/components/name_component.h>
+#include <ecs/systems/first_person_camera_system.h>
 #include <engine.h>
 #include <maths/transform.h>
 #include <rendering/directional_light.h>
@@ -35,16 +36,17 @@ Engine::Engine()
     world->register_component<ShaderComponent>();
     world->register_component<CameraComponent>();
     world->register_component<HierarchyComponent>();
+    world->register_component<NameComponent>();
     world->register_component<Material>();
     world->register_component<PointLight>();
     world->register_component<DirectionalLight>();
 
     // Init systems
-    world->register_system<OrbitCameraSystem>();
+    world->register_system<FirstPersonCameraSystem>();
     Signature camera_system_signature;
     camera_system_signature.set(world->get_component_type<CameraComponent>());
     camera_system_signature.set(world->get_component_type<Transform>());
-    world->set_system_signature<OrbitCameraSystem>(camera_system_signature);
+    world->set_system_signature<FirstPersonCameraSystem>(camera_system_signature);
 
     // Init renderer
     renderer = std::make_unique<OpenGLRenderer>(context, window, world);

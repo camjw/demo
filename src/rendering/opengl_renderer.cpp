@@ -18,7 +18,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
 void OpenGLRenderer::begin_draw(Time time)
 {
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0, 0, 0, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Set common variables for shaders
@@ -177,6 +177,9 @@ void OpenGLRenderer::process_directional_lights(std::vector<Entity> directional_
     {
         DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[i]);
 
-        directional_light.bind(lighting_shader);
+        directional_light.bind(lighting_shader, i);
     }
+
+    lighting_shader->bind();
+    lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
 }
