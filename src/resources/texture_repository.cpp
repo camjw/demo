@@ -1,3 +1,4 @@
+#include <assimp/texture.h>
 #include <resources/texture_repository.h>
 #include <utils/opengl_helpers.h>
 
@@ -18,6 +19,17 @@ TextureID TextureRepository::get_texture_id(const std::string& texture_name)
 TextureID TextureRepository::create_texture(const std::string& texture_name, const std::string& filename)
 {
     std::shared_ptr<Texture> new_texture = std::make_shared<Texture>(filename);
+
+    texture_names_to_ids.insert(std::make_pair(texture_name, ++current_texture_id));
+    textures.insert(std::make_pair(current_texture_id, new_texture));
+    glCheckError();
+
+    return current_texture_id;
+}
+
+TextureID TextureRepository::create_texture(const std::string& texture_name, const aiTexture* assimp_texture)
+{
+    std::shared_ptr<Texture> new_texture = std::make_shared<Texture>(assimp_texture);
 
     texture_names_to_ids.insert(std::make_pair(texture_name, ++current_texture_id));
     textures.insert(std::make_pair(current_texture_id, new_texture));

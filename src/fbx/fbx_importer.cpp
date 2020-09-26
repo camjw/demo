@@ -97,8 +97,7 @@ void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node
         scene_node->add_child(world->create_entity()
                                   .with(MeshComponent(mesh_ids[assimp_node->mMeshes[i]]))
                                   .with(Transform::identity())
-                                  .with(ShaderComponent(shader_repository->get_shader_id("lighting")))
-                                  .with(PEWTER_MATERIAL)
+                                  .with(PEWTER_MATERIAL(shader_repository->get_shader_id("simple_lighting")))
                                   .build());
     }
 
@@ -116,6 +115,9 @@ std::vector<TextureID> FBXImporter::build_textures(const aiScene* assimp_scene)
 
     for (unsigned int i = 0; i < num_textures; i++)
     {
+        aiTexture* assimp_texture = assimp_scene->mTextures[i];
+        TextureID texture_id = texture_repository->create_texture(assimp_texture->mFilename.C_Str(), assimp_texture);
+        texture_ids.push_back(texture_id);
     }
 
     return texture_ids;

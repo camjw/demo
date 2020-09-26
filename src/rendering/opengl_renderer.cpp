@@ -23,10 +23,10 @@ void OpenGLRenderer::begin_draw(const Time time)
 
     // Set common variables for shaders
     // TODO: set uniform struct rather than individual params
-    shader_repository->for_each(new SetShaderTime(time));
-    shader_repository->for_each(new SetShaderProjection(window->get_projection_matrix()));
+    shader_repository->for_each(SetShaderTime(time));
+    shader_repository->for_each(SetShaderProjection(window->get_projection_matrix()));
 
-    isCameraSet = false;
+    is_camera_set = false;
 }
 
 void OpenGLRenderer::draw_scene_graph(const Scene* scene)
@@ -53,32 +53,52 @@ void OpenGLRenderer::draw_node(const SceneNode* scene_node, glm::mat4 parent_tra
     }
 }
 
+void OpenGLRenderer::search_for_point_lights(const SceneNode* scene_node, glm::mat4 parent_transform)
+{
+    Transform node_transform = Transform::identity();
+    if (world->has_component<Transform>(scene_node->get_entity()))
+    {
+        // Can only draw something if it has a position in space
+        populate_point_light(scene_node->get_entity(), parent_transform);
+        node_transform = world->get_component<Transform>(scene_node->get_entity());
+    }
+
+    // Draw child nodes
+    for (SceneNode* const& child_node : scene_node->get_children())
+    {
+        search_for_point_lights(child_node, parent_transform * node_transform.get_model_matrix());
+    }
+}
+
 void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform) const
 {
-    if (!world->has_component<ShaderComponent>(entity))
+    if (world->has_component<Material>(entity) && world->has_component<MeshComponent>(entity))
     {
-        return;
+        draw_mesh(entity, parent_transform);
     }
+}
 
-    if (world->has_component<TextureComponent>(entity))
-    {
-        TextureComponent texture = world->get_component<TextureComponent>(entity);
-        texture_repository->get_texture(texture.id)->bind(texture.binding_index);
-    }
-
-    ShaderID shader_id = world->get_component<ShaderComponent>(entity).id;
-    std::shared_ptr<Shader> shader = shader_repository->get_shader(shader_id);
+void OpenGLRenderer::draw_mesh(const Entity entity, glm::mat4 parent_transform) const
+{
+    Material material = world->get_component<Material>(entity);
+    std::shared_ptr<Shader> shader = shader_repository->get_shader(material.shader);
     shader->bind();
+    glCheckError();
 
-    if (world->has_component<Material>(entity))
+    if (material.diffuse_texture != INVALID_TEXTURE)
     {
-        world->get_component<Material>(entity).bind(shader);
+        std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material.diffuse_texture);
+        std::shared_ptr<Texture> specular_texture = texture_repository->get_texture(material.specular_texture);
+        diffuse_texture->bind(0);
+        specular_texture->bind(1);
+        shader->set_int("material.diffuse_texture", 0);
+        shader->set_int("material.specular_texture", 1);
     }
 
-    if (world->has_component<PointLight>(entity))
-    {
-        shader->set_float3("lightColour", world->get_component<PointLight>(entity).colour);
-    }
+    shader->set_float3("material.ambient_colour", material.ambient_colour);
+    shader->set_float3("material.diffuse_colour", material.diffuse_colour);
+    shader->set_float3("material.specular_colour", material.specular_colour);
+    shader->set_float("material.shininess", material.shininess);
 
     Transform transform = world->get_component<Transform>(entity);
     glm::mat4 model_matrix = parent_transform * transform.get_model_matrix();
@@ -107,18 +127,18 @@ void OpenGLRenderer::set_camera(const Entity camera_entity)
 {
     CameraComponent& camera = world->get_component<CameraComponent>(camera_entity);
     Transform& camera_transform = world->get_component<Transform>(camera_entity);
-    shader_repository->for_each(new SetShaderCamera(
+    shader_repository->for_each(SetShaderCamera(
         camera_transform.position,
         camera_transform.position + camera.forward,
         get_view_matrix(camera, camera_transform)));
 
-    isCameraSet = true;
+    is_camera_set = true;
 }
 
 void OpenGLRenderer::draw_scene(const Time time, const Scene* scene)
 {
     begin_draw(time);
-    process_lights();
+    process_lights(scene);
     draw_scene_graph(scene);
     end_draw();
 }
@@ -133,7 +153,7 @@ glm::mat4 OpenGLRenderer::get_view_matrix(const CameraComponent& cameraComponent
 
 // TODO: should probably refactor this so that it only gets the active lights in a scene up to
 // a maximum number
-void OpenGLRenderer::process_lights() const
+void OpenGLRenderer::process_lights(const Scene* scene)
 {
     Signature point_light_and_transform = world->get_signature_builder()
                                               .with<Transform>()
@@ -143,6 +163,8 @@ void OpenGLRenderer::process_lights() const
     std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
 
     process_point_lights(point_lights);
+    glm::mat4 transform = Transform::identity().get_model_matrix();
+    search_for_point_lights(scene->get_root_node(), transform);
 
     Signature directional_light = world->get_signature_builder()
                                       .with<DirectionalLight>()
@@ -182,4 +204,16 @@ void OpenGLRenderer::process_directional_lights(const std::vector<Entity> direct
 
     lighting_shader->bind();
     lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
+}
+
+void OpenGLRenderer::populate_point_light(Entity entity, glm::mat4 parent_transform)
+{
+    assert(current_light_index < MAX_NUM_POINT_LIGHTS && "trying to send too many point lights to GPU");
+
+    if (!world->has_component<PointLight>(entity))
+    {
+        return;
+    }
+
+    shader_repository->for_each(SetShaderPointLight(world->get_component<PointLight>(entity), current_light_index++));
 }

@@ -4,10 +4,12 @@
 #include <glad/glad.h>
 #include <stb_image.h>
 
+#include <assimp/texture.h>
 #include <cstdint>
 #include <string>
 
 using TextureID = uint32_t;
+const TextureID INVALID_TEXTURE = UINT32_MAX;
 
 struct TextureComponent
 {
@@ -22,6 +24,7 @@ class Texture
 public:
     Texture();
     explicit Texture(const std::string& filename);
+    explicit Texture(const aiTexture* assimp_texture);
     GLuint ID = 0;
 
     Texture(const Texture&) = delete;
@@ -52,7 +55,6 @@ public:
         return *this;
     }
 
-    void build(const std::string& filename);
     void bind(int texture_index) const;
     void destroy() {};
 
@@ -62,6 +64,8 @@ private:
         glDeleteTextures(1, &ID);
         ID = 0;
     }
+
+    void load_from_data(unsigned char* image_data, const int image_width, const int image_height, const int num_channels);
 
     GLuint width, height;
     GLuint internal_format;

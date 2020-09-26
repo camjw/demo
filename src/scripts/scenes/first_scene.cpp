@@ -14,7 +14,7 @@ void FirstScene::on_create()
 {
     build_camera();
 
-    context->get_fbx_importer()->load_fbx("../assets/models/sponza.fbx", graph->root().get());
+    context->get_fbx_importer()->load_fbx("../assets/models/crytek_sponza.fbx", graph->root().get());
     graph->add_child(world->create_entity()
                          .with(Transform {
                              .position = float3(0, 10, 0),

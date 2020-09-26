@@ -5,12 +5,12 @@
 #include <rendering/shader.h>
 #include <templates/action.h>
 
-class SetShaderProjection : public Action<Shader>
+class SetShaderProjection
 {
 public:
     SetShaderProjection(glm::mat4 projection)
         : projection(projection) {};
-    inline void run(std::shared_ptr<Shader> shader)
+    inline void operator()(std::shared_ptr<Shader> shader)
     {
         shader->bind();
         shader->set_mat4(DEMO_CONSTANTS_PROJECTION, projection);

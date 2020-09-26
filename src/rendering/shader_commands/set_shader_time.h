@@ -6,13 +6,13 @@
 #include <templates/action.h>
 #include <timer.h>
 
-class SetShaderTime : public Action<Shader>
+class SetShaderTime
 {
 public:
     SetShaderTime(Time time)
         : time(time) {};
 
-    inline void run(std::shared_ptr<Shader> shader)
+    inline void operator()(std::shared_ptr<Shader> shader)
     {
         shader->bind();
         shader->set_float(DEMO_CONSTANTS_TOTAL_TIME, time.total_time);

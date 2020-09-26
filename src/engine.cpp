@@ -23,11 +23,14 @@ Engine::Engine()
     context = std::make_shared<DemoContext>(world);
     context->get_shader_repository()->create_shader("lamp");
     context->get_shader_repository()->create_shader("lighting");
+    context->get_shader_repository()->create_shader(
+        "simple_lighting",
+        DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader.vert",
+        DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader_no_textures.frag");
     context->get_shader_repository()->create_shader("pixel");
     context->get_shader_repository()->create_shader("simple");
     context->get_shader_repository()->create_shader("skybox");
     context->get_shader_repository()->create_shader("uv_test");
-
 
     // Register components
     world->register_component<Transform>();

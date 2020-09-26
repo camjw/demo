@@ -21,7 +21,7 @@ public:
 
     void delete_shader(ShaderID mesh_id);
     void clear();
-    void for_each(Action<Shader>* action);
+    void for_each(std::function<void(std::shared_ptr<Shader>)> action);
 
     std::vector<std::shared_ptr<Shader>> get_all();
 

@@ -72,11 +72,11 @@ void ShaderRepository::clear()
     }
 }
 
-void ShaderRepository::for_each(Action<Shader>* action)
+void ShaderRepository::for_each(std::function<void(std::shared_ptr<Shader>)> action)
 {
     for (const auto& shader : shaders)
     {
-        action->run(shader.second);
+        action(shader.second);
     }
 }
 

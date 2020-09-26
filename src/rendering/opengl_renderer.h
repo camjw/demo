@@ -35,15 +35,18 @@ public:
 private:
     void begin_draw(const Time time);
     void set_camera(const Entity camera_entity);
-    void process_lights() const;
+    void process_lights(const Scene* scene);
     void process_point_lights(const std::vector<Entity> point_lights) const ;
     void process_directional_lights(const std::vector<Entity> directional_lights) const;
     void draw_scene_graph(const Scene* scene);
     void draw_node(const SceneNode* scene_node, glm::mat4 parent_transform) const;
     void draw_entity(const Entity entity, glm::mat4 parent_transform) const;
+    void draw_mesh(const Entity entity, glm::mat4 parent_transform) const;
+    void populate_point_light(const Entity entity, glm::mat4 parent_transform);
     void draw_skybox() const;
     void end_draw() const ;
     glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
+    void search_for_point_lights(const SceneNode* scene_node, glm::mat4 parent_transform);
 
     Window* window {};
 
@@ -52,8 +55,9 @@ private:
     std::shared_ptr<TextureRepository> texture_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
 
-
-    bool isCameraSet;
+    static const int MAX_NUM_POINT_LIGHTS = 20;
+    bool is_camera_set = false;
+    int current_light_index = 0;
 };
 
 #endif

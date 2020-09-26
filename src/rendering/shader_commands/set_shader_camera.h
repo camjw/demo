@@ -6,14 +6,14 @@
 #include <rendering/shader.h>
 #include <templates/action.h>
 
-class SetShaderCamera : public Action<Shader>
+class SetShaderCamera
 {
 public:
     SetShaderCamera(float3 position, float3 forward, glm::mat4 view)
         : position(position)
         , forward(forward)
         , view(view) {};
-    inline void run(std::shared_ptr<Shader> shader)
+    inline void operator()(std::shared_ptr<Shader> shader)
     {
         shader->bind();
 
