@@ -15,6 +15,8 @@ public:
 template <typename T>
 class ComponentArray : public IComponentArray
 {
+    static_assert(std::is_base_of<Component, T>::value, "Component type must derive from Component");
+
 public:
     ~ComponentArray() {};
 

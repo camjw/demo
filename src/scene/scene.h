@@ -30,6 +30,11 @@ public:
         return camera;
     };
 
+    inline Entity get_skybox() const
+    {
+        return skybox;
+    };
+
     inline void set_camera(Entity camera)
     {
         this->camera = camera;
@@ -52,6 +57,7 @@ protected:
     std::shared_ptr<World> world;
 
     Entity camera = INVALID_ENTITY;
+    Entity skybox = INVALID_ENTITY;
     SceneID scene_id;
 };
 

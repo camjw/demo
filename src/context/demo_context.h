@@ -3,6 +3,7 @@
 
 #include <fbx/fbx_importer.h>
 #include <memory>
+#include <resources/material_repository.h>
 #include <resources/mesh_repository.h>
 #include <resources/shader_repository.h>
 #include <resources/texture_repository.h>
@@ -20,6 +21,10 @@ public:
     {
         return texture_repository;
     }
+    inline std::shared_ptr<MaterialRepository> get_material_repository()
+    {
+        return material_repository;
+    }
     inline std::shared_ptr<ShaderRepository> get_shader_repository()
     {
         return shader_repository;
@@ -32,6 +37,7 @@ public:
 private:
     std::shared_ptr<MeshRepository> mesh_repository;
     std::shared_ptr<TextureRepository> texture_repository;
+    std::shared_ptr<MaterialRepository> material_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
     std::shared_ptr<FBXImporter> fbx_importer;
 };

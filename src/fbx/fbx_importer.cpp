@@ -79,14 +79,7 @@ void FBXImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNo
         .scale = float3(scale.x, scale.y, scale.z)
     };
 
-    if (world->has_component<Transform>(scene_node->get_entity()))
-    {
-        world->get_component<Transform>(scene_node->get_entity()) = node_transform;
-    }
-    else
-    {
-        world->add_component<Transform>(scene_node->get_entity(), node_transform);
-    }
+    world->get_or_add_component<Transform>(scene_node->get_entity(), node_transform);
 }
 
 void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node, std::vector<MeshID> mesh_ids)
@@ -97,7 +90,7 @@ void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node
         scene_node->add_child(world->create_entity()
                                   .with(MeshComponent(mesh_ids[assimp_node->mMeshes[i]]))
                                   .with(Transform::identity())
-                                  .with(PEWTER_MATERIAL(shader_repository->get_shader_id("simple_lighting")))
+                                  .with(pewter_material(shader_repository->get_shader_id("simple_lighting")))
                                   .build());
     }
 
@@ -106,7 +99,6 @@ void FBXImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node
                                                    });
 }
 
-// TODO: implement texture importing
 std::vector<TextureID> FBXImporter::build_textures(const aiScene* assimp_scene)
 {
     unsigned int num_textures = assimp_scene->mNumTextures;
@@ -126,7 +118,6 @@ std::vector<TextureID> FBXImporter::build_textures(const aiScene* assimp_scene)
 std::vector<MeshID> FBXImporter::build_meshes(const aiScene* assimp_scene)
 {
     unsigned int num_meshes = assimp_scene->mNumMeshes;
-
     std::vector<MeshID> mesh_ids(num_meshes);
 
     for (unsigned int i = 0; i < num_meshes; i++)

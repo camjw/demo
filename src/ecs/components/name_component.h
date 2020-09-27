@@ -1,7 +1,7 @@
 #ifndef DEMO_NAME_COMPONENT_H
 #define DEMO_NAME_COMPONENT_H
 
-struct NameComponent
+struct NameComponent : Component
 {
     std::string name;
 };

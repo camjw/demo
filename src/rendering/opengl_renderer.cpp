@@ -32,6 +32,7 @@ void OpenGLRenderer::begin_draw(const Time time)
 void OpenGLRenderer::draw_scene_graph(const Scene* scene)
 {
     set_camera(scene->get_camera());
+    draw_skybox(scene->get_skybox());
     glm::mat4 transform = Transform::identity().get_model_matrix();
     draw_node(scene->get_root_node(), transform);
 }
@@ -59,7 +60,7 @@ void OpenGLRenderer::search_for_point_lights(const SceneNode* scene_node, glm::m
     if (world->has_component<Transform>(scene_node->get_entity()))
     {
         // Can only draw something if it has a position in space
-        populate_point_light(scene_node->get_entity(), parent_transform);
+        populate_point_light(scene_node->get_entity());
         node_transform = world->get_component<Transform>(scene_node->get_entity());
     }
 
@@ -113,7 +114,7 @@ void OpenGLRenderer::draw_mesh(const Entity entity, glm::mat4 parent_transform) 
     glCheckError();
 }
 
-void OpenGLRenderer::draw_skybox() const
+void OpenGLRenderer::draw_skybox(const Entity entity) const
 {
 }
 
@@ -194,19 +195,19 @@ void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights
 void OpenGLRenderer::process_directional_lights(const std::vector<Entity> directional_lights) const
 {
     std::vector<DirectionalLight> directional_light_components;
-
     for (int i = 0; i < directional_lights.size(); i++)
     {
         directional_light_components.push_back(world->get_component<DirectionalLight>(directional_lights[i]));
     }
 
+    assert(directional_light_components.size() < MAX_NUM_DIRECTIONAL_LIGHTS && "trying to send too many point lights to GPU");
+
     shader_repository->for_each(SetShaderDirectionalLights(directional_light_components));
 }
 
-void OpenGLRenderer::populate_point_light(Entity entity, glm::mat4 parent_transform)
+void OpenGLRenderer::populate_point_light(Entity entity)
 {
     assert(current_light_index < MAX_NUM_POINT_LIGHTS && "trying to send too many point lights to GPU");
-
     if (!world->has_component<PointLight>(entity))
     {
         return;

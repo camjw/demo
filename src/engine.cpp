@@ -19,32 +19,42 @@ Engine::Engine()
     world = std::make_shared<World>();
     world->init(world);
 
-    // Init shaders
+    // Build context
     context = std::make_shared<DemoContext>(world);
-    context->get_shader_repository()->create_shader("lamp");
-    context->get_shader_repository()->create_shader("lighting");
-    context->get_shader_repository()->create_shader(
+
+    // Init shaders
+    std::shared_ptr<ShaderRepository> shader_repository = context->get_shader_repository();
+    shader_repository->create_shader("lamp");
+    shader_repository->create_shader("lighting");
+    shader_repository->create_shader("pixel");
+    shader_repository->create_shader("simple");
+    shader_repository->create_shader("skybox");
+    shader_repository->create_shader("uv_test");
+    ShaderID simple_lighting_shader_id = shader_repository->create_shader(
         "simple_lighting",
         DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader.vert",
         DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader_no_textures.frag");
-    context->get_shader_repository()->create_shader("pixel");
-    context->get_shader_repository()->create_shader("simple");
-    context->get_shader_repository()->create_shader("skybox");
-    context->get_shader_repository()->create_shader("uv_test");
+
+    // Init default materials
+    std::shared_ptr<MaterialRepository> material_repository = context->get_material_repository();
+    material_repository->insert_material(pewter_material(simple_lighting_shader_id), "pewter");
+    material_repository->insert_material(ruby_material(simple_lighting_shader_id), "ruby");
+    material_repository->insert_material(emerald_material(simple_lighting_shader_id), "emerald");
+    material_repository->insert_material(turquoise_material(simple_lighting_shader_id), "turquoise");
 
     // Register components
     world->register_component<Transform>();
     world->register_component<TextureComponent>();
     world->register_component<MeshComponent>();
     world->register_component<ShaderComponent>();
+    world->register_component<MaterialComponent>();
     world->register_component<CameraComponent>();
     world->register_component<HierarchyComponent>();
     world->register_component<NameComponent>();
-    world->register_component<Material>();
     world->register_component<PointLight>();
     world->register_component<DirectionalLight>();
 
-    // Init systems
+    // Register systems
     world->register_system<FirstPersonCameraSystem>();
     Signature camera_system_signature;
     camera_system_signature.set(world->get_component_type<CameraComponent>());

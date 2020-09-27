@@ -42,8 +42,8 @@ private:
     void draw_node(const SceneNode* scene_node, glm::mat4 parent_transform) const;
     void draw_entity(const Entity entity, glm::mat4 parent_transform) const;
     void draw_mesh(const Entity entity, glm::mat4 parent_transform) const;
-    void populate_point_light(const Entity entity, glm::mat4 parent_transform);
-    void draw_skybox() const;
+    void populate_point_light(const Entity entity);
+    void draw_skybox(const Entity entity) const;
     void end_draw() const ;
     glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
     void search_for_point_lights(const SceneNode* scene_node, glm::mat4 parent_transform);
@@ -55,7 +55,6 @@ private:
     std::shared_ptr<TextureRepository> texture_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
 
-    static const int MAX_NUM_POINT_LIGHTS = 20;
     bool is_camera_set = false;
     int current_light_index = 0;
 };

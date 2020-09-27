@@ -5,6 +5,16 @@
 #include "texture.h"
 #include <maths/float3.h>
 
+using MaterialID = uint32_t;
+const MaterialID INVALID_MATERIAL = UINT32_MAX;
+
+struct MaterialComponent
+{
+    MaterialID material_id = INVALID_MATERIAL;
+
+    MaterialComponent(MaterialID material_id): material_id(material_id) {}
+};
+
 struct Material
 {
     // only should be used if neither of the textures are set
@@ -39,7 +49,7 @@ struct Material
     Material() {}
 };
 
-inline Material PEWTER_MATERIAL(ShaderID shader)
+inline Material pewter_material(ShaderID shader)
 {
     return Material(
         shader,
@@ -49,7 +59,7 @@ inline Material PEWTER_MATERIAL(ShaderID shader)
         9.84615);
 }
 
-inline Material RUBY_MATERIAL(ShaderID shader)
+inline Material ruby_material(ShaderID shader)
 {
     return Material(
         shader,
@@ -59,7 +69,7 @@ inline Material RUBY_MATERIAL(ShaderID shader)
         76.8);
 }
 
-inline Material EMERALD_MATERIAL(ShaderID shader)
+inline Material emerald_material(ShaderID shader)
 {
     return Material(
         shader,
@@ -69,7 +79,7 @@ inline Material EMERALD_MATERIAL(ShaderID shader)
         76.8);
 }
 
-inline Material TURQUOISE_MATERIAL(ShaderID shader)
+inline Material turquoise_material(ShaderID shader)
 {
     return Material(
         shader,

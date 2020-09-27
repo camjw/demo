@@ -79,6 +79,21 @@ public:
         return component_manager->get_component<T>(entity);
     }
 
+    template <class T>
+    T& get_or_add_component(Entity entity, T& value)
+    {
+        if (has_component<T>(entity))
+        {
+            get_component<T>(entity) = value;
+        }
+        else
+        {
+            add_component<T>(entity, value);
+        }
+        
+        return value;
+    }
+
     template <typename T>
     bool has_component(Entity entity)
     {
@@ -131,7 +146,6 @@ public:
     }
 
     SignatureBuilder get_signature_builder();
-
 
 private:
     std::unique_ptr<ComponentManager> component_manager;

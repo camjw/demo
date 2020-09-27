@@ -4,7 +4,7 @@
 #include <ecs/ecs.h>
 #include <maths/transform.h>
 
-struct HierarchyComponent
+struct HierarchyComponent : Component
 {
     Entity parent = INVALID_ENTITY;
 };

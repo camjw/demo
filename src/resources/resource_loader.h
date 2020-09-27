@@ -5,6 +5,7 @@
 #include <resources/mesh_repository.h>
 #include <resources/shader_repository.h>
 #include <resources/texture_repository.h>
+#include <resources/material_repository.h>
 
 class ResourceLoader
 {
@@ -12,9 +13,11 @@ public:
     ResourceLoader(
         std::shared_ptr<MeshRepository> mesh_repository,
         std::shared_ptr<TextureRepository> texture_repository,
+        std::shared_ptr<MaterialRepository> material_repository,
         std::shared_ptr<ShaderRepository> shader_repository)
         : mesh_repository(mesh_repository)
         , texture_repository(texture_repository)
+        , material_repository(material_repository)
         , shader_repository(shader_repository)
     {
     }
@@ -25,6 +28,7 @@ public:
 private:
     std::shared_ptr<MeshRepository> mesh_repository;
     std::shared_ptr<TextureRepository> texture_repository;
+    std::shared_ptr<MaterialRepository> material_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
 };
 
