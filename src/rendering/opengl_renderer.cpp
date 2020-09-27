@@ -18,7 +18,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
 void OpenGLRenderer::begin_draw(const Time time)
 {
-    glClearColor(0, 0, 0, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Set common variables for shaders
@@ -193,17 +193,14 @@ void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights
 
 void OpenGLRenderer::process_directional_lights(const std::vector<Entity> directional_lights) const
 {
-    std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
+    std::vector<DirectionalLight> directional_light_components;
 
     for (int i = 0; i < directional_lights.size(); i++)
     {
-        DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[i]);
-
-        directional_light.bind(lighting_shader, i);
+        directional_light_components.push_back(world->get_component<DirectionalLight>(directional_lights[i]));
     }
 
-    lighting_shader->bind();
-    lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
+    shader_repository->for_each(SetShaderDirectionalLights(directional_light_components));
 }
 
 void OpenGLRenderer::populate_point_light(Entity entity, glm::mat4 parent_transform)
