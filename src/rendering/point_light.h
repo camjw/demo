@@ -2,6 +2,7 @@
 #define DEMO_POINT_LIGHT_H
 
 #include "shader.h"
+#include <ecs/ecs.h>
 #include <maths/float3.h>
 
 struct PointLight
@@ -28,7 +29,8 @@ struct PointLight
         shader->set_float3("pointLights[" + std::to_string(index) + "].diffuse", diffuse);
         shader->set_float3("pointLights[" + std::to_string(index) + "].specular", specular);
     }
-
 };
+
+MARK_AS_COMPONENT(PointLight)
 
 #endif //DEMO_POINT_LIGHT_H

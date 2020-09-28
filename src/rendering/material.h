@@ -12,8 +12,15 @@ struct MaterialComponent
 {
     MaterialID material_id = INVALID_MATERIAL;
 
-    MaterialComponent(MaterialID material_id): material_id(material_id) {}
+    explicit MaterialComponent() = default;
+
+    MaterialComponent(MaterialID material_id)
+        : material_id(material_id)
+    {
+    }
 };
+
+MARK_AS_COMPONENT(MaterialComponent)
 
 struct Material
 {
@@ -24,6 +31,8 @@ struct Material
 
     TextureID diffuse_texture = INVALID_TEXTURE;
     TextureID specular_texture = INVALID_TEXTURE;
+    TextureProperties diffuse_texture_properties = DEFAULT_TEXTURE_PROPERTIES;
+    TextureProperties specular_texture_properties = DEFAULT_TEXTURE_PROPERTIES;
 
     ShaderID shader;
 
@@ -46,7 +55,12 @@ struct Material
     {
     }
 
-    Material() {}
+    Material(ShaderID shader)
+        : shader(shader)
+    {
+    }
+
+    Material() { }
 };
 
 inline Material pewter_material(ShaderID shader)

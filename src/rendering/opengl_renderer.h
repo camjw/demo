@@ -33,7 +33,7 @@ public:
     void draw_scene(const Time time, const Scene* scene);
 
 private:
-    void begin_draw(const Time time);
+    void begin_draw(const Time time, const Scene* scene);
     void set_camera(const Entity camera_entity);
     void process_lights(const Scene* scene);
     void process_point_lights(const std::vector<Entity> point_lights) const ;
@@ -53,6 +53,7 @@ private:
     std::shared_ptr<World> world;
     std::shared_ptr<MeshRepository> mesh_repository;
     std::shared_ptr<TextureRepository> texture_repository;
+    std::shared_ptr<MaterialRepository> material_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
 
     bool is_camera_set = false;

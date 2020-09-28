@@ -1,24 +1,25 @@
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
-    Window* _window, std::shared_ptr<World> _world)
+    Window* window, std::shared_ptr<World> world)
+    : window(window)
+    , world(world)
 {
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
 
     glCheckError();
 
-    this->window = _window;
-    this->world = _world;
-
     mesh_repository = context->get_mesh_repository();
     texture_repository = context->get_texture_repository();
+    material_repository = context->get_material_repository();
     shader_repository = context->get_shader_repository();
 }
 
-void OpenGLRenderer::begin_draw(const Time time)
+void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    float3 clear_colour = scene->get_clear_colour();
+    glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Set common variables for shaders
@@ -73,7 +74,7 @@ void OpenGLRenderer::search_for_point_lights(const SceneNode* scene_node, glm::m
 
 void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform) const
 {
-    if (world->has_component<Material>(entity) && world->has_component<MeshComponent>(entity))
+    if (world->has_component<MaterialComponent>(entity) && world->has_component<MeshComponent>(entity))
     {
         draw_mesh(entity, parent_transform);
     }
@@ -81,25 +82,34 @@ void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform
 
 void OpenGLRenderer::draw_mesh(const Entity entity, glm::mat4 parent_transform) const
 {
-    Material material = world->get_component<Material>(entity);
-    std::shared_ptr<Shader> shader = shader_repository->get_shader(material.shader);
+    MaterialID material_id = world->get_component<MaterialComponent>(entity).material_id;
+    std::shared_ptr<Material> material = material_repository->get_material(material_id);
+    std::shared_ptr<Shader> shader = shader_repository->get_shader(material->shader);
     shader->bind();
     glCheckError();
 
-    if (material.diffuse_texture != INVALID_TEXTURE)
+    if (material->diffuse_texture != INVALID_TEXTURE)
     {
-        std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material.diffuse_texture);
-        std::shared_ptr<Texture> specular_texture = texture_repository->get_texture(material.specular_texture);
+        std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material->diffuse_texture);
+        material->diffuse_texture_properties.apply(diffuse_texture->get_id());
         diffuse_texture->bind(0);
-        specular_texture->bind(1);
-        shader->set_int("material.diffuse_texture", 0);
-        shader->set_int("material.specular_texture", 1);
+        glCheckError();
     }
 
-    shader->set_float3("material.ambient_colour", material.ambient_colour);
-    shader->set_float3("material.diffuse_colour", material.diffuse_colour);
-    shader->set_float3("material.specular_colour", material.specular_colour);
-    shader->set_float("material.shininess", material.shininess);
+    if (material->specular_texture != INVALID_TEXTURE)
+    {
+        std::shared_ptr<Texture> specular_texture = texture_repository->get_texture(material->specular_texture);
+        material->specular_texture_properties.apply(specular_texture->get_id());
+        specular_texture->bind(1);
+    }
+
+    shader->set_int("material.diffuse_texture", 0);
+    shader->set_int("material.specular_texture", 1);
+
+    shader->set_float3("material.ambient_colour", material->ambient_colour);
+    shader->set_float3("material.diffuse_colour", material->diffuse_colour);
+    shader->set_float3("material.specular_colour", material->specular_colour);
+    shader->set_float("material.shininess", material->shininess);
 
     Transform transform = world->get_component<Transform>(entity);
     glm::mat4 model_matrix = parent_transform * transform.get_model_matrix();
@@ -138,8 +148,9 @@ void OpenGLRenderer::set_camera(const Entity camera_entity)
 
 void OpenGLRenderer::draw_scene(const Time time, const Scene* scene)
 {
-    begin_draw(time);
+    begin_draw(time, scene);
     process_lights(scene);
+    // TODO: add fustrum culling here
     draw_scene_graph(scene);
     end_draw();
 }

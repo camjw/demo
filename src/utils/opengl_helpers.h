@@ -1,11 +1,13 @@
 #ifndef DEMO_OPENGL_HELPERS_H
 #define DEMO_OPENGL_HELPERS_H
 
+#include "suppress_warning.h"
 #include <glad/glad.h>
 #include <string>
 
-static GLenum glCheckError_(const char* file, int line)
+static inline GLenum glCheckError_(const char* file, int line)
 {
+    SUPPRESS_WARNING(glCheckError_)
     GLenum errorCode;
     while ((errorCode = glGetError()) != GL_NO_ERROR)
     {

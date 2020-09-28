@@ -12,11 +12,9 @@ public:
     virtual void on_entity_destroyed(Entity entity) = 0;
 };
 
-template <typename T>
+template <typename T, typename std::enable_if<IsMarkedAsComponent<T>::is_component, T>::type* = nullptr>
 class ComponentArray : public IComponentArray
 {
-    static_assert(std::is_base_of<Component, T>::value, "Component type must derive from Component");
-
 public:
     ~ComponentArray() {};
 

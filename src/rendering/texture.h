@@ -6,6 +6,7 @@
 
 #include <assimp/texture.h>
 #include <cstdint>
+#include <ecs/ecs.h>
 #include <string>
 
 using TextureID = uint32_t;
@@ -16,16 +17,18 @@ struct TextureComponent
     TextureID id;
     int binding_index;
     explicit TextureComponent() = default;
-    TextureComponent(TextureID id, int binding_index) : id(id), binding_index(binding_index) {};
+    TextureComponent(TextureID id, int binding_index)
+        : id(id)
+        , binding_index(binding_index) {};
 };
 
-class Texture
+MARK_AS_COMPONENT(TextureComponent)
+
+struct Texture
 {
-public:
     Texture();
     explicit Texture(const std::string& filename);
     explicit Texture(const aiTexture* assimp_texture);
-    GLuint ID = 0;
 
     Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;
@@ -38,10 +41,6 @@ public:
         other.height = 0;
         other.internal_format = 0;
         other.image_format = 0;
-        other.wrap_s = 0;
-        other.wrap_t = 0;
-        other.filter_min = 0;
-        other.filter_max = 0;
     }
 
     Texture& operator=(Texture&& other) noexcept
@@ -57,23 +56,49 @@ public:
 
     void bind(int texture_index) const;
     void destroy() {};
-
-private:
     void release()
     {
         glDeleteTextures(1, &ID);
         ID = 0;
     }
 
-    void load_from_data(unsigned char* image_data, const int image_width, const int image_height, const int num_channels);
+    inline GLuint get_id()
+    {
+        return ID;
+    }
 
-    GLuint width, height;
+private:
+    GLuint ID = 0;
     GLuint internal_format;
     GLuint image_format;
+    GLuint width;
+    GLuint height;
+    void load_from_data(unsigned char* image_data, const int image_width, const int image_height, const int num_channels);
+};
+
+struct TextureProperties
+{
     GLuint wrap_s;
     GLuint wrap_t;
     GLuint filter_min;
     GLuint filter_max;
+
+    void apply(GLuint texture_id)
+    {
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter_min);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter_max);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+};
+
+const TextureProperties DEFAULT_TEXTURE_PROPERTIES = TextureProperties {
+    .wrap_s = GL_REPEAT,
+    .wrap_t = GL_REPEAT,
+    .filter_min = GL_LINEAR,
+    .filter_max = GL_LINEAR,
 };
 
 #endif

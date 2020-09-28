@@ -549,7 +549,7 @@ enum aiComponent
 
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will merge all geometry layers present
+/** @brief Set whether the import importer will merge all geometry layers present
  *    in the source file or take only the first.
  *
  * The default value is true (1)
@@ -559,7 +559,7 @@ enum aiComponent
     "IMPORT_FBX_READ_ALL_GEOMETRY_LAYERS"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will read all materials present in the
+/** @brief Set whether the import importer will read all materials present in the
  *    source file or take only the referenced materials.
  *
  * This is void unless IMPORT_FBX_READ_MATERIALS=1.
@@ -571,7 +571,7 @@ enum aiComponent
     "IMPORT_FBX_READ_ALL_MATERIALS"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will read materials.
+/** @brief Set whether the import importer will read materials.
  *
  * The default value is true (1)
  * Property type: bool
@@ -580,7 +580,7 @@ enum aiComponent
     "IMPORT_FBX_READ_MATERIALS"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will read embedded textures.
+/** @brief Set whether the import importer will read embedded textures.
  *
  * The default value is true (1)
  * Property type: bool
@@ -589,7 +589,7 @@ enum aiComponent
     "IMPORT_FBX_READ_TEXTURES"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will read cameras.
+/** @brief Set whether the import importer will read cameras.
  *
  * The default value is true (1)
  * Property type: bool
@@ -598,7 +598,7 @@ enum aiComponent
     "IMPORT_FBX_READ_CAMERAS"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will read light sources.
+/** @brief Set whether the import importer will read light sources.
  *
  * The default value is true (1)
  * Property type: bool
@@ -607,7 +607,7 @@ enum aiComponent
     "IMPORT_FBX_READ_LIGHTS"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will read animations.
+/** @brief Set whether the import importer will read animations.
  *
  * The default value is true (1)
  * Property type: bool
@@ -616,7 +616,7 @@ enum aiComponent
     "IMPORT_FBX_READ_ANIMATIONS"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will act in strict mode in which only
+/** @brief Set whether the import importer will act in strict mode in which only
  *    FBX 2013 is supported and any other sub formats are rejected. FBX 2013
  *    is the primary target for the importer, so this format is best
  *    supported and well-tested.
@@ -628,7 +628,7 @@ enum aiComponent
     "IMPORT_FBX_STRICT_MODE"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will preserve pivot points for
+/** @brief Set whether the import importer will preserve pivot points for
  *    transformations (as extra nodes). If set to false, pivots and offsets
  *    will be evaluated whenever possible.
  *
@@ -650,7 +650,7 @@ enum aiComponent
     "IMPORT_FBX_OPTIMIZE_EMPTY_ANIMATION_CURVES"
 
 // ---------------------------------------------------------------------------
-/** @brief Set whether the fbx importer will use the legacy embedded texture naming.
+/** @brief Set whether the import importer will use the legacy embedded texture naming.
  *
  * The default value is false (0)
  * Property type: bool

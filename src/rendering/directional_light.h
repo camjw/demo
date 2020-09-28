@@ -22,4 +22,6 @@ struct DirectionalLight
     }
 };
 
+MARK_AS_COMPONENT(DirectionalLight)
+
 #endif

@@ -13,6 +13,8 @@ struct RotatingCubeComponent
     float3 axis;
 };
 
+MARK_AS_COMPONENT(RotatingCubeComponent)
+
 class RotatingCubeSystem : public System
 {
 public:

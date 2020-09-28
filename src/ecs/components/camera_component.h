@@ -13,7 +13,7 @@ const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
 const float LOOK_SPEED = 0.5f;
 
-struct CameraComponent : Component
+struct CameraComponent
 {
     float3 up;
     float3 forward;
@@ -25,6 +25,8 @@ struct CameraComponent : Component
     float zoom = ZOOM;
     float look_speed = LOOK_SPEED;
 };
+
+MARK_AS_COMPONENT(CameraComponent)
 
 const float3 WORLD_UP = float3(0, 1, 0);
 

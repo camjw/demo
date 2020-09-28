@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include <ecs/ecs.h>
 #include <maths/maths.h>
 
 using MeshID = uint32_t;
@@ -18,6 +19,8 @@ struct MeshComponent
     explicit MeshComponent() = default;
     explicit MeshComponent(MeshID id) : id(id) {};
 };
+
+MARK_AS_COMPONENT(MeshComponent)
 
 class Mesh
 {

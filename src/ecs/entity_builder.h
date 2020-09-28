@@ -35,7 +35,7 @@ public:
         return *this;
     };
 
-    EntityBuilder with(Material data)
+    EntityBuilder with(MaterialComponent data)
     {
         m_material = data;
         material_set = true;
@@ -99,7 +99,7 @@ private:
 
     Transform m_transform;
     TextureComponent m_texture;
-    Material m_material;
+    MaterialComponent m_material;
     MeshComponent m_mesh;
     ShaderComponent m_shader;
     CameraComponent m_camera;

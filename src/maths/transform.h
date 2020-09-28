@@ -31,4 +31,7 @@ struct Transform
     }
 };
 
+MARK_AS_COMPONENT(Transform)
+
+
 #endif // DEMO_TRANSFORM_H

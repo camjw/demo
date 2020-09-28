@@ -1,0 +1,6 @@
+#ifndef DEMO_SUPPRESS_WARNING_H
+#define DEMO_SUPPRESS_WARNING_H
+
+#define SUPPRESS_WARNING(x) (void)x;
+
+#endif // DEMO_SUPPRESS_WARNING_H

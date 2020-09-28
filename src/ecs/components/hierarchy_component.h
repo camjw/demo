@@ -4,9 +4,11 @@
 #include <ecs/ecs.h>
 #include <maths/transform.h>
 
-struct HierarchyComponent : Component
+struct HierarchyComponent
 {
     Entity parent = INVALID_ENTITY;
 };
+
+MARK_AS_COMPONENT(HierarchyComponent)
 
 #endif // DEMO_HIERARCHY_COMPONENT_H

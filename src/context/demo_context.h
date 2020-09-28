@@ -1,7 +1,7 @@
 #ifndef DEMO_DEMO_CONTEXT_H
 #define DEMO_DEMO_CONTEXT_H
 
-#include <fbx/fbx_importer.h>
+#include <import/model_importer.h>
 #include <memory>
 #include <resources/material_repository.h>
 #include <resources/mesh_repository.h>
@@ -29,9 +29,9 @@ public:
     {
         return shader_repository;
     }
-    inline std::shared_ptr<FBXImporter> get_fbx_importer()
+    inline std::shared_ptr<ModelImporter> get_model_importer()
     {
-        return fbx_importer;
+        return model_importer;
     }
 
 private:
@@ -39,7 +39,7 @@ private:
     std::shared_ptr<TextureRepository> texture_repository;
     std::shared_ptr<MaterialRepository> material_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
-    std::shared_ptr<FBXImporter> fbx_importer;
+    std::shared_ptr<ModelImporter> model_importer;
 };
 
 #endif //DEMO_DEMO_CONTEXT_H

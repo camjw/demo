@@ -50,6 +50,11 @@ public:
         return graph->root().get();
     }
 
+    inline float3 get_clear_colour() const
+    {
+        return clear_colour;
+    }
+
     std::unique_ptr<SceneGraph> graph;
 
 protected:
@@ -58,6 +63,7 @@ protected:
 
     Entity camera = INVALID_ENTITY;
     Entity skybox = INVALID_ENTITY;
+    float3 clear_colour;
     SceneID scene_id;
 };
 
