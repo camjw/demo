@@ -88,26 +88,29 @@ void OpenGLRenderer::draw_mesh(const Entity entity, glm::mat4 parent_transform) 
     shader->bind();
     glCheckError();
 
-    shader->set_int("material.diffuse_texture", 0);
-    shader->set_int("diffuse_texture", 0);
-//    shader->set_int("material.specular_texture", 1);
-
     if (material->diffuse_texture != INVALID_TEXTURE)
     {
         std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material->diffuse_texture);
         diffuse_texture->bind(0);
-//        material->diffuse_texture_properties.apply();
+        material->diffuse_texture_properties.apply();
         glCheckError();
     }
 
-//    if (material->specular_texture != INVALID_TEXTURE)
-//    {
-//        std::shared_ptr<Texture> specular_texture = texture_repository->get_texture(material->specular_texture);
-//        material->specular_texture_properties.apply();
-//        specular_texture->bind(1);
-//        glCheckError();
-//    }
+    if (material->specular_texture != INVALID_TEXTURE)
+    {
+        std::shared_ptr<Texture> specular_texture = texture_repository->get_texture(material->specular_texture);
+        specular_texture->bind(1);
+        material->specular_texture_properties.apply();
+        glCheckError();
+    }
+    else if (material->diffuse_texture != INVALID_TEXTURE)
+    {
+        std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material->diffuse_texture);
+        diffuse_texture->bind(1);
+    }
 
+    shader->set_int("material.diffuse_texture", 0);
+    shader->set_int("material.specular_texture", 1);
 
     shader->set_float3("material.ambient_colour", material->ambient_colour);
     shader->set_float3("material.diffuse_colour", material->diffuse_colour);

@@ -51,34 +51,30 @@ Texture::Texture(const aiTexture* assimp_texture)
 void Texture::load_from_data(unsigned char* image_data, const int image_width, const int image_height, const int num_channels)
 {
     glGenTextures(1, &ID);
+    glBindTexture(GL_TEXTURE_2D, ID);
 
     width = image_width;
     height = image_height;
     if (num_channels == 3)
     {
+        printf("Loading texture with 3 channels\n");
         image_format = GL_RGB;
         internal_format = GL_RGB;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_data);
     }
     else if (num_channels == 4)
     {
+        printf("Loading texture with 4 channels\n");
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
     }
 
     glGenerateMipmap(GL_TEXTURE_2D);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
     stbi_image_free(image_data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::bind(int texture_index) const
 {
-    printf("Binding texture with id: %i\n", ID);
     glActiveTexture(GL_TEXTURE0 + texture_index);
     glBindTexture(GL_TEXTURE_2D, ID);
 }
