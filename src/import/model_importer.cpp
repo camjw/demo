@@ -91,6 +91,7 @@ void ModelImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_no
         MeshID mesh_id = mesh_ids[assimp_node->mMeshes[i]];
         MaterialID material_id = mesh_to_materials_map.find(mesh_id)->second;
 
+        printf("ATTACHING MATERIAL %i\n", material_id);
         scene_node->add_child(world->create_entity()
                                   .with(MeshComponent(mesh_id))
                                   .with(Transform::identity())
@@ -153,6 +154,7 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
                 assimp_material->GetTexture(aiTextureType_SPECULAR, 0, &texture_path);
                 if (texture_ids.find(texture_path.C_Str()) != texture_ids.end())
                 {
+                    printf("specular texture index: %s\n", texture_path.C_Str());
                     specular_texture_id = texture_ids.find(texture_path.C_Str())->second;
                 }
                 else
@@ -196,6 +198,7 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
         }
 
         MaterialID new_material_id = material_repository->insert_material(material, material_name.C_Str());
+        printf("material spec id: %i\n", material.specular_texture);
         material_ids[i] = new_material_id;
     }
 

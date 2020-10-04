@@ -66,12 +66,19 @@ void Texture::load_from_data(unsigned char* image_data, const int image_width, c
     }
 
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     stbi_image_free(image_data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::bind(int texture_index) const
 {
+    printf("Binding texture with id: %i\n", ID);
     glActiveTexture(GL_TEXTURE0 + texture_index);
     glBindTexture(GL_TEXTURE_2D, ID);
 }

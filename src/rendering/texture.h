@@ -83,14 +83,12 @@ struct TextureProperties
     GLuint filter_min;
     GLuint filter_max;
 
-    void apply(GLuint texture_id)
+    void apply()
     {
-        glBindTexture(GL_TEXTURE_2D, texture_id);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter_min);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter_max);
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
 };
 

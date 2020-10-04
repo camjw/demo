@@ -10,14 +10,14 @@ struct SetShaderDirectionalLights
 
     void operator()(std::shared_ptr<Shader> shader)
     {
+        shader->bind();
+        shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
+
         for (int i = 0; i < directional_lights.size(); i++)
         {
             DirectionalLight directional_light = directional_lights[i];
             directional_light.bind(shader, i);
         }
-
-        shader->bind();
-        shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
     }
 
 private:
