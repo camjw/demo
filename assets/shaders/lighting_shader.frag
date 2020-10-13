@@ -71,7 +71,8 @@ void main()
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     }
 
-    FragColor = result;
+    //FragColor = result;
+    FragColor = texture(material.diffuse_texture, TexCoords);
 }
 
 // calculates the color when using a directional light.

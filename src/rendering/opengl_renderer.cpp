@@ -8,18 +8,25 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glCheckError();
 
     mesh_repository = context->get_mesh_repository();
     texture_repository = context->get_texture_repository();
     material_repository = context->get_material_repository();
     shader_repository = context->get_shader_repository();
+
+    opaque_render_queue = std::make_unique<RenderQueue>();
+    transparent_render_queue = std::make_unique<RenderQueue>();
 }
 
 void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
 {
+    opaque_render_queue->clear();
     float3 clear_colour = scene->get_clear_colour();
-    glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 1.0f);
+    glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Set common variables for shaders
@@ -38,7 +45,7 @@ void OpenGLRenderer::draw_scene_graph(const Scene* scene)
     draw_node(scene->get_root_node(), transform);
 }
 
-void OpenGLRenderer::draw_node(const SceneNode* scene_node, glm::mat4 parent_transform) const
+void OpenGLRenderer::draw_node(const SceneNode* scene_node, glm::mat4 parent_transform)
 {
     Transform node_transform = Transform::identity();
     if (world->has_component<Transform>(scene_node->get_entity()))
@@ -72,62 +79,34 @@ void OpenGLRenderer::search_for_point_lights(const SceneNode* scene_node, glm::m
     }
 }
 
-void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform) const
+void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform)
 {
     if (world->has_component<MaterialComponent>(entity) && world->has_component<MeshComponent>(entity))
     {
-        draw_mesh(entity, parent_transform);
+        enqueue_mesh(entity, parent_transform);
     }
 }
 
-void OpenGLRenderer::draw_mesh(const Entity entity, glm::mat4 parent_transform) const
+void OpenGLRenderer::enqueue_mesh(const Entity entity, glm::mat4 parent_transform)
 {
     MaterialID material_id = world->get_component<MaterialComponent>(entity).material_id;
     std::shared_ptr<Material> material = material_repository->get_material(material_id);
-    std::shared_ptr<Shader> shader = shader_repository->get_shader(material->shader);
-    shader->bind();
-    glCheckError();
 
-    if (material->diffuse_texture != INVALID_TEXTURE)
-    {
-        std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material->diffuse_texture);
-        diffuse_texture->bind(0);
-        material->diffuse_texture_properties.apply();
-        glCheckError();
-    }
+    RenderCommand command;
+    command.shader_id = material->shader;
+    command.material_id = material_id;
 
-    if (material->specular_texture != INVALID_TEXTURE)
-    {
-        std::shared_ptr<Texture> specular_texture = texture_repository->get_texture(material->specular_texture);
-        specular_texture->bind(1);
-        material->specular_texture_properties.apply();
-        glCheckError();
-    }
-    else if (material->diffuse_texture != INVALID_TEXTURE)
-    {
-        std::shared_ptr<Texture> diffuse_texture = texture_repository->get_texture(material->diffuse_texture);
-        diffuse_texture->bind(1);
-    }
-
-    shader->set_int("material.diffuse_texture", 0);
-    shader->set_int("material.specular_texture", 1);
-
-    shader->set_float3("material.ambient_colour", material->ambient_colour);
-    shader->set_float3("material.diffuse_colour", material->diffuse_colour);
-    shader->set_float3("material.specular_colour", material->specular_colour);
-    shader->set_float("material.shininess", material->shininess);
+    command.diffuse_texture_id = material->diffuse_texture;
+    command.specular_texture_id = material->specular_texture;
 
     Transform transform = world->get_component<Transform>(entity);
     glm::mat4 model_matrix = parent_transform * transform.get_model_matrix();
-    glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(model_matrix));
-    shader->set_mat4(DEMO_CONSTANTS_MODEL, model_matrix);
-    shader->set_mat3(DEMO_CONSTANTS_NORMAL_MODEL, normal_model_matrix);
+    command.transform = model_matrix;
 
     MeshComponent mesh = world->get_component<MeshComponent>(entity);
-    std::shared_ptr<Mesh> render_mesh = mesh_repository->get_mesh(mesh.id);
-    render_mesh->bind();
-    render_mesh->draw();
-    glCheckError();
+    command.mesh_id = mesh.id;
+
+    opaque_render_queue->push_back(command);
 }
 
 void OpenGLRenderer::draw_skybox(const Entity entity) const
@@ -136,6 +115,19 @@ void OpenGLRenderer::draw_skybox(const Entity entity) const
 
 void OpenGLRenderer::end_draw() const
 {
+    for (const RenderCommand& command : opaque_render_queue->commands)
+    {
+        std::shared_ptr<Shader> shader = shader_repository->get_shader(command.shader_id);
+        shader->bind();
+        shader->set_mat4(DEMO_CONSTANTS_MODEL, command.transform);
+        glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
+        shader->set_mat3(DEMO_CONSTANTS_NORMAL_MODEL, normal_model_matrix);
+        texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
+        texture_repository->get_texture(command.specular_texture_id)->bind(1);
+        material_repository->get_material(command.material_id)->bind(shader);
+        mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
+    }
+
     glfwSwapBuffers(window->get_glfw_window());
     glfwPollEvents();
 }

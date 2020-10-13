@@ -8,14 +8,22 @@
 using MaterialID = uint32_t;
 const MaterialID INVALID_MATERIAL = UINT32_MAX;
 
+enum RenderMode
+{
+    OPAQUE,
+    TRANSPARENT,
+};
+
 struct MaterialComponent
 {
     MaterialID material_id = INVALID_MATERIAL;
+    RenderMode render_mode = OPAQUE;
 
     explicit MaterialComponent() = default;
 
-    MaterialComponent(MaterialID material_id)
+    MaterialComponent(MaterialID material_id, RenderMode render_mode)
         : material_id(material_id)
+        , render_mode(render_mode)
     {
     }
 };
@@ -59,6 +67,8 @@ struct Material
         : shader(shader)
     {
     }
+
+    void bind(std::shared_ptr<Shader> shader);
 
     Material() { }
 };

@@ -324,15 +324,21 @@ void Mesh::init()
     glCheckError();
 }
 
-void Mesh::bind()
+void Mesh::bind() const
 {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 }
 
-void Mesh::draw()
+void Mesh::draw() const
 {
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+}
+
+void Mesh::bind_and_draw() const
+{
+    bind();
+    draw();
 }
 
 void Mesh::destroy()

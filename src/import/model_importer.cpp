@@ -94,7 +94,7 @@ void ModelImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_no
         scene_node->add_child(world->create_entity()
                                   .with(MeshComponent(mesh_id))
                                   .with(Transform::identity())
-                                  .with(MaterialComponent(material_id))
+                                  .with(MaterialComponent(material_id, OPAQUE))
                                   .build());
     }
 

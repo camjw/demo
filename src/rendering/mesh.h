@@ -46,8 +46,9 @@ public:
     std::vector<uint32_t> indices;
 
     void init();
-    void bind();
-    void draw();
+    void bind() const;
+    void draw() const;
+    void bind_and_draw() const;
     void destroy();
 
     Mesh(const Mesh&) = delete;
