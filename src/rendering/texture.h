@@ -10,7 +10,7 @@
 #include <string>
 
 using TextureID = uint32_t;
-const TextureID INVALID_TEXTURE = UINT32_MAX;
+const TextureID INVALID_TEXTURE = 1;
 
 struct TextureComponent
 {

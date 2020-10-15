@@ -125,8 +125,15 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
 
     for (unsigned int i = 0; i < assimp_scene->mNumMaterials; i++)
     {
+
         aiMaterial* assimp_material = assimp_scene->mMaterials[i];
         aiString material_name = assimp_material->GetName();
+        ai_real assimp_opacity;
+        if (aiGetMaterialFloat(assimp_material, AI_MATKEY_OPACITY, &assimp_opacity) == AI_SUCCESS)
+        {
+            std::string opacity = assimp_opacity == 1 ? "OPaque" : "Transparent";
+            printf("%s\n", opacity.c_str());
+        }
         Material material;
 
         if (assimp_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
@@ -168,25 +175,25 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
         }
 
         aiColor4D assimp_ambient;
-        if (aiGetMaterialColor(assimp_material, AI_MATKEY_COLOR_AMBIENT, &assimp_ambient) == AI_SUCCESS)
+        if (assimp_material->Get(AI_MATKEY_COLOR_AMBIENT, assimp_ambient) == AI_SUCCESS)
         {
             material.ambient_colour = float3(assimp_ambient.r, assimp_ambient.g, assimp_ambient.b);
         }
 
         aiColor4D assimp_diffuse;
-        if (aiGetMaterialColor(assimp_material, AI_MATKEY_COLOR_DIFFUSE, &assimp_diffuse) == AI_SUCCESS)
+        if (assimp_material->Get(AI_MATKEY_COLOR_DIFFUSE, assimp_diffuse) == AI_SUCCESS)
         {
             material.diffuse_colour = float3(assimp_diffuse.r, assimp_diffuse.g, assimp_diffuse.b);
         }
 
         aiColor4D assimp_specular;
-        if (aiGetMaterialColor(assimp_material, AI_MATKEY_COLOR_SPECULAR, &assimp_specular) == AI_SUCCESS)
+        if (assimp_material->Get(AI_MATKEY_COLOR_SPECULAR, assimp_specular) == AI_SUCCESS)
         {
             material.specular_colour = float3(assimp_specular.r, assimp_specular.g, assimp_specular.b);
         }
 
         ai_real assimp_shininess;
-        if (aiGetMaterialFloat(assimp_material, AI_MATKEY_MAPPING_SHININESS(0), &assimp_shininess) == AI_SUCCESS)
+        if (assimp_material->Get(AI_MATKEY_MAPPING_SHININESS(0), assimp_shininess) == AI_SUCCESS)
         {
             material.shininess = assimp_shininess;
         }

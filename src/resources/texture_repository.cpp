@@ -2,6 +2,12 @@
 #include <resources/texture_repository.h>
 #include <utils/opengl_helpers.h>
 
+TextureRepository::TextureRepository()
+{
+    TextureID base_texture_id = create_texture("base_texture", "assets/textures/uv_test.png");
+    printf("Base texture id: %i\n", base_texture_id);
+}
+
 std::shared_ptr<Texture> TextureRepository::get_texture(TextureID texture_id)
 {
     assert(textures.find(texture_id) != textures.end() && "No such texture.");
