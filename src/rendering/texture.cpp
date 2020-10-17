@@ -1,19 +1,19 @@
 #include <rendering/texture.h>
 
-Texture::Texture()
-    : internal_format(GL_RGBA)
-    , image_format(GL_RGBA)
-    , width(0)
-    , height(0)
+Texture::Texture(int width, int height)
+    : image_format(GL_RGBA)
+    , width(width)
+    , height(height)
 {
+    // Passing nullptr as the data makes an empty texture which can be used in a framebuffer
+    load_from_data(nullptr);
 }
 
 Texture::Texture(const std::string& filename)
-    : Texture()
 {
-    int image_width, image_height, num_channels;
+    int num_channels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char* image_data = stbi_load(filename.c_str(), &image_width, &image_height, &num_channels, 0);
+    unsigned char* image_data = stbi_load(filename.c_str(), &width, &height, &num_channels, 0);
 
     if (image_data == nullptr)
     {
@@ -21,22 +21,22 @@ Texture::Texture(const std::string& filename)
         return;
     }
 
-    load_from_data(image_data, image_width, image_width, num_channels);
+    set_image_format(num_channels);
+    load_from_data(image_data);
 }
 
 Texture::Texture(const aiTexture* assimp_texture)
-    : Texture()
 {
     unsigned char* image_data;
-    int image_width, image_height, num_channels;
+    int num_channels;
 
     if (assimp_texture->mHeight == 0)
     {
-        image_data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(assimp_texture->pcData), assimp_texture->mWidth, &image_width, &image_height, &num_channels, 0);
+        image_data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(assimp_texture->pcData), assimp_texture->mWidth, &width, &height, &num_channels, 0);
     }
     else
     {
-        image_data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(assimp_texture->pcData), assimp_texture->mWidth * assimp_texture->mHeight, &image_width, &image_height, &num_channels, 0);
+        image_data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(assimp_texture->pcData), assimp_texture->mWidth * assimp_texture->mHeight, &width, &height, &num_channels, 0);
     }
 
     if (image_data == nullptr)
@@ -45,36 +45,42 @@ Texture::Texture(const aiTexture* assimp_texture)
         return;
     }
 
-    load_from_data(image_data, image_width, image_width, num_channels);
+    set_image_format(num_channels);
+    load_from_data(image_data);
 }
 
-void Texture::load_from_data(unsigned char* image_data, const int image_width, const int image_height, const int num_channels)
+void Texture::set_image_format(int num_channels)
 {
-    glGenTextures(1, &ID);
-    glBindTexture(GL_TEXTURE_2D, ID);
-
-    width = image_width;
-    height = image_height;
-    if (num_channels == 3)
+    switch (num_channels)
     {
-        printf("Loading texture with 3 channels\n");
+    case 1:
+        image_format = GL_R;
+    case 2:
+        image_format = GL_RG;
+    case 3:
         image_format = GL_RGB;
-        internal_format = GL_RGB;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_data);
+    default:
+        image_format = GL_RGBA;
     }
-    else if (num_channels == 4)
-    {
-        printf("Loading texture with 4 channels\n");
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-    }
+}
+
+void Texture::load_from_data(unsigned char* image_data)
+{
+    glGenTextures(1, &id_);
+    glBindTexture(GL_TEXTURE_2D, id_);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, image_format, width, height, 0, image_format, GL_UNSIGNED_BYTE, image_data);
 
     glGenerateMipmap(GL_TEXTURE_2D);
-    stbi_image_free(image_data);
+    if (image_data)
+    {
+        stbi_image_free(image_data);
+    }
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::bind(int texture_index) const
 {
     glActiveTexture(GL_TEXTURE0 + texture_index);
-    glBindTexture(GL_TEXTURE_2D, ID);
+    glBindTexture(GL_TEXTURE_2D, id_);
 }

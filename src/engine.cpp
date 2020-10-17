@@ -34,6 +34,7 @@ Engine::Engine()
         "simple_lighting",
         DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader.vert",
         DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader_no_textures.frag");
+    shader_repository->create_shader("deferred");
 
     // Init default materials
     std::shared_ptr<MaterialRepository> material_repository = context->get_material_repository();

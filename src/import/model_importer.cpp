@@ -128,11 +128,10 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
 
         aiMaterial* assimp_material = assimp_scene->mMaterials[i];
         aiString material_name = assimp_material->GetName();
-        ai_real assimp_opacity;
-        if (aiGetMaterialFloat(assimp_material, AI_MATKEY_OPACITY, &assimp_opacity) == AI_SUCCESS)
+        int assimp_shading_model;
+        if (assimp_material->Get(AI_MATKEY_SHADING_MODEL, assimp_shading_model) == AI_SUCCESS)
         {
-            std::string opacity = assimp_opacity == 1 ? "OPaque" : "Transparent";
-            printf("%s\n", opacity.c_str());
+            printf("Shading model: %i\n", assimp_shading_model);
         }
         Material material;
 

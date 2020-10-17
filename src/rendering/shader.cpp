@@ -35,16 +35,16 @@ void Shader::init(const std::string& vertex_filepath, const std::string& fragmen
     check_compile_errors(fragment, "FRAGMENT");
 
     // shader Program
-    id = glCreateProgram();
-    glAttachShader(id, vertex);
-    glAttachShader(id, fragment);
-    glLinkProgram(id);
-    check_compile_errors(id, "PROGRAM");
+    id_ = glCreateProgram();
+    glAttachShader(id_, vertex);
+    glAttachShader(id_, fragment);
+    glLinkProgram(id_);
+    check_compile_errors(id_, "PROGRAM");
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 }
 
 void Shader::destroy() const
 {
-    glDeleteProgram(id);
+    glDeleteProgram(id_);
 }

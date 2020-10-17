@@ -3,8 +3,8 @@
 #include <window.h>
 
 Window::Window(const std::string& window_name)
-    : width(800)
-    , height(600)
+    : width_(800)
+    , height_(600)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -92,8 +92,8 @@ void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height
 void Window::update(Time time, InputState* input)
 {
     float2 framebuffer_size = input->get_framebuffer_size();
-    width = framebuffer_size.x;
-    height = framebuffer_size.y;
+    width_ = framebuffer_size.x;
+    height_ = framebuffer_size.y;
 
     close_window = input->is_key_pressed(Key::Esc);
 }

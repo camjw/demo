@@ -72,6 +72,13 @@ void main()
     }
 
     //FragColor = result;
+
+    result = texture(material.diffuse_texture, TexCoords);
+    if (result.a < 1.0)
+    {
+        discard;
+    }
+
     FragColor = texture(material.diffuse_texture, TexCoords);
 }
 

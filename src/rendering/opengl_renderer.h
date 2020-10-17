@@ -14,8 +14,10 @@
 #include <maths/transform.h>
 #include <rendering/cube_map.h>
 #include <rendering/directional_light.h>
+#include <rendering/frame_buffer.h>
 #include <rendering/material.h>
 #include <rendering/point_light.h>
+#include <rendering/render_buffer.h>
 #include <rendering/shader.h>
 #include <rendering/shader_commands/shader_commands.h>
 #include <rendering/texture.h>
@@ -37,7 +39,7 @@ private:
     void begin_draw(const Time time, const Scene* scene);
     void set_camera(const Entity camera_entity);
     void process_lights(const Scene* scene);
-    void process_point_lights(const std::vector<Entity> point_lights) const ;
+    void process_point_lights(const std::vector<Entity> point_lights) const;
     void process_directional_lights(const std::vector<Entity> directional_lights) const;
     void draw_scene_graph(const Scene* scene);
     void draw_node(const SceneNode* scene_node, glm::mat4 parent_transform);
@@ -45,7 +47,7 @@ private:
     void enqueue_mesh(const Entity entity, glm::mat4 parent_transform);
     void populate_point_light(const Entity entity);
     void draw_skybox(const Entity entity) const;
-    void end_draw() const;
+    void end_draw(const Scene* scene) const;
     glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
     void search_for_point_lights(const SceneNode* scene_node, glm::mat4 parent_transform);
 

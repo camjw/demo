@@ -35,23 +35,33 @@ public:
 
     inline glm::mat4x4 get_projection_matrix()
     {
-        return glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f);
+        return glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
     }
 
-    inline void set_window_dimensions(float width, float height)
+    inline void set_window_dimensions(int width, int height)
     {
-        this->width = width;
-        this->height = height;
+        this->width_ = width;
+        this->height_ = height;
     }
 
     void update(Time time, InputState* input);
 
     void load_icon(const std::string& icon_path);
 
+    inline int width() const
+    {
+        return width_;
+    }
+
+    inline int height() const
+    {
+        return height_;
+    }
+
 private:
     GLFWwindow* glfw_window = nullptr;
     bool close_window = false;
-    float width, height;
+    int width_, height_;
 
     void setup_callbacks();
 

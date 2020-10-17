@@ -20,31 +20,88 @@ MeshID MeshRepository::create_mesh(
     return current_mesh_id;
 }
 
-MeshID MeshRepository::create_square()
+std::shared_ptr<Mesh> MeshRepository::get_or_create_square()
 {
-    std::shared_ptr<Mesh> square_mesh = Mesh::square();
-    square_mesh->init();
+    if (square_mesh != nullptr)
+    {
+        return square_mesh;
+    }
 
-    meshes.insert(std::make_pair(++current_mesh_id, square_mesh));
-    return current_mesh_id;
+    std::shared_ptr<Mesh> mesh = Mesh::square();
+    mesh->init();
+
+    meshes.insert(std::make_pair(++current_mesh_id, mesh));
+
+    square_mesh = mesh;
+    square_mesh_id = current_mesh_id;
+    return mesh;
 }
 
-MeshID MeshRepository::create_cube()
+std::shared_ptr<Mesh> MeshRepository::get_or_create_cube()
 {
-    std::shared_ptr<Mesh> cube_mesh = Mesh::cube();
-    cube_mesh->init();
+    if (cube_mesh != nullptr)
+    {
+        return cube_mesh;
+    }
 
-    meshes.insert(std::make_pair(++current_mesh_id, cube_mesh));
-    return current_mesh_id;
+    std::shared_ptr<Mesh> mesh = Mesh::cube();
+    mesh->init();
+
+    meshes.insert(std::make_pair(++current_mesh_id, mesh));
+
+    cube_mesh = mesh;
+    cube_mesh_id = current_mesh_id;
+    return mesh;
 }
 
-MeshID MeshRepository::create_skybox()
+std::shared_ptr<Mesh> MeshRepository::get_or_create_skybox()
 {
-    std::shared_ptr<Mesh> skybox_mesh = Mesh::skybox();
-    skybox_mesh->init();
+    if (skybox_mesh != nullptr)
+    {
+        return skybox_mesh;
+    }
 
-    meshes.insert(std::make_pair(++current_mesh_id, skybox_mesh));
-    return current_mesh_id;
+    std::shared_ptr<Mesh> mesh = Mesh::skybox();
+    mesh->init();
+
+    meshes.insert(std::make_pair(++current_mesh_id, mesh));
+
+    skybox_mesh = mesh;
+    skybox_mesh_id = current_mesh_id;
+    return mesh;
+}
+
+MeshID MeshRepository::get_square_id()
+{
+    if (square_mesh_id != INVALID_MESH)
+    {
+        return square_mesh_id;
+    }
+
+    get_or_create_square();
+    return square_mesh_id;
+}
+
+MeshID MeshRepository::get_cube_id()
+{
+    if (cube_mesh_id != INVALID_MESH)
+    {
+        return cube_mesh_id;
+    }
+
+    get_or_create_cube();
+    return cube_mesh_id;
+}
+
+MeshID MeshRepository::get_skybox_id()
+{
+    if (skybox_mesh_id != INVALID_MESH)
+    {
+        return skybox_mesh_id;
+    }
+
+    get_or_create_skybox();
+    return skybox_mesh_id;
 }
 
 void MeshRepository::delete_mesh(MeshID mesh_id)

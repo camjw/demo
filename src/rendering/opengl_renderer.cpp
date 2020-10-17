@@ -24,11 +24,6 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
 void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
 {
-    opaque_render_queue->clear();
-    float3 clear_colour = scene->get_clear_colour();
-    glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     // Set common variables for shaders
     // TODO: set uniform struct rather than individual params
     shader_repository->for_each(SetShaderTime(time));
@@ -39,6 +34,7 @@ void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
 
 void OpenGLRenderer::draw_scene_graph(const Scene* scene)
 {
+    opaque_render_queue->clear();
     set_camera(scene->get_camera());
     draw_skybox(scene->get_skybox());
     glm::mat4 transform = Transform::identity().get_model_matrix();
@@ -113,8 +109,24 @@ void OpenGLRenderer::draw_skybox(const Entity entity) const
 {
 }
 
-void OpenGLRenderer::end_draw() const
+void OpenGLRenderer::end_draw(const Scene* scene) const
 {
+    FrameBuffer frame_buffer = FrameBuffer();
+    Texture render_texture = Texture(window->width(), window->height());
+    frame_buffer.bind();
+    frame_buffer.attach(&render_texture, 0);
+    RenderBuffer render_buffer = RenderBuffer(window->width(), window->height());
+    frame_buffer.attach(&render_buffer);
+    if (!frame_buffer.is_complete())
+    {
+        printf("Frame buffer is not complete!\n");
+    }
+
+    float3 clear_colour = scene->get_clear_colour();
+    glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
     for (const RenderCommand& command : opaque_render_queue->commands)
     {
         std::shared_ptr<Shader> shader = shader_repository->get_shader(command.shader_id);
@@ -127,6 +139,16 @@ void OpenGLRenderer::end_draw() const
         material_repository->get_material(command.material_id)->bind(shader);
         mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
     }
+
+    frame_buffer.unbind();
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    render_texture.bind(0);
+    std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred_shader");
+    deferred_shader->set_int("render_texture", 0);
+    deferred_shader->bind();
+    mesh_repository->get_or_create_square()->draw();
 
     glfwSwapBuffers(window->get_glfw_window());
     glfwPollEvents();
@@ -150,7 +172,7 @@ void OpenGLRenderer::draw_scene(const Time time, const Scene* scene)
     process_lights(scene);
     // TODO: add frustum culling here
     draw_scene_graph(scene);
-    end_draw();
+    end_draw(scene);
 }
 
 glm::mat4 OpenGLRenderer::get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const

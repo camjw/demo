@@ -12,6 +12,7 @@
 #include <maths/maths.h>
 
 using MeshID = uint32_t;
+const MeshID INVALID_MESH = UINT32_MAX;
 
 struct MeshComponent
 {

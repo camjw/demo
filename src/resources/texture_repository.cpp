@@ -49,7 +49,7 @@ void TextureRepository::delete_texture(TextureID texture_id)
     assert(textures.find(texture_id) != textures.end() && "Removing non-existent texture.");
 
     std::shared_ptr<Texture> texture_to_delete = textures[texture_id];
-    texture_to_delete->destroy();
+    texture_to_delete->release();
     textures.erase(texture_id);
 }
 

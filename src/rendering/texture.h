@@ -26,7 +26,7 @@ MARK_AS_COMPONENT(TextureComponent)
 
 struct Texture
 {
-    Texture();
+    explicit Texture(int width, int height);
     explicit Texture(const std::string& filename);
     explicit Texture(const aiTexture* assimp_texture);
 
@@ -34,12 +34,11 @@ struct Texture
     Texture& operator=(const Texture&) = delete;
 
     Texture(Texture&& other) noexcept
-        : ID(other.ID)
+        : id_(other.id_)
     {
-        other.ID = 0;
+        other.id_ = 0;
         other.width = 0;
         other.height = 0;
-        other.internal_format = 0;
         other.image_format = 0;
     }
 
@@ -48,55 +47,64 @@ struct Texture
         if (this != &other)
         {
             release();
-            std::swap(ID, other.ID);
+            std::swap(id_, other.id_);
         }
 
         return *this;
     }
 
     void bind(int texture_index) const;
-    void destroy() {};
-    void release()
+    inline void release()
     {
-        glDeleteTextures(1, &ID);
-        ID = 0;
+        glDeleteTextures(1, &id_);
+        id_ = 0;
     }
 
-    inline GLuint get_id()
+    inline GLuint id()
     {
-        return ID;
+        return id_;
     }
 
 private:
-    GLuint ID = 0;
-    GLuint internal_format;
+    GLuint id_ = 0;
     GLuint image_format;
-    GLuint width;
-    GLuint height;
-    void load_from_data(unsigned char* image_data, const int image_width, const int image_height, const int num_channels);
+    int width;
+    int height;
+    void set_image_format(int num_channels);
+    void load_from_data(unsigned char* image_data);
 };
 
 struct TextureProperties
 {
     GLuint wrap_s;
     GLuint wrap_t;
-    GLuint filter_min;
-    GLuint filter_max;
+    GLuint min_filter;
+    GLuint mag_filter;
 
     void apply()
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter_min);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter_max);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
+    }
+
+    static TextureProperties Default()
+    {
+        return TextureProperties{
+            .wrap_s = GL_REPEAT,
+            .wrap_t = GL_REPEAT,
+            .min_filter = GL_LINEAR,
+            .mag_filter = GL_LINEAR,
+        };
     }
 };
 
 const TextureProperties DEFAULT_TEXTURE_PROPERTIES = TextureProperties {
     .wrap_s = GL_REPEAT,
     .wrap_t = GL_REPEAT,
-    .filter_min = GL_LINEAR,
-    .filter_max = GL_LINEAR,
+    .min_filter = GL_LINEAR,
+    .mag_filter = GL_LINEAR,
 };
 
 #endif
