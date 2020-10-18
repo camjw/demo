@@ -62,6 +62,10 @@ private:
     std::unique_ptr<RenderQueue> opaque_render_queue;
     std::unique_ptr<RenderQueue> transparent_render_queue;
 
+    std::unique_ptr<Framebuffer> framebuffer;
+    std::unique_ptr<Texture> render_texture;
+    std::unique_ptr<Renderbuffer> renderbuffer;
+
     bool is_camera_set = false;
     int current_light_index = 0;
 };

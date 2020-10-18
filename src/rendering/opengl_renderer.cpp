@@ -20,6 +20,23 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
     opaque_render_queue = std::make_unique<RenderQueue>();
     transparent_render_queue = std::make_unique<RenderQueue>();
+
+    // Build framebuffer
+    framebuffer = std::make_unique<Framebuffer>();
+    render_texture = std::make_unique<Texture>(window->width(), window->height());
+    renderbuffer = std::make_unique<Renderbuffer>(window->width(), window->height());
+
+    framebuffer->bind();
+    render_texture->bind(0);
+    TextureProperties::Default().apply();
+    framebuffer->attach(render_texture.get(), 0);
+    framebuffer->attach(renderbuffer.get());
+    if (!framebuffer->is_complete())
+    {
+        printf("Frame buffer is not complete!\n");
+    }
+
+    framebuffer->unbind();
 }
 
 void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
@@ -111,16 +128,7 @@ void OpenGLRenderer::draw_skybox(const Entity entity) const
 
 void OpenGLRenderer::end_draw(const Scene* scene) const
 {
-    Framebuffer framebuffer = Framebuffer();
-    Texture render_texture = Texture(window->width(), window->height());
-    framebuffer.bind();
-    framebuffer.attach(&render_texture, 0);
-    Renderbuffer renderbuffer = Renderbuffer(window->width(), window->height());
-    framebuffer.attach(&renderbuffer);
-    if (!framebuffer.is_complete())
-    {
-        printf("Frame buffer is not complete!\n");
-    }
+    framebuffer->bind();
 
     float3 clear_colour = scene->get_clear_colour();
     glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
@@ -134,21 +142,24 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
         shader->set_mat4(DEMO_CONSTANTS_MODEL, command.transform);
         glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
         shader->set_mat3(DEMO_CONSTANTS_NORMAL_MODEL, normal_model_matrix);
+        shader->set_int("material.diffuse_texture", 0);
+        shader->set_int("material.specular_texture", 1);
         texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
         texture_repository->get_texture(command.specular_texture_id)->bind(1);
         material_repository->get_material(command.material_id)->bind(shader);
         mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
     }
 
-    framebuffer.unbind();
+    framebuffer->unbind();
+    glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    render_texture.bind(0);
     std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred");
-    deferred_shader->set_int("render_texture", 0);
     deferred_shader->bind();
-    mesh_repository->get_or_create_square()->draw();
+    deferred_shader->set_int("render_texture", 0);
+    render_texture->bind(0);
+    mesh_repository->get_or_create_square()->bind_and_draw();
 
     glfwSwapBuffers(window->get_glfw_window());
     glfwPollEvents();

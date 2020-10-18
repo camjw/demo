@@ -4,10 +4,10 @@
 std::shared_ptr<Mesh> Mesh::square()
 {
     std::vector<float3> square_positions = {
-        float3(-0.5f, -0.5f, 0.0f),
-        float3(-0.5f, 0.5f, 0.0f),
-        float3(0.5f, 0.5f, 0.0f),
-        float3(0.5f, -0.5f, 0.0f),
+        float3(-1.0f, -1.0f, 0.0f),
+        float3(-1.0f, 1.0f, 0.0f),
+        float3(1.0f, 1.0f, 0.0f),
+        float3(1.0f, -1.0f, 0.0f),
     };
 
     std::vector<float3> square_normals = {
@@ -19,13 +19,12 @@ std::shared_ptr<Mesh> Mesh::square()
 
     std::vector<float2> square_uvs = {
         float2(0.0f, 0.0f),
-        float2(1.0f, 0.0f),
+        float2(0.0f, 1.0f),
         float2(1.0f, 1.0f),
-        float2(0.0f, 1.0f)
+        float2(1.0f, 0.0f)
     };
 
     std::vector<uint32_t> square_indices = {
-        0, 1, 2, 0, 2, 3,
         0, 2, 1, 0, 3, 2
     };
 
