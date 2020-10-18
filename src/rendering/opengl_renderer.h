@@ -14,10 +14,10 @@
 #include <maths/transform.h>
 #include <rendering/cube_map.h>
 #include <rendering/directional_light.h>
-#include <rendering/frame_buffer.h>
+#include <rendering/framebuffer.h>
 #include <rendering/material.h>
 #include <rendering/point_light.h>
-#include <rendering/render_buffer.h>
+#include <rendering/renderbuffer.h>
 #include <rendering/shader.h>
 #include <rendering/shader_commands/shader_commands.h>
 #include <rendering/texture.h>

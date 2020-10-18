@@ -1,14 +1,14 @@
-#ifndef DEMO_FRAME_BUFFER_H
-#define DEMO_FRAME_BUFFER_H
+#ifndef DEMO_FRAMEBUFFER_H
+#define DEMO_FRAMEBUFFER_H
 
-#include "render_buffer.h"
+#include "renderbuffer.h"
 #include <string>
 #include <unordered_map>
 
-class FrameBuffer
+class Framebuffer
 {
 public:
-    FrameBuffer()
+    Framebuffer()
     {
         glGenFramebuffers(1, &id_);
     }
@@ -18,16 +18,16 @@ public:
         glBindFramebuffer(GL_FRAMEBUFFER, id_);
     }
 
-    FrameBuffer(const FrameBuffer&) = delete;
-    FrameBuffer& operator=(const FrameBuffer&) = delete;
+    Framebuffer(const Framebuffer&) = delete;
+    Framebuffer& operator=(const Framebuffer&) = delete;
 
-    FrameBuffer(FrameBuffer&& other) noexcept
+    Framebuffer(Framebuffer&& other) noexcept
     : id_(other.id_)
     {
         other.id_ = 0;
     }
 
-    FrameBuffer& operator=(FrameBuffer&& other) noexcept
+    Framebuffer& operator=(Framebuffer&& other) noexcept
     {
         if (this != &other)
         {
@@ -63,7 +63,7 @@ public:
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + binding_index, GL_TEXTURE_2D, texture->id(), mipmap_level);
     }
 
-    inline void attach(RenderBuffer* render_buffer)
+    inline void attach(Renderbuffer* render_buffer)
     {
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, render_buffer->id());
     }
@@ -78,4 +78,4 @@ private:
     std::unordered_map<std::string, Texture*> attached_textures;
 };
 
-#endif //DEMO_FRAME_BUFFER_H
+#endif //DEMO_FRAMEBUFFER_H

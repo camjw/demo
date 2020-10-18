@@ -1,10 +1,10 @@
-#ifndef DEMO_RENDER_BUFFER_H
-#define DEMO_RENDER_BUFFER_H
+#ifndef DEMO_RENDERBUFFER_H
+#define DEMO_RENDERBUFFER_H
 
-class RenderBuffer
+class Renderbuffer
 {
 public:
-    RenderBuffer(int width, int height)
+    Renderbuffer(int width, int height)
     {
         glGenRenderbuffers(1, &id_);
         glBindRenderbuffer(GL_RENDERBUFFER, id_);
@@ -12,16 +12,16 @@ public:
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
 
-    RenderBuffer(const RenderBuffer&) = delete;
-    RenderBuffer& operator=(const RenderBuffer&) = delete;
+    Renderbuffer(const Renderbuffer&) = delete;
+    Renderbuffer& operator=(const Renderbuffer&) = delete;
 
-    RenderBuffer(RenderBuffer&& other) noexcept
+    Renderbuffer(Renderbuffer&& other) noexcept
     : id_(other.id_)
     {
         other.id_ = 0;
     }
 
-    RenderBuffer& operator=(RenderBuffer&& other) noexcept
+    Renderbuffer& operator=(Renderbuffer&& other) noexcept
     {
         if (this != &other)
         {
@@ -51,4 +51,4 @@ private:
     GLuint id_;
 };
 
-#endif //DEMO_RENDER_BUFFER_H
+#endif //DEMO_RENDERBUFFER_H

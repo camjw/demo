@@ -111,13 +111,13 @@ void OpenGLRenderer::draw_skybox(const Entity entity) const
 
 void OpenGLRenderer::end_draw(const Scene* scene) const
 {
-    FrameBuffer frame_buffer = FrameBuffer();
+    Framebuffer framebuffer = Framebuffer();
     Texture render_texture = Texture(window->width(), window->height());
-    frame_buffer.bind();
-    frame_buffer.attach(&render_texture, 0);
-    RenderBuffer render_buffer = RenderBuffer(window->width(), window->height());
-    frame_buffer.attach(&render_buffer);
-    if (!frame_buffer.is_complete())
+    framebuffer.bind();
+    framebuffer.attach(&render_texture, 0);
+    Renderbuffer renderbuffer = Renderbuffer(window->width(), window->height());
+    framebuffer.attach(&renderbuffer);
+    if (!framebuffer.is_complete())
     {
         printf("Frame buffer is not complete!\n");
     }
@@ -140,12 +140,12 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
         mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
     }
 
-    frame_buffer.unbind();
+    framebuffer.unbind();
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     render_texture.bind(0);
-    std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred_shader");
+    std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred");
     deferred_shader->set_int("render_texture", 0);
     deferred_shader->bind();
     mesh_repository->get_or_create_square()->draw();

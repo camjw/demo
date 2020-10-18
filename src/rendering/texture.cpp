@@ -27,6 +27,7 @@ Texture::Texture(const std::string& filename)
 
 Texture::Texture(const aiTexture* assimp_texture)
 {
+    printf("Loading texture %s\n", assimp_texture->mFilename.C_Str());
     unsigned char* image_data;
     int num_channels;
 
@@ -45,6 +46,8 @@ Texture::Texture(const aiTexture* assimp_texture)
         return;
     }
 
+    printf("Num channels: %i\n", num_channels);
+    printf("Width: %i, height: %i\n", width, height);
     set_image_format(num_channels);
     load_from_data(image_data);
 }
@@ -54,13 +57,17 @@ void Texture::set_image_format(int num_channels)
     switch (num_channels)
     {
     case 1:
-        image_format = GL_R;
+        image_format = GL_RED;
+        break;
     case 2:
         image_format = GL_RG;
+        break;
     case 3:
         image_format = GL_RGB;
+        break;
     default:
         image_format = GL_RGBA;
+        break;
     }
 }
 
@@ -70,8 +77,8 @@ void Texture::load_from_data(unsigned char* image_data)
     glBindTexture(GL_TEXTURE_2D, id_);
 
     glTexImage2D(GL_TEXTURE_2D, 0, image_format, width, height, 0, image_format, GL_UNSIGNED_BYTE, image_data);
-
     glGenerateMipmap(GL_TEXTURE_2D);
+
     if (image_data)
     {
         stbi_image_free(image_data);
