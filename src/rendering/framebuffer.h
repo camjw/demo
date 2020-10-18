@@ -2,16 +2,15 @@
 #define DEMO_FRAMEBUFFER_H
 
 #include "renderbuffer.h"
+#include "texture.h"
+#include <glad/glad.h>
 #include <string>
 #include <unordered_map>
 
 class Framebuffer
 {
 public:
-    Framebuffer()
-    {
-        glGenFramebuffers(1, &id_);
-    }
+    Framebuffer(int width, int height);
 
     inline void bind()
     {
@@ -73,9 +72,13 @@ public:
         return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
     }
 
+    void bind_render_texture(int bind_index) const;
+
 private:
     GLuint id_;
-    std::unordered_map<std::string, Texture*> attached_textures;
+
+    std::unique_ptr<Texture> render_texture;
+    std::unique_ptr<Renderbuffer> renderbuffer;
 };
 
 #endif //DEMO_FRAMEBUFFER_H

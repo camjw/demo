@@ -22,21 +22,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
     transparent_render_queue = std::make_unique<RenderQueue>();
 
     // Build framebuffer
-    framebuffer = std::make_unique<Framebuffer>();
-    render_texture = std::make_unique<Texture>(window->width(), window->height());
-    renderbuffer = std::make_unique<Renderbuffer>(window->width(), window->height());
-
-    framebuffer->bind();
-    render_texture->bind(0);
-    TextureProperties::Default().apply();
-    framebuffer->attach(render_texture.get(), 0);
-    framebuffer->attach(renderbuffer.get());
-    if (!framebuffer->is_complete())
-    {
-        printf("Frame buffer is not complete!\n");
-    }
-
-    framebuffer->unbind();
+    framebuffer = std::make_unique<Framebuffer>(window->width(), window->height());
 }
 
 void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
@@ -158,7 +144,7 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred");
     deferred_shader->bind();
     deferred_shader->set_int("render_texture", 0);
-    render_texture->bind(0);
+    framebuffer->bind_render_texture(0);
     mesh_repository->get_or_create_square()->bind_and_draw();
 
     glfwSwapBuffers(window->get_glfw_window());
