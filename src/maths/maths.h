@@ -5,6 +5,7 @@
 #include <maths/float3.h>
 #include <maths/float4.h>
 
+#include <maths/int2.h>
 #include <maths/quaternion.h>
 
 class maths

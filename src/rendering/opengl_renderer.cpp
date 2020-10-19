@@ -120,6 +120,7 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    glViewport(0, 0, window->width(), window->height());
 
     for (const RenderCommand& command : opaque_render_queue->commands)
     {
@@ -140,6 +141,9 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    int2 viewportDimensions = window->get_viewport_dimensions();
+    glViewport(0, 0, viewportDimensions.x, viewportDimensions.y);
 
     std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred");
     deferred_shader->bind();

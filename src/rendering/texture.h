@@ -81,22 +81,12 @@ struct TextureProperties
     GLuint min_filter;
     GLuint mag_filter;
 
-    void apply()
+    void apply() const
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
-    }
-
-    static TextureProperties Default()
-    {
-        return TextureProperties{
-            .wrap_s = GL_REPEAT,
-            .wrap_t = GL_REPEAT,
-            .min_filter = GL_LINEAR,
-            .mag_filter = GL_LINEAR,
-        };
     }
 };
 

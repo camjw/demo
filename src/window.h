@@ -12,6 +12,7 @@
 #include <string>
 
 #include <maths/float2.h>
+#include <maths/int2.h>
 #include <timer.h>
 
 class InputState;
@@ -56,6 +57,13 @@ public:
     inline int height() const
     {
         return height_;
+    }
+
+    inline int2 get_viewport_dimensions() const
+    {
+        int viewportWidth, viewportHeight;
+        glfwGetFramebufferSize(glfw_window, &viewportWidth, &viewportHeight);
+        return int2(viewportWidth, viewportHeight);
     }
 
 private:

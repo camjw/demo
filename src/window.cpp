@@ -33,10 +33,6 @@ Window::Window(const std::string& window_name)
 
     glCheckError();
 
-    glEnable(GL_DEPTH_TEST);
-
-    glCheckError();
-
     setup_callbacks();
 }
 

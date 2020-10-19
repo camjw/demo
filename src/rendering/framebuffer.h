@@ -17,6 +17,11 @@ public:
         glBindFramebuffer(GL_FRAMEBUFFER, id_);
     }
 
+    inline void clear()
+    {
+
+    }
+
     Framebuffer(const Framebuffer&) = delete;
     Framebuffer& operator=(const Framebuffer&) = delete;
 

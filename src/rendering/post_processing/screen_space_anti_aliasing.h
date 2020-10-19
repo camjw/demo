@@ -1,0 +1,8 @@
+#ifndef DEMO_SCREEN_SPACE_ANTI_ALIASING_H
+#define DEMO_SCREEN_SPACE_ANTI_ALIASING_H
+
+class ScreenSpaceAntiAliasing
+{
+};
+
+#endif //DEMO_SCREEN_SPACE_ANTI_ALIASING_H

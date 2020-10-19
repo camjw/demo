@@ -9,7 +9,7 @@ Framebuffer::Framebuffer(int width, int height)
 
     bind();
     render_texture->bind(0);
-    TextureProperties::Default().apply();
+    DEFAULT_TEXTURE_PROPERTIES.apply();
     attach(render_texture.get(), 0);
     attach(renderbuffer.get());
     if (!is_complete())
