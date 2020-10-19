@@ -16,6 +16,7 @@ public:
 
 private:
     void build_camera();
+    void build_skybox();
 };
 
 #endif // DEMO_FIRST_SCENE_H

@@ -14,10 +14,11 @@ FirstScene::FirstScene(std::shared_ptr<DemoContext> context, const std::shared_p
 void FirstScene::on_create()
 {
     build_camera();
+    build_skybox();
 
     context->get_model_importer()->load_fbx("../assets/models/crytek_sponza.fbx", graph->root().get());
     float3 sunlight_colour = float3(240.0f / 255, 240.0f / 255, 188.0f / 255);
-    float light_intensity = 0.5f;
+    float light_intensity = 0.75f;
     graph->add_child(world->create_entity()
                          .with(Transform {
                              .position = float3(0, 10, 0),
@@ -46,5 +47,13 @@ void FirstScene::build_camera()
                  .with(Transform {
                      .position = float3(-1.0, 1.0, 0.0),
                  })
+                 .build();
+}
+
+void FirstScene::build_skybox()
+{
+    CubeMapID cloudy_sky_id = context->get_cube_map_repository()->create_cube_map("cloudy_sky", "../assets/skyboxes/cloudy_sky");
+    skybox = world->create_entity()
+                 .with(CubeMapComponent(cloudy_sky_id))
                  .build();
 }

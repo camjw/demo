@@ -9,3 +9,8 @@ ShaderID ResourceLoader::get_or_create_shader(const std::string& shader_name, co
 {
     return shader_repository->create_shader(shader_name, vertex_filename, fragment_filename);
 }
+
+CubeMapID ResourceLoader::get_or_create_cube_map(const std::string& cube_map_name, const std::string& cube_map_directory)
+{
+    return cube_map_repository->create_cube_map(cube_map_name, cube_map_directory);
+}

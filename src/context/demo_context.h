@@ -3,6 +3,7 @@
 
 #include <import/model_importer.h>
 #include <memory>
+#include <resources/cube_map_repository.h>
 #include <resources/material_repository.h>
 #include <resources/mesh_repository.h>
 #include <resources/shader_repository.h>
@@ -29,6 +30,10 @@ public:
     {
         return shader_repository;
     }
+    inline std::shared_ptr<CubeMapRepository> get_cube_map_repository()
+    {
+        return cube_map_repository;
+    }
     inline std::shared_ptr<ModelImporter> get_model_importer()
     {
         return model_importer;
@@ -39,6 +44,7 @@ private:
     std::shared_ptr<TextureRepository> texture_repository;
     std::shared_ptr<MaterialRepository> material_repository;
     std::shared_ptr<ShaderRepository> shader_repository;
+    std::shared_ptr<CubeMapRepository> cube_map_repository;
     std::shared_ptr<ModelImporter> model_importer;
 };
 

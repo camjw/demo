@@ -5,43 +5,64 @@
 #include <stb_image.h>
 
 #include <cstdint>
+#include <ecs/ecs.h>
 #include <string>
 #include <vector>
 
+using CubeMapID = uint32_t;
+const CubeMapID INVALID_CUBE_MAP = UINT32_MAX;
+
+struct CubeMapComponent
+{
+    CubeMapID id = INVALID_CUBE_MAP;
+
+    explicit CubeMapComponent() = default;
+    explicit CubeMapComponent(CubeMapID id) : id(id) {};
+};
+
+MARK_AS_COMPONENT(CubeMapComponent)
+
 class CubeMap
 {
-    public:
-        CubeMap();
-        GLuint ID = 0;
+public:
+    CubeMap(const std::vector<std::string>& faces);
+    inline GLuint id() const
+    {
+        return id_;
+    }
 
-        CubeMap(const CubeMap&) = delete;
-        CubeMap& operator=(const CubeMap&) = delete;
+    CubeMap(const CubeMap&) = delete;
+    CubeMap& operator=(const CubeMap&) = delete;
 
-        CubeMap(CubeMap &&other) : ID(other.ID) 
+    CubeMap(CubeMap&& other)
+        : id_(other.id_)
+    {
+        other.id_ = 0;
+    }
+
+    CubeMap& operator=(CubeMap&& other)
+    {
+        if (this != &other)
         {
-            other.ID = 0;
+            release();
+            std::swap(id_, other.id_);
         }
 
-        CubeMap &operator=(CubeMap &&other)
-        {
-            if(this != &other)
-            {
-                release();
-                std::swap(ID, other.ID);
-            }
+        return *this;
+    }
 
-            return *this;
-        }
+    void bind() const;
 
-        void build(const std::vector<std::string>& faces);
-        void bind() const;
+    void release()
+    {
+        glDeleteTextures(1, &id_);
+        id_ = 0;
+    }
+private:
+    GLuint id_ = 0;
+    void build(const std::vector<std::string>& faces);
 
-    private:
-        void release()
-        {
-            glDeleteTextures(1, &ID);
-            ID = 0;
-        }
+    GLuint get_image_format(int num_channels) const;
 };
 
 #endif

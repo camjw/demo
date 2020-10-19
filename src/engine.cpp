@@ -28,7 +28,7 @@ Engine::Engine()
     shader_repository->create_shader("lighting");
     shader_repository->create_shader("pixel");
     shader_repository->create_shader("simple");
-    shader_repository->create_shader("skybox");
+    shader_repository->create_shader("skyboxes");
     shader_repository->create_shader("uv_test");
     ShaderID simple_lighting_shader_id = shader_repository->create_shader(
         "simple_lighting",
@@ -54,6 +54,7 @@ Engine::Engine()
     world->register_component<NameComponent>();
     world->register_component<PointLight>();
     world->register_component<DirectionalLight>();
+    world->register_component<CubeMapComponent>();
 
     // Register systems
     world->register_system<FirstPersonCameraSystem>();

@@ -16,7 +16,7 @@ const MeshID INVALID_MESH = UINT32_MAX;
 
 struct MeshComponent
 {
-    MeshID id;
+    MeshID id = INVALID_MESH;
     explicit MeshComponent() = default;
     explicit MeshComponent(MeshID id) : id(id) {};
 };
