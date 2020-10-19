@@ -54,7 +54,12 @@ vec4 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
 vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
-{    
+{
+    if (texture(material.diffuse_texture, TexCoords).a < 1.0)
+    {
+        discard;
+    }
+
     // properties
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(CAMERA_POSITION - FragPos);
@@ -65,21 +70,14 @@ void main()
     {
         result += CalcDirectionalLight(directionalLights[i], norm, viewDir);
     }
+
     // phase 2: point lights
     for(int i = 0; i < NUM_ACTIVE_POINT_LIGHTS; i++)
     {
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     }
 
-    //FragColor = result;
-
-    result = texture(material.diffuse_texture, TexCoords);
-    if (result.a < 1.0)
-    {
-        discard;
-    }
-
-    FragColor = texture(material.diffuse_texture, TexCoords);
+    FragColor = vec4(result.xyz, 1.0f);
 }
 
 // calculates the color when using a directional light.

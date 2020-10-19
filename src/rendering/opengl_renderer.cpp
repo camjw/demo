@@ -120,6 +120,7 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    glDisable(GL_FRAMEBUFFER_SRGB);
     glViewport(0, 0, window->width(), window->height());
 
     for (const RenderCommand& command : opaque_render_queue->commands)
@@ -132,7 +133,8 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
         shader->set_int("material.diffuse_texture", 0);
         shader->set_int("material.specular_texture", 1);
         texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
-        texture_repository->get_texture(command.specular_texture_id)->bind(1);
+//        texture_repository->get_texture(command.specular_texture_id)->bind(1);
+        texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
         material_repository->get_material(command.material_id)->bind(shader);
         mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
     }
@@ -141,6 +143,7 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_FRAMEBUFFER_SRGB);
 
     int2 viewportDimensions = window->get_viewport_dimensions();
     glViewport(0, 0, viewportDimensions.x, viewportDimensions.y);
