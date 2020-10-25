@@ -34,9 +34,9 @@ public:
         return glfwWindowShouldClose(glfw_window) || close_window;
     }
 
-    inline glm::mat4x4 get_projection_matrix()
+    inline float get_aspect_ratio()
     {
-        return glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
+        return (float) width_ / height_;
     }
 
     inline void set_window_dimensions(int width, int height)

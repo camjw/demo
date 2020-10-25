@@ -6,6 +6,6 @@ struct NameComponent
     std::string name;
 };
 
-MARK_AS_COMPONENT(NameComponent)
+REGISTER_COMPONENT(Name, NameComponent)
 
 #endif // DEMO_NAME_COMPONENT_H

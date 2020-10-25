@@ -1,6 +1,8 @@
 #include <ecs/components/hierarchy_component.h>
 #include <ecs/components/name_component.h>
+#include <ecs/components/wren_script_component.h>
 #include <ecs/systems/first_person_camera_system.h>
+#include <ecs/systems/wren_scripting_system.h>
 #include <engine.h>
 #include <maths/transform.h>
 #include <rendering/directional_light.h>
@@ -28,7 +30,7 @@ Engine::Engine()
     shader_repository->create_shader("lighting");
     shader_repository->create_shader("pixel");
     shader_repository->create_shader("simple");
-    shader_repository->create_shader("skyboxes");
+    shader_repository->create_shader("skybox");
     shader_repository->create_shader("uv_test");
     ShaderID simple_lighting_shader_id = shader_repository->create_shader(
         "simple_lighting",
@@ -55,6 +57,7 @@ Engine::Engine()
     world->register_component<PointLight>();
     world->register_component<DirectionalLight>();
     world->register_component<CubeMapComponent>();
+    world->register_component<WrenScriptComponent>();
 
     // Register systems
     world->register_system<FirstPersonCameraSystem>();
@@ -62,6 +65,11 @@ Engine::Engine()
     camera_system_signature.set(world->get_component_type<CameraComponent>());
     camera_system_signature.set(world->get_component_type<Transform>());
     world->set_system_signature<FirstPersonCameraSystem>(camera_system_signature);
+
+    world->register_system<WrenScriptingSystem>();
+    Signature wren_scripting_system_signature;
+    wren_scripting_system_signature.set(world->get_component_type<WrenScriptComponent>());
+    world->set_system_signature<WrenScriptingSystem>(wren_scripting_system_signature);
 
     // Init renderer
     renderer = std::make_unique<OpenGLRenderer>(context, window, world);

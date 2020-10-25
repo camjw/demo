@@ -1,7 +1,7 @@
 #ifndef DEMO_HIERARCHY_COMPONENT_H
 #define DEMO_HIERARCHY_COMPONENT_H
 
-#include <ecs/ecs.h>
+#include <ecs/world.h>
 #include <maths/transform.h>
 
 struct HierarchyComponent
@@ -9,6 +9,6 @@ struct HierarchyComponent
     Entity parent = INVALID_ENTITY;
 };
 
-MARK_AS_COMPONENT(HierarchyComponent)
+REGISTER_COMPONENT(Hierarchy, HierarchyComponent)
 
 #endif // DEMO_HIERARCHY_COMPONENT_H

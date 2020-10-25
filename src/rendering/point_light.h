@@ -2,7 +2,7 @@
 #define DEMO_POINT_LIGHT_H
 
 #include "shader.h"
-#include <ecs/ecs.h>
+#include <ecs/world.h>
 #include <maths/float3.h>
 
 struct PointLight
@@ -31,6 +31,6 @@ struct PointLight
     }
 };
 
-MARK_AS_COMPONENT(PointLight)
+REGISTER_COMPONENT(PointLight, PointLight)
 
 #endif //DEMO_POINT_LIGHT_H

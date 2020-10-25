@@ -1,6 +1,7 @@
 #ifndef DEMO_TRANSFORM_H
 #define DEMO_TRANSFORM_H
 
+#include <ecs/world.h>
 #include <glm/glm.hpp>
 #include <maths/float3.h>
 #include <maths/quaternion.h>
@@ -31,7 +32,6 @@ struct Transform
     }
 };
 
-MARK_AS_COMPONENT(Transform)
-
+REGISTER_COMPONENT(Transform, Transform)
 
 #endif // DEMO_TRANSFORM_H

@@ -7,6 +7,7 @@
 #include <assimp/texture.h>
 #include <cstdint>
 #include <ecs/ecs.h>
+#include <ecs/world.h>
 #include <string>
 
 using TextureID = uint32_t;
@@ -22,11 +23,12 @@ struct TextureComponent
         , binding_index(binding_index) {};
 };
 
-MARK_AS_COMPONENT(TextureComponent)
+REGISTER_COMPONENT(Texture, TextureComponent)
 
 struct Texture
 {
     explicit Texture(int width, int height);
+    explicit Texture(int width, int height, GLuint internal_format, GLuint image_format);
     explicit Texture(const std::string& filename);
     explicit Texture(const aiTexture* assimp_texture);
 
@@ -67,6 +69,7 @@ struct Texture
 
 private:
     GLuint id_ = 0;
+    GLuint internal_format;
     GLuint image_format;
     int width;
     int height;

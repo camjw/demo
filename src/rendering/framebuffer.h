@@ -83,6 +83,10 @@ private:
     GLuint id_;
 
     std::unique_ptr<Texture> render_texture;
+    std::unique_ptr<Texture> position_texture;
+    std::unique_ptr<Texture> normal_texture;
+    std::unique_ptr<Texture> albedo_texture;
+
     std::unique_ptr<Renderbuffer> renderbuffer;
 };
 

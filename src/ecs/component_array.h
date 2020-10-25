@@ -12,7 +12,7 @@ public:
     virtual void on_entity_destroyed(Entity entity) = 0;
 };
 
-template <typename T, typename std::enable_if<IsMarkedAsComponent<T>::is_component, T>::type* = nullptr>
+template <typename T>
 class ComponentArray : public IComponentArray
 {
 public:

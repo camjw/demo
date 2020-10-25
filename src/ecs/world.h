@@ -1,13 +1,14 @@
 #ifndef DEMO_ECS_WORLD_HPP
 #define DEMO_ECS_WORLD_HPP
 
-#include "entity_builder.h"
 #include <ecs/component_manager.h>
 #include <ecs/ecs.h>
 #include <ecs/entity_manager.h>
 #include <ecs/system_manager.h>
+#include <type_traits>
 
 class SignatureBuilder;
+class EntityBuilder;
 
 class World
 {
@@ -28,10 +29,7 @@ public:
         return entity_manager->create_entity();
     }
 
-    EntityBuilder create_entity()
-    {
-        return EntityBuilder(self);
-    }
+    EntityBuilder* create_entity();
 
     void destroy_entity(Entity entity)
     {
@@ -90,7 +88,7 @@ public:
         {
             add_component<T>(entity, value);
         }
-        
+
         return value;
     }
 
@@ -154,5 +152,48 @@ private:
 
     std::shared_ptr<World> self;
 };
+
+using component_registration_function = void (*)(std::shared_ptr<World> world);
+void register_component(component_registration_function crf);
+static std::vector<component_registration_function>& components_to_register();
+
+using system_registration_function = void (*)(std::shared_ptr<World> world, Signature signature);
+void register_system(system_registration_function srf);
+static std::vector<system_registration_function>& systems_to_register()
+{
+    static std::vector<system_registration_function> v;
+    return v;
+}
+
+#define CONCAT_IMPL(a, b) a##b
+#define CONCAT(a, b) CONCAT_IMPL(a, b)
+#define CONCAT3(a, b, c) CONCAT(a, CONCAT(b, c))
+
+// ComponentName should be globally unique (can get lucky if they repeat),
+// but they don't have any other impact.
+#define REGISTER_COMPONENT(ComponentName, ComponentType)                                              \
+    static_assert(std::is_class<ComponentType>::value, "Must pass type in");                          \
+    namespace detail                                                                                  \
+    {                                                                                                 \
+        /* function we later define */                                                                \
+        static void CONCAT3(ComponentName, _registered_fun_, __LINE__)(std::shared_ptr<World> world); \
+                                                                                                      \
+        namespace /* ensure internal linkage for struct */                                            \
+        {                                                                                             \
+            /* helper struct for static registration in ctor */                                       \
+            struct CONCAT3(ComponentName, _register_struct_, __LINE__)                                \
+            {                                                                                         \
+                CONCAT3(ComponentName, _register_struct_, __LINE__)                                   \
+                ()                                                                                    \
+                { /* called once before main */                                                       \
+                    register_component(CONCAT3(ComponentName, _registered_fun_, __LINE__));           \
+                }                                                                                     \
+            } CONCAT3(ComponentName, _register_struct_instance_, __LINE__);                           \
+        }                                                                                             \
+    }                                                                                                 \
+    void detail::CONCAT3(ComponentName, _registered_fun_, __LINE__)(std::shared_ptr<World> world)     \
+    {                                                                                                 \
+        world->register_component<ComponentType>();                                                   \
+    }
 
 #endif

@@ -2,6 +2,7 @@
 #define DEMO_DIRECTIONAL_LIGHT_HPP
 
 #include "shader.h"
+#include <ecs/world.h>
 #include <maths/float3.h>
 #include <maths/float4.h>
 
@@ -22,6 +23,6 @@ struct DirectionalLight
     }
 };
 
-MARK_AS_COMPONENT(DirectionalLight)
+REGISTER_COMPONENT(DirectionalLight, DirectionalLight)
 
 #endif

@@ -4,6 +4,7 @@
 #include <rendering/cube_map.h>
 #include <string>
 #include <unordered_map>
+
 class CubeMapRepository
 {
 public:

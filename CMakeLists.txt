@@ -18,7 +18,7 @@ include_directories(demo
         )
 
 # Add EK source files
-file(GLOB_RECURSE SOURCES "src/*.cpp" "lib/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp" "lib/*.cpp" "src/*.c" "lib/*.c")
 
 # Create executable
 add_executable(demo ${SOURCES})
@@ -57,7 +57,8 @@ else()
 endif(WIN32)
 
 add_library(GLAD "src/glad.c")
-set(LIBS ${LIBS} GLAD)
+add_library(WREN "src/wren.c")
+set(LIBS ${LIBS} GLAD WREN)
 
 target_link_libraries(demo ${LIBS})
 

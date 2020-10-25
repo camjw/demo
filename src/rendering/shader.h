@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-#include <ecs/ecs.h>
+#include <ecs/world.h>
 #include <fstream>
 #include <maths/float3.h>
 #include <maths/float4.h>
@@ -21,7 +21,7 @@ struct ShaderComponent
     explicit ShaderComponent(ShaderID id) : id(id) {};
 };
 
-MARK_AS_COMPONENT(ShaderComponent)
+REGISTER_COMPONENT(Shader, ShaderComponent)
 
 // TODO: refactor so this doesn't use streams or strings
 class Shader

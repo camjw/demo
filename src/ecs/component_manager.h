@@ -16,7 +16,6 @@ public:
         assert(component_types.find(type_name) == component_types.end() && "Registering component type more than once.");
 
         component_types.insert({ type_name, next_component_type });
-
         component_arrays.insert({ type_name, std::make_shared<ComponentArray<T>>() });
 
         ++next_component_type;

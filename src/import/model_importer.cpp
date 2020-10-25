@@ -92,10 +92,10 @@ void ModelImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_no
         MaterialID material_id = mesh_to_materials_map.find(mesh_id)->second;
 
         scene_node->add_child(world->create_entity()
-                                  .with(MeshComponent(mesh_id))
-                                  .with(Transform::identity())
-                                  .with(MaterialComponent(material_id, OPAQUE))
-                                  .build());
+                                  ->with(MeshComponent(mesh_id))
+                                  ->with(Transform::identity())
+                                  ->with(MaterialComponent(material_id, OPAQUE))
+                                  ->build());
     }
 
     world->add_component(scene_node->get_entity(), NameComponent {
@@ -125,16 +125,10 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
 
     for (unsigned int i = 0; i < assimp_scene->mNumMaterials; i++)
     {
-
         aiMaterial* assimp_material = assimp_scene->mMaterials[i];
         aiString material_name = assimp_material->GetName();
-        int assimp_shading_model;
-        if (assimp_material->Get(AI_MATKEY_SHADING_MODEL, assimp_shading_model) == AI_SUCCESS)
-        {
-            printf("Shading model: %i\n", assimp_shading_model);
-        }
-        Material material;
 
+        Material material;
         if (assimp_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
         {
             aiString texture_path;

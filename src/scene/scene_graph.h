@@ -40,8 +40,8 @@ public:
         // Set root node to have entity
         root_node->set_entity(
             world->create_entity()
-                .with(Transform::identity())
-                .build());
+                ->with(Transform::identity())
+                ->build());
     }
 
     SceneNode* find_entity_in_graph(Entity entity)

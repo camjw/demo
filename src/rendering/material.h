@@ -28,7 +28,7 @@ struct MaterialComponent
     }
 };
 
-MARK_AS_COMPONENT(MaterialComponent)
+REGISTER_COMPONENT(Material, MaterialComponent)
 
 struct Material
 {

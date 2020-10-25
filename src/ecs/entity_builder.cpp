@@ -50,6 +50,11 @@ Entity EntityBuilder::build()
         m_world->add_component(entity, m_directional_light);
     }
 
+    if (wren_script_component_set)
+    {
+        m_world->add_component(entity, m_wren_script_component);
+    }
+
     if (cube_map_set)
     {
         m_world->add_component(entity, m_cube_map);

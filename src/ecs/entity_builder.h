@@ -3,6 +3,7 @@
 
 #include <ecs/components/camera_component.h>
 #include <ecs/components/hierarchy_component.h>
+#include <ecs/components/wren_script_component.h>
 #include <maths/transform.h>
 #include <memory>
 #include <rendering/cube_map.h>
@@ -22,82 +23,89 @@ public:
     {
     }
 
-    EntityBuilder with(Transform data)
+    EntityBuilder* with(Transform data)
     {
         m_transform = data;
         transform_set = true;
-        return *this;
+        return this;
     }
 
-    EntityBuilder with(MeshComponent data)
+    EntityBuilder* with(MeshComponent data)
     {
         m_mesh = data;
         mesh_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(MaterialComponent data)
+    EntityBuilder* with(MaterialComponent data)
     {
         m_material = data;
         material_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(CubeMapComponent data)
+    EntityBuilder* with(CubeMapComponent data)
     {
         m_cube_map = data;
         cube_map_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(ShaderComponent data)
+    EntityBuilder* with(ShaderComponent data)
     {
         m_shader = data;
         shader_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(CameraComponent data)
+    EntityBuilder* with(CameraComponent data)
     {
         m_camera = data;
         camera_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(TextureComponent data)
+    EntityBuilder* with(TextureComponent data)
     {
         m_texture = data;
         texture_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(HierarchyComponent data)
+    EntityBuilder* with(HierarchyComponent data)
     {
         m_hierarchy = data;
         hierarchy_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(PointLight data)
+    EntityBuilder* with(PointLight data)
     {
         m_point_light = data;
         point_light_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with(DirectionalLight data)
+    EntityBuilder* with(DirectionalLight data)
     {
         m_directional_light = data;
         directional_light_set = true;
-        return *this;
+        return this;
     };
 
-    EntityBuilder with_parent(Entity parent)
+    EntityBuilder* with(WrenScriptComponent data)
+    {
+        m_wren_script_component = data;
+        wren_script_component_set = true;
+        return this;
+    };
+
+    EntityBuilder* with_parent(Entity parent)
     {
         HierarchyComponent hierarchy_component = HierarchyComponent { .parent = parent };
         m_hierarchy = hierarchy_component;
         hierarchy_set = true;
-        return *this;
+        return this;
     }
 
     Entity build();
@@ -114,6 +122,7 @@ private:
     HierarchyComponent m_hierarchy;
     PointLight m_point_light;
     DirectionalLight m_directional_light;
+    WrenScriptComponent m_wren_script_component;
     CubeMapComponent m_cube_map;
 
     bool transform_set = false;
@@ -125,6 +134,7 @@ private:
     bool hierarchy_set = false;
     bool point_light_set = false;
     bool directional_light_set = false;
+    bool wren_script_component_set = false;
     bool cube_map_set = false;
 };
 

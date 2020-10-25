@@ -5,7 +5,7 @@
 #include <stb_image.h>
 
 #include <cstdint>
-#include <ecs/ecs.h>
+#include <ecs/world.h>
 #include <string>
 #include <vector>
 
@@ -20,7 +20,7 @@ struct CubeMapComponent
     explicit CubeMapComponent(CubeMapID id) : id(id) {};
 };
 
-MARK_AS_COMPONENT(CubeMapComponent)
+REGISTER_COMPONENT(CubeMap, CubeMapComponent)
 
 class CubeMap
 {

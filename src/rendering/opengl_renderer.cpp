@@ -30,7 +30,6 @@ void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
     // Set common variables for shaders
     // TODO: set uniform struct rather than individual params
     shader_repository->for_each(SetShaderTime(time));
-    shader_repository->for_each(SetShaderProjection(window->get_projection_matrix()));
 
     is_camera_set = false;
 }
@@ -133,7 +132,14 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
         shader->set_int("material.diffuse_texture", 0);
         shader->set_int("material.specular_texture", 1);
         texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
-//        texture_repository->get_texture(command.specular_texture_id)->bind(1);
+        if (command.specular_texture_id == INVALID_TEXTURE)
+        {
+            texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
+        }
+        else
+        {
+            texture_repository->get_texture(command.specular_texture_id)->bind(1);
+        }
         texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
         material_repository->get_material(command.material_id)->bind(shader);
         mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
@@ -162,6 +168,20 @@ void OpenGLRenderer::set_camera(const Entity camera_entity)
 {
     CameraComponent& camera = world->get_component<CameraComponent>(camera_entity);
     Transform& camera_transform = world->get_component<Transform>(camera_entity);
+
+    float aspect_ratio = window->get_aspect_ratio();
+
+    glm::mat4 projection_matrix;
+    if (camera.projection_type == PERSPECTIVE)
+    {
+        projection_matrix = glm::perspective(glm::radians(camera.fov), aspect_ratio, camera.near_plane, camera.far_plane);
+    }
+    else
+    {
+        projection_matrix = glm::ortho(glm::radians(camera.fov), aspect_ratio, camera.near_plane, camera.far_plane);
+    }
+
+    shader_repository->for_each(SetShaderProjection(projection_matrix));
     shader_repository->for_each(SetShaderCamera(
         camera_transform.position,
         camera_transform.position + camera.forward,
