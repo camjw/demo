@@ -4,7 +4,9 @@
 #include <ecs/world.h>
 
 struct WrenScriptComponent
-{};
+{
+    std::string script_filename;
+};
 
 REGISTER_COMPONENT(WrenScript, WrenScriptComponent)
 

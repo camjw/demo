@@ -48,7 +48,9 @@ void FirstScene::build_camera()
                  ->with(Transform {
                      .position = float3(-1.0, 1.0, 0.0),
                  })
-                 ->with(WrenScriptComponent {})
+                 ->with(WrenScriptComponent {
+                     .script_filename = "assets/scripts/hello_world.wren",
+                 })
                  ->build();
 }
 

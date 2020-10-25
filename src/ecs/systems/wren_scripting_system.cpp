@@ -1,5 +1,6 @@
 #include "wren_scripting_system.h"
 #include <ecs/components/wren_script_component.h>
+#include <fstream>
 
 WrenScriptingSystem::WrenScriptingSystem(World* world)
     : System(world)
@@ -22,13 +23,11 @@ WrenScriptingSystem::WrenScriptingSystem(World* world)
 void WrenScriptingSystem::update(Time time, InputState* input)
 {
     const char* module = "main";
-    const char* script_content = "System.print(\"I am running in a VM!\")";
 
     for (Entity const& entity : entities)
     {
         WrenScriptComponent& script = world->get_component<WrenScriptComponent>(entity);
-
-        WrenInterpretResult result = wrenInterpret(wren_vm, module, script_content);
+        WrenInterpretResult result = wrenInterpret(wren_vm, module, get_or_load_script(script.script_filename));
         handle_wren_result(result);
     }
 }
@@ -78,4 +77,16 @@ void WrenScriptingSystem::handle_wren_result(WrenInterpretResult result)
     case WREN_RESULT_SUCCESS:
         break;
     }
+}
+
+const char* WrenScriptingSystem::get_or_load_script(const std::string& filename)
+{
+    if (script_contents.find(filename) == script_contents.end())
+    {
+        std::ifstream in(filename);
+        std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+        script_contents.insert(std::pair<std::string, std::string>(filename, contents));
+    }
+
+    return script_contents.find(filename)->second.c_str();
 }
