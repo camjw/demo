@@ -120,7 +120,7 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
     unsigned int num_materials = assimp_scene->mNumMaterials;
     std::vector<MaterialID> material_ids(num_materials);
 
-    ShaderID lighting_shader_id = shader_repository->get_shader_id("lighting");
+    ShaderID lighting_shader_id = shader_repository->get_shader_id("deferred_rendering");
     ShaderID simple_lighting_shader_id = shader_repository->get_shader_id("simple_lighting");
 
     for (unsigned int i = 0; i < assimp_scene->mNumMaterials; i++)

@@ -2,6 +2,8 @@
 #include <ecs/components/wren_script_component.h>
 #include <fstream>
 
+std::unordered_map<std::string, std::string> WrenScriptingSystem::script_contents;
+
 WrenScriptingSystem::WrenScriptingSystem(World* world)
     : System(world)
 {
@@ -10,6 +12,8 @@ WrenScriptingSystem::WrenScriptingSystem(World* world)
 
     config.writeFn = &wren_logger;
     config.errorFn = &wren_error;
+    config.loadModuleFn = &wren_load_module;
+
     wren_vm = wrenNewVM(&config);
 
     WrenInterpretResult result = wrenInterpret(
@@ -26,9 +30,18 @@ void WrenScriptingSystem::update(Time time, InputState* input)
 
     for (Entity const& entity : entities)
     {
-        WrenScriptComponent& script = world->get_component<WrenScriptComponent>(entity);
-        WrenInterpretResult result = wrenInterpret(wren_vm, module, get_or_load_script(script.script_filename));
-        handle_wren_result(result);
+        // TODO: come back to this
+//        WrenScriptComponent& script = world->get_component<WrenScriptComponent>(entity);
+//        WrenInterpretResult result = wrenInterpret(wren_vm, module, get_or_load_script(script.script_filename));
+//        handle_wren_result(result);
+//
+//        wrenEnsureSlots(wren_vm, 1);
+//        wrenGetVariable(wren_vm, "main", "HelloWorld", 0);
+//        WrenHandle* gameEngineClass = wrenGetSlotHandle(wren_vm, 0);
+//        WrenHandle* method = wrenMakeCallHandle(wren_vm, "new()");
+//        wrenSetSlotHandle(wren_vm, 0, gameEngineClass);
+//        WrenInterpretResult result1 = wrenCall(wren_vm, method);
+//        handle_wren_result(result1);
     }
 }
 
@@ -59,6 +72,12 @@ void WrenScriptingSystem::wren_error(WrenVM* vm, WrenErrorType errorType,
     break;
     }
 }
+
+char* WrenScriptingSystem::wren_load_module(WrenVM* vm, const char* name)
+{
+    return const_cast<char*>(get_or_load_script("assets/scripts/" + std::string(name) + ".wren"));
+}
+
 
 void WrenScriptingSystem::handle_wren_result(WrenInterpretResult result)
 {

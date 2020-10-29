@@ -66,6 +66,9 @@ private:
 
     bool is_camera_set = false;
     int current_light_index = 0;
+
+    std::vector<float3> lightPositions;
+    std::vector<float3> lightColors;
 };
 
 #endif

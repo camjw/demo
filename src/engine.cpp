@@ -37,6 +37,8 @@ Engine::Engine()
         DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader.vert",
         DEMO_CONSTANTS_SHADERS_FOLDER + "lighting_shader_no_textures.frag");
     shader_repository->create_shader("deferred");
+    shader_repository->create_shader("deferred_rendering");
+    shader_repository->create_shader("deferred_lighting");
 
     // Init default materials
     std::shared_ptr<MaterialRepository> material_repository = context->get_material_repository();
@@ -58,6 +60,12 @@ Engine::Engine()
     world->register_component<DirectionalLight>();
     world->register_component<CubeMapComponent>();
     world->register_component<WrenScriptComponent>();
+
+//    auto components = components_to_register();
+//    for (int i = 0; i < components.size(); i++)
+//    {
+//        components[i](world);
+//    }
 
     // Register systems
     world->register_system<FirstPersonCameraSystem>();

@@ -1,4 +1,5 @@
 #include <rendering/texture.h>
+#include <utils/opengl_helpers.h>
 
 Texture::Texture(int width, int height)
     : internal_format(GL_RGBA)
@@ -18,6 +19,7 @@ Texture::Texture(int width, int height, GLuint internal_format, GLuint image_for
 {
     // Passing nullptr as the data makes an empty texture which can be used in a framebuffer
     load_from_data(nullptr);
+    glCheckError();
 }
 
 Texture::Texture(const std::string& filename)

@@ -1,31 +1,30 @@
 #include "framebuffer.h"
+#include <utils/opengl_helpers.h>
 
 Framebuffer::Framebuffer(int width, int height)
 {
     glGenFramebuffers(1, &id_);
+    bind();
 
-    render_texture = std::make_unique<Texture>(width, height);
     position_texture = std::make_unique<Texture>(width, height, GL_RGBA16F, GL_RGBA);
     normal_texture = std::make_unique<Texture>(width, height, GL_RGBA16F, GL_RGBA);
-    albedo_texture = std::make_unique<Texture>(width, height);
+    colour_texture = std::make_unique<Texture>(width, height);
     renderbuffer = std::make_unique<Renderbuffer>(width, height);
 
-    bind();
-    render_texture->bind(0);
+    position_texture->bind(0);
     DEFAULT_TEXTURE_PROPERTIES.apply();
-    attach(render_texture.get(), 0);
+    attach(position_texture.get(), 0);
 
-    position_texture->bind(1);
+    normal_texture->bind(1);
     DEFAULT_TEXTURE_PROPERTIES.apply();
-    attach(position_texture.get(), 1);
+    attach(normal_texture.get(), 1);
 
-    normal_texture->bind(2);
+    colour_texture->bind(2);
     DEFAULT_TEXTURE_PROPERTIES.apply();
-    attach(normal_texture.get(), 2);
+    attach(colour_texture.get(), 2);
 
-    albedo_texture->bind(3);
-    DEFAULT_TEXTURE_PROPERTIES.apply();
-    attach(albedo_texture.get(), 3);
+    unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+    glDrawBuffers(3, attachments);
 
     renderbuffer->bind();
     attach(renderbuffer.get());
@@ -35,9 +34,17 @@ Framebuffer::Framebuffer(int width, int height)
     }
 
     unbind();
+    glCheckError();
 }
 
-void Framebuffer::bind_render_texture(int bind_index) const
+void Framebuffer::bind_textures() const
 {
-    render_texture->bind(bind_index);
+    position_texture->bind(0);
+    normal_texture->bind(1);
+    colour_texture->bind(2);
+}
+
+void Framebuffer::bind_texture(int texture_index) const
+{
+    normal_texture->bind(texture_index);
 }

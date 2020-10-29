@@ -77,15 +77,15 @@ public:
         return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
     }
 
-    void bind_render_texture(int bind_index) const;
+    void bind_textures() const;
+    void bind_texture(int texture_index) const;
 
 private:
     GLuint id_;
 
-    std::unique_ptr<Texture> render_texture;
     std::unique_ptr<Texture> position_texture;
     std::unique_ptr<Texture> normal_texture;
-    std::unique_ptr<Texture> albedo_texture;
+    std::unique_ptr<Texture> colour_texture;
 
     std::unique_ptr<Renderbuffer> renderbuffer;
 };
