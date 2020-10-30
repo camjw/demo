@@ -23,24 +23,6 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
     // Build framebuffer
     framebuffer = std::make_unique<Framebuffer>(window->width(), window->height());
-
-    // lighting info
-    // -------------
-    const unsigned int NR_LIGHTS = 32;
-    srand(13);
-    for (unsigned int i = 0; i < NR_LIGHTS; i++)
-    {
-        // calculate slightly random offsets
-        float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
-        float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        lightPositions.push_back(float3(xPos, yPos, zPos));
-        // also calculate random color
-        float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        lightColors.push_back(float3(rColor, gColor, bColor));
-    }
 }
 
 void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
@@ -132,24 +114,26 @@ void OpenGLRenderer::draw_skybox(const Entity entity) const
 void OpenGLRenderer::end_draw(const Scene* scene) const
 {
     framebuffer->bind();
-    framebuffer->bind_textures();
 
     float3 clear_colour = scene->get_clear_colour();
     glClearColor(clear_colour.x, clear_colour.y, clear_colour.z, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_FRAMEBUFFER_SRGB);
+    glDisable(GL_BLEND);
     glViewport(0, 0, window->width(), window->height());
 
     for (const RenderCommand& command : opaque_render_queue->commands)
     {
         std::shared_ptr<Shader> shader = shader_repository->get_shader(command.shader_id);
+        glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
+
         shader->bind();
         shader->set_mat4(DEMO_CONSTANTS_MODEL, command.transform);
-        glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
         shader->set_mat3(DEMO_CONSTANTS_NORMAL_MODEL, normal_model_matrix);
         shader->set_int("material.diffuse_texture", 0);
         shader->set_int("material.specular_texture", 1);
+
         texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
         if (command.specular_texture_id == INVALID_TEXTURE)
         {
@@ -159,32 +143,24 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
         {
             texture_repository->get_texture(command.specular_texture_id)->bind(1);
         }
-        texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
+
         material_repository->get_material(command.material_id)->bind(shader);
         mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
     }
 
     framebuffer->unbind();
     glDisable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_FRAMEBUFFER_SRGB);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     int2 viewportDimensions = window->get_viewport_dimensions();
     glViewport(0, 0, viewportDimensions.x, viewportDimensions.y);
 
     std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred_lighting");
     deferred_shader->bind();
-    for (unsigned int i = 0; i < lightPositions.size(); i++)
-    {
-        deferred_shader->set_float3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-        deferred_shader->set_float3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-        // update attenuation parameters and calculate radius
-        const float linear = 0.7;
-        const float quadratic = 1.8;
-        deferred_shader->set_float("lights[" + std::to_string(i) + "].Linear", linear);
-        deferred_shader->set_float("lights[" + std::to_string(i) + "].Quadratic", quadratic);
-    }
 
     framebuffer->bind_textures();
     deferred_shader->set_int("gPosition", 0);
