@@ -46,6 +46,7 @@ struct GBufferData {
 
 uniform DirectionalLight directionalLights[MAX_NUM_DIRECTIONAL_LIGHTS];
 uniform PointLight pointLights[MAX_NUM_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_NUM_SPOT_LIGHTS];
 
 uniform int NUM_ACTIVE_DIRECTIONAL_LIGHTS;
 uniform int NUM_ACTIVE_POINT_LIGHTS;
@@ -84,6 +85,12 @@ void main()
         result += calculate_point_light_result(g_buffer_data, pointLights[i], view_direction);
     }
 
+    // phase 3: spot lights
+    for (int i = 0; i < NUM_ACTIVE_SPOT_LIGHTS; i++)
+    {
+        result += calculate_spot_light_result(g_buffer_data, spotLights[i], view_direction);
+    }
+
     FragColor = vec4(result.xyz, 1.0f);
 }
 
@@ -118,4 +125,9 @@ vec3 calculate_point_light_result(GBufferData data, PointLight light, vec3 view_
     specular *= attenuation;
 
     return diffuse + specular;
+}
+
+vec3 calculate_spot_light_result(GBufferData data, PointLight light, vec3 view_direction)
+{
+    return vec3(0);
 }
