@@ -3,6 +3,7 @@
 
 #include <ecs/components/camera_component.h>
 #include <ecs/components/hierarchy_component.h>
+#include <ecs/components/name_component.h>
 #include <ecs/components/wren_script_component.h>
 #include <maths/transform.h>
 #include <memory>
@@ -48,6 +49,13 @@ public:
     {
         m_cube_map = data;
         cube_map_set = true;
+        return this;
+    };
+
+    EntityBuilder* with(NameComponent data)
+    {
+        m_name = data;
+        name_set = true;
         return this;
     };
 
@@ -121,6 +129,7 @@ private:
     CameraComponent m_camera;
     HierarchyComponent m_hierarchy;
     PointLight m_point_light;
+    NameComponent m_name;
     DirectionalLight m_directional_light;
     WrenScriptComponent m_wren_script_component;
     CubeMapComponent m_cube_map;
@@ -132,6 +141,7 @@ private:
     bool shader_set = false;
     bool camera_set = false;
     bool hierarchy_set = false;
+    bool name_set = false;
     bool point_light_set = false;
     bool directional_light_set = false;
     bool wren_script_component_set = false;

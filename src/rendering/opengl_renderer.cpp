@@ -60,23 +60,6 @@ void OpenGLRenderer::draw_node(const SceneNode* scene_node, glm::mat4 parent_tra
     }
 }
 
-void OpenGLRenderer::search_for_point_lights(const SceneNode* scene_node, glm::mat4 parent_transform)
-{
-    Transform node_transform = Transform::identity();
-    if (world->has_component<Transform>(scene_node->get_entity()))
-    {
-        // Can only draw something if it has a position in space
-        populate_point_light(scene_node->get_entity());
-        node_transform = world->get_component<Transform>(scene_node->get_entity());
-    }
-
-    // Draw child nodes
-    for (SceneNode* const& child_node : scene_node->get_children())
-    {
-        search_for_point_lights(child_node, parent_transform * node_transform.get_model_matrix());
-    }
-}
-
 void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform)
 {
     if (world->has_component<MaterialComponent>(entity) && world->has_component<MeshComponent>(entity))
@@ -125,27 +108,7 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
 
     for (const RenderCommand& command : opaque_render_queue->commands)
     {
-        std::shared_ptr<Shader> shader = shader_repository->get_shader(command.shader_id);
-        glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
-
-        shader->bind();
-        shader->set_mat4(DEMO_CONSTANTS_MODEL, command.transform);
-        shader->set_mat3(DEMO_CONSTANTS_NORMAL_MODEL, normal_model_matrix);
-        shader->set_int("material.diffuse_texture", 0);
-        shader->set_int("material.specular_texture", 1);
-
-        texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
-        if (command.specular_texture_id == INVALID_TEXTURE)
-        {
-            texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
-        }
-        else
-        {
-            texture_repository->get_texture(command.specular_texture_id)->bind(1);
-        }
-
-        material_repository->get_material(command.material_id)->bind(shader);
-        mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
+        process_command(command);
     }
 
     framebuffer->unbind();
@@ -159,7 +122,7 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     int2 viewportDimensions = window->get_viewport_dimensions();
     glViewport(0, 0, viewportDimensions.x, viewportDimensions.y);
 
-    std::shared_ptr<Shader> deferred_shader = shader_repository->get_shader("deferred_lighting");
+    Shader* deferred_shader = shader_repository->get_shader("deferred_lighting");
     deferred_shader->bind();
 
     framebuffer->bind_textures();
@@ -228,23 +191,20 @@ void OpenGLRenderer::process_lights(const Scene* scene)
                                               .build();
 
     std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
-
     process_point_lights(point_lights);
-    glm::mat4 transform = Transform::identity().get_model_matrix();
-    search_for_point_lights(scene->get_root_node(), transform);
+
 
     Signature directional_light = world->get_signature_builder()
                                       .with<DirectionalLight>()
                                       .build();
 
     std::vector<Entity> directional_lights = world->get_entities_with_signature(directional_light);
-
     process_directional_lights(directional_lights);
 }
 
 void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights) const
 {
-    std::shared_ptr<Shader> lighting_shader = shader_repository->get_shader("lighting");
+    Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
 
     for (int i = 0; i < point_lights.size(); i++)
     {
@@ -266,18 +226,32 @@ void OpenGLRenderer::process_directional_lights(const std::vector<Entity> direct
         directional_light_components.push_back(world->get_component<DirectionalLight>(directional_lights[i]));
     }
 
-    assert(directional_light_components.size() < MAX_NUM_DIRECTIONAL_LIGHTS && "trying to send too many point lights to GPU");
+    assert(directional_light_components.size() < MAX_NUM_DIRECTIONAL_LIGHTS && "trying to send too many directional lights to GPU");
 
     shader_repository->for_each(SetShaderDirectionalLights(directional_light_components));
 }
 
-void OpenGLRenderer::populate_point_light(Entity entity)
+void OpenGLRenderer::process_command(const RenderCommand& command) const
 {
-    assert(current_light_index < MAX_NUM_POINT_LIGHTS && "trying to send too many point lights to GPU");
-    if (!world->has_component<PointLight>(entity))
+    Shader* shader = shader_repository->get_shader(command.shader_id);
+    glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
+
+    shader->bind();
+    shader->set_mat4(DEMO_CONSTANTS_MODEL, command.transform);
+    shader->set_mat3(DEMO_CONSTANTS_NORMAL_MODEL, normal_model_matrix);
+    shader->set_int("material.diffuse_texture", 0);
+    shader->set_int("material.specular_texture", 1);
+
+    texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
+    if (command.specular_texture_id == INVALID_TEXTURE)
     {
-        return;
+        texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
+    }
+    else
+    {
+        texture_repository->get_texture(command.specular_texture_id)->bind(1);
     }
 
-    shader_repository->for_each(SetShaderPointLight(world->get_component<PointLight>(entity), current_light_index++));
+    material_repository->get_material(command.material_id)->bind(shader);
+    mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
 }

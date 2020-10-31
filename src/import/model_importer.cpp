@@ -1,4 +1,5 @@
 #include "model_importer.h"
+#include "assimp_helper_functions.h"
 
 #include <ecs/components/name_component.h>
 #include <utility>
@@ -23,6 +24,8 @@ void ModelImporter::load_fbx(const std::string& filename, SceneNode* scene_node,
     {
         update_scene_camera(assimp_scene, scene_node);
     }
+
+    build_lights(assimp_scene, scene_node);
 }
 
 void ModelImporter::update_scene_camera(const aiScene* assimp_scene, SceneNode* scene_node)
@@ -43,13 +46,13 @@ void ModelImporter::update_scene_camera(const aiScene* assimp_scene, SceneNode* 
     const aiVector3D camera_up = first_camera->mUp;
     const aiVector3D camera_forward = first_camera->mLookAt;
 
-    scene_camera.up = float3(camera_up.x, camera_up.y, camera_up.z);
-    scene_camera.forward = float3(camera_forward.x, camera_forward.y, camera_forward.z);
+    scene_camera.up = AssimpHelperFunctions::to_float3(camera_up);
+    scene_camera.forward = AssimpHelperFunctions::to_float3(camera_forward);
     scene_camera.right = float3::cross(scene_camera.forward, scene_camera.up);
 
     Transform& scene_camera_transform = world->get_component<Transform>(scene_camera_entity);
     const aiVector3D camera_position = first_camera->mPosition;
-    scene_camera_transform.position = float3(camera_position.x, camera_position.y, camera_position.z);
+    scene_camera_transform.position = AssimpHelperFunctions::to_float3(camera_position);
 }
 
 void ModelImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<MeshID>& mesh_ids,
@@ -66,18 +69,8 @@ void ModelImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, Scene
         attach_assimp_node_to_scene(assimp_node->mChildren[i], child_node, mesh_ids, mesh_to_material_map);
     }
 
-    aiVector3D position;
-    aiQuaternion rotation;
-    aiVector3D scale;
-
     aiMatrix4x4 assimp_transform = assimp_node->mTransformation;
-    assimp_transform.Decompose(scale, rotation, position);
-
-    Transform node_transform = Transform {
-        .position = float3(position.x, position.y, position.z),
-        .rotation = quaternion(rotation.w, rotation.x, rotation.y, rotation.z),
-        .scale = float3(scale.x, scale.y, scale.z)
-    };
+    Transform node_transform = AssimpHelperFunctions::to_transform(assimp_transform);
 
     world->get_or_add_component<Transform>(scene_node->get_entity(), node_transform);
 }
@@ -170,19 +163,19 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
         aiColor4D assimp_ambient;
         if (assimp_material->Get(AI_MATKEY_COLOR_AMBIENT, assimp_ambient) == AI_SUCCESS)
         {
-            material.ambient_colour = float3(assimp_ambient.r, assimp_ambient.g, assimp_ambient.b);
+            material.ambient_colour = AssimpHelperFunctions::to_float3(assimp_ambient);
         }
 
         aiColor4D assimp_diffuse;
         if (assimp_material->Get(AI_MATKEY_COLOR_DIFFUSE, assimp_diffuse) == AI_SUCCESS)
         {
-            material.diffuse_colour = float3(assimp_diffuse.r, assimp_diffuse.g, assimp_diffuse.b);
+            material.diffuse_colour = AssimpHelperFunctions::to_float3(assimp_diffuse);
         }
 
         aiColor4D assimp_specular;
         if (assimp_material->Get(AI_MATKEY_COLOR_SPECULAR, assimp_specular) == AI_SUCCESS)
         {
-            material.specular_colour = float3(assimp_specular.r, assimp_specular.g, assimp_specular.b);
+            material.specular_colour = AssimpHelperFunctions::to_float3(assimp_specular);
         }
 
         ai_real assimp_shininess;
@@ -220,11 +213,8 @@ std::vector<MeshID> ModelImporter::build_meshes(const aiScene* assimp_scene)
 
         for (int j = 0; j < numVertices; j++)
         {
-            const aiVector3D vertex = mesh->mVertices[j];
-            const aiVector3D normal = mesh->mNormals[j];
-
-            vertices[j] = 0.01f * float3(vertex.x, vertex.y, vertex.z);
-            normals[j] = float3(normal.x, normal.y, normal.z);
+            vertices[j] = 0.01f * AssimpHelperFunctions::to_float3(mesh->mVertices[j]);
+            normals[j] = AssimpHelperFunctions::to_float3(mesh->mNormals[j]);
         }
 
         if (mesh->HasTextureCoords(0))
@@ -253,4 +243,71 @@ std::vector<MeshID> ModelImporter::build_meshes(const aiScene* assimp_scene)
     }
 
     return mesh_ids;
+}
+
+void ModelImporter::build_lights(const aiScene* assimp_scene, SceneNode* scene_node)
+{
+    SceneNode* lights_parent = scene_node->add_child(world->create_entity()
+                                                         ->with(NameComponent { .name = "Lights" })
+                                                         ->build());
+
+    for (int i = 0; i < assimp_scene->mNumLights; i++)
+    {
+        aiLight* light = assimp_scene->mLights[i];
+
+        aiNode* assimp_node = assimp_scene->mRootNode->FindNode(light->mName);
+        Transform light_transform = assimp_node == nullptr ? Transform::identity() : AssimpHelperFunctions::to_transform(assimp_node->mTransformation);
+
+        Entity light_entity = world->create_entity()
+                                  ->with(light_transform)
+                                  ->build();
+        switch (light->mType)
+        {
+        case aiLightSource_POINT:
+            add_point_light(light, light_entity);
+            break;
+        case aiLightSource_DIRECTIONAL:
+            add_directional_light(light, light_entity);
+            break;
+        case aiLightSource_SPOT:
+            add_point_light(light, light_entity);
+            break;
+        case aiLightSource_UNDEFINED:
+        case aiLightSource_AMBIENT:
+        case aiLightSource_AREA:
+        case _aiLightSource_Force32Bit:
+            printf("Unhandled light type\n");
+            break;
+        }
+
+        lights_parent->add_child(light_entity);
+    }
+}
+
+void ModelImporter::add_directional_light(const aiLight* light, const Entity entity) const
+{
+    printf("Add directional light\n");
+    DirectionalLight directional_light = DirectionalLight {
+        .direction = AssimpHelperFunctions::to_float3(light->mDirection),
+        .ambient = AssimpHelperFunctions::to_float3(light->mColorAmbient),
+        .diffuse = AssimpHelperFunctions::to_float3(light->mColorDiffuse),
+        .specular = AssimpHelperFunctions::to_float3(light->mColorSpecular),
+    };
+
+    world->add_component(entity, directional_light);
+}
+
+void ModelImporter::add_point_light(const aiLight* light, const Entity entity) const
+{
+    printf("Add point light\n");
+    PointLight point_light = PointLight {
+        .constant = light->mAttenuationConstant,
+        .linear = light->mAttenuationLinear,
+        .quadratic = light->mAttenuationQuadratic,
+        .ambient = AssimpHelperFunctions::to_float3(light->mColorAmbient),
+        .diffuse = AssimpHelperFunctions::to_float3(light->mColorDiffuse),
+        .specular = AssimpHelperFunctions::to_float3(light->mColorSpecular),
+    };
+
+    world->add_component(entity, point_light);
 }

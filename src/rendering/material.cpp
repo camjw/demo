@@ -1,6 +1,6 @@
 #include "material.h"
 
-void Material::bind(std::shared_ptr<Shader> shader)
+void Material::bind(Shader* shader)
 {
     shader->set_float3("material.ambient_colour", ambient_colour);
     shader->set_float3("material.diffuse_colour", diffuse_colour);

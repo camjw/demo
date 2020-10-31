@@ -68,7 +68,7 @@ struct Material
     {
     }
 
-    void bind(std::shared_ptr<Shader> shader);
+    void bind(Shader* shader);
 
     Material() { }
 };

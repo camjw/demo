@@ -17,20 +17,7 @@ void FirstScene::on_create()
     build_camera();
     build_skybox();
 
-    context->get_model_importer()->load_fbx("../assets/models/crytek_sponza.fbx", graph->root().get());
-    float3 sunlight_colour = float3(240.0f / 255, 240.0f / 255, 188.0f / 255);
-    float light_intensity = 0.75f;
-    graph->add_child(world->create_entity()
-                         ->with(Transform {
-                             .position = float3(0, 10, 0),
-                         })
-                         ->with(DirectionalLight {
-                             .direction = float3(-2, -5, -1).normalise(),
-                             .ambient = light_intensity * sunlight_colour,
-                             .diffuse = light_intensity * sunlight_colour,
-                             .specular = light_intensity * sunlight_colour,
-                         })
-                         ->build());
+    context->get_model_importer()->load_file("../assets/models/crytek_sponza.fbx", graph->root().get());
 }
 
 void FirstScene::on_destroy()

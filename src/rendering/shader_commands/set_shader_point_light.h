@@ -8,7 +8,7 @@ public:
         : point_light(point_light)
         , light_index(light_index) {};
 
-    inline void operator()(std::shared_ptr<Shader> shader)
+    inline void operator()(Shader* shader)
     {
         shader->bind();
         shader->set_float3("pointLight[" + std::to_string(light_index) + "].ambient", point_light.ambient);

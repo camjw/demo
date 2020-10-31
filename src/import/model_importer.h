@@ -44,7 +44,7 @@ public:
     }
 
     void load_fbx(const std::string& filename, SceneNode* scene_node, ModelImportOptions import_options);
-    inline void load_fbx(const std::string& filename, SceneNode* scene_node)
+    inline void load_file(const std::string& filename, SceneNode* scene_node)
     {
         load_fbx(filename, scene_node, ModelImportOptions::Default());
     };
@@ -65,6 +65,9 @@ private:
     Assimp::Importer assimp_importer;
     void populate_node(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<MeshID>& mesh_ids,
         const std::unordered_map<MeshID, MaterialID>& meshes_to_materials_map) const;
+    void build_lights(const aiScene* assimp_scene, SceneNode* scene_node);
+    void add_point_light(const aiLight* light, const Entity entity) const;
+    void add_directional_light(const aiLight* light, const Entity entity) const;
 };
 
 #endif //DEMO_MODEL_IMPORTER_H

@@ -13,7 +13,7 @@ struct DirectionalLight
     float3 diffuse;
     float3 specular;
 
-    inline void bind(std::shared_ptr<Shader> shader, int index)
+    inline void bind(Shader* shader, int index)
     {
         shader->bind();
         shader->set_float3("directionalLights[" + std::to_string(index) + "].direction", direction);

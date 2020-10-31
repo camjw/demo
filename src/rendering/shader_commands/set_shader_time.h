@@ -12,7 +12,7 @@ public:
     SetShaderTime(Time time)
         : time(time) {};
 
-    inline void operator()(std::shared_ptr<Shader> shader)
+    inline void operator()(Shader* shader)
     {
         shader->bind();
         shader->set_float(DEMO_CONSTANTS_TOTAL_TIME, time.total_time);

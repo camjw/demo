@@ -40,6 +40,11 @@ Entity EntityBuilder::build()
         m_world->add_component(entity, m_hierarchy);
     }
 
+    if (name_set)
+    {
+        m_world->add_component(entity, m_name);
+    }
+
     if (point_light_set)
     {
         m_world->add_component(entity, m_point_light);

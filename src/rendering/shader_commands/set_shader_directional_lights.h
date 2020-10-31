@@ -8,7 +8,7 @@ struct SetShaderDirectionalLights
     {
     }
 
-    void operator()(std::shared_ptr<Shader> shader)
+    void operator()(Shader* shader)
     {
         shader->bind();
         shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());

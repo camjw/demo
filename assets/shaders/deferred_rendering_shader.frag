@@ -17,8 +17,14 @@ uniform Material material;
 
 void main()
 {
+    vec4 diffuse_colour = texture(material.diffuse_texture, TexCoords);
+    if (diffuse_colour.a < 1.0f)
+    {
+        discard;
+    }
+
+    gAlbedoSpec.rgb = diffuse_colour.rgb;
+    gAlbedoSpec.a = texture(material.specular_texture, TexCoords).r;
     gPosition = vec4(FragPos, 1.0f);
     gNormal = vec4(normalize(Normal), 1.0f);
-    gAlbedoSpec.rgb = texture(material.diffuse_texture, TexCoords).rgb;
-    gAlbedoSpec.a = texture(material.specular_texture, TexCoords).r;
 }

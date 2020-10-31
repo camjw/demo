@@ -47,7 +47,6 @@ public:
 
     void set_int(const std::string& name, int value) const
     {
-        int foo = glGetUniformLocation(id_, name.c_str());
         glUniform1i(glGetUniformLocation(id_, name.c_str()), value);
     }
 

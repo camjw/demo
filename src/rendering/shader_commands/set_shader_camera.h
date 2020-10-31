@@ -13,7 +13,8 @@ public:
         : position(position)
         , forward(forward)
         , view(view) {};
-    inline void operator()(std::shared_ptr<Shader> shader)
+
+    inline void operator()(Shader* shader)
     {
         shader->bind();
 

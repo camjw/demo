@@ -61,12 +61,6 @@ Engine::Engine()
     world->register_component<CubeMapComponent>();
     world->register_component<WrenScriptComponent>();
 
-//    auto components = components_to_register();
-//    for (int i = 0; i < components.size(); i++)
-//    {
-//        components[i](world);
-//    }
-
     // Register systems
     world->register_system<FirstPersonCameraSystem>();
     Signature camera_system_signature;

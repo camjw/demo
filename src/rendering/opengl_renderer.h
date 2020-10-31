@@ -45,7 +45,6 @@ private:
     void draw_node(const SceneNode* scene_node, glm::mat4 parent_transform);
     void draw_entity(const Entity entity, glm::mat4 parent_transform);
     void enqueue_mesh(const Entity entity, glm::mat4 parent_transform);
-    void populate_point_light(const Entity entity);
     void draw_skybox(const Entity entity) const;
     void end_draw(const Scene* scene) const;
     glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
@@ -69,6 +68,7 @@ private:
 
     std::vector<float3> lightPositions;
     std::vector<float3> lightColors;
+    void process_command(const RenderCommand& command) const;
 };
 
 #endif
