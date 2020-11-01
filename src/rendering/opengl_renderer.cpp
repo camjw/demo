@@ -1,3 +1,4 @@
+#include "spot_light.h"
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
@@ -185,26 +186,34 @@ glm::mat4 OpenGLRenderer::get_view_matrix(const CameraComponent& cameraComponent
 // a maximum number
 void OpenGLRenderer::process_lights(const Scene* scene)
 {
-    Signature point_light_and_transform = world->get_signature_builder()
-                                              .with<Transform>()
-                                              .with<PointLight>()
-                                              .build();
-
-    std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
-    process_point_lights(point_lights);
-
-
     Signature directional_light = world->get_signature_builder()
                                       .with<DirectionalLight>()
                                       .build();
-
     std::vector<Entity> directional_lights = world->get_entities_with_signature(directional_light);
     process_directional_lights(directional_lights);
+
+    Signature point_light_and_transform = world->get_signature_builder()
+                                              .with<PointLight>()
+                                              .with<Transform>()
+                                              .build();
+    std::vector<Entity> point_lights = world->get_entities_with_signature(point_light_and_transform);
+    process_point_lights(point_lights);
+
+    Signature spot_light_and_transform = world->get_signature_builder()
+                                             .with<SpotLight>()
+                                             .with<Transform>()
+                                             .build();
+    std::vector<Entity> spot_lights = world->get_entities_with_signature(spot_light_and_transform);
+    process_spot_lights(spot_lights);
 }
 
 void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights) const
 {
+    assert(point_lights.size() < MAX_NUM_POINT_LIGHTS && "trying to send too many point lights to GPU");
+
     Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
+    lighting_shader->bind();
+    lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 
     for (int i = 0; i < point_lights.size(); i++)
     {
@@ -213,22 +222,38 @@ void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights
 
         point_light.bind(lighting_shader, i, transform.position);
     }
+}
 
+void OpenGLRenderer::process_spot_lights(const std::vector<Entity> spot_lights) const
+{
+    assert(spot_lights.size() < MAX_NUM_SPOT_LIGHTS && "trying to send too many spot lights to GPU");
+
+    Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
     lighting_shader->bind();
-    lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
+    lighting_shader->set_int(DEMO_NUM_ACTIVE_SPOT_LIGHTS, spot_lights.size());
+
+    for (int i = 0; i < spot_lights.size(); i++)
+    {
+        SpotLight spot_light = world->get_component<SpotLight>(spot_lights[i]);
+        Transform transform = world->get_component<Transform>(spot_lights[i]);
+
+        spot_light.bind(lighting_shader, i, transform.position);
+    }
 }
 
 void OpenGLRenderer::process_directional_lights(const std::vector<Entity> directional_lights) const
 {
-    std::vector<DirectionalLight> directional_light_components;
+    assert(directional_lights.size() < MAX_NUM_DIRECTIONAL_LIGHTS && "trying to send too many directional lights to GPU");
+
+    Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
+    lighting_shader->bind();
+    lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
+
     for (int i = 0; i < directional_lights.size(); i++)
     {
-        directional_light_components.push_back(world->get_component<DirectionalLight>(directional_lights[i]));
+        DirectionalLight directional_light = world->get_component<DirectionalLight>(directional_lights[i]);
+        directional_light.bind(lighting_shader, i);
     }
-
-    assert(directional_light_components.size() < MAX_NUM_DIRECTIONAL_LIGHTS && "trying to send too many directional lights to GPU");
-
-    shader_repository->for_each(SetShaderDirectionalLights(directional_light_components));
 }
 
 void OpenGLRenderer::process_command(const RenderCommand& command) const

@@ -39,8 +39,9 @@ private:
     void begin_draw(const Time time, const Scene* scene);
     void set_camera(const Entity camera_entity);
     void process_lights(const Scene* scene);
-    void process_point_lights(const std::vector<Entity> point_lights) const;
     void process_directional_lights(const std::vector<Entity> directional_lights) const;
+    void process_point_lights(const std::vector<Entity> point_lights) const;
+    void process_spot_lights(const std::vector<Entity> spot_lights) const;
     void draw_scene_graph(const Scene* scene);
     void draw_node(const SceneNode* scene_node, glm::mat4 parent_transform);
     void draw_entity(const Entity entity, glm::mat4 parent_transform);
@@ -48,7 +49,6 @@ private:
     void draw_skybox(const Entity entity) const;
     void end_draw(const Scene* scene) const;
     glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
-    void search_for_point_lights(const SceneNode* scene_node, glm::mat4 parent_transform);
 
     Window* window {};
 

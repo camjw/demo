@@ -8,6 +8,7 @@
 #include <rendering/directional_light.h>
 #include <rendering/material.h>
 #include <rendering/point_light.h>
+#include <rendering/spot_light.h>
 #include <utils/opengl_helpers.h>
 
 Engine::Engine()
@@ -60,6 +61,7 @@ Engine::Engine()
     world->register_component<DirectionalLight>();
     world->register_component<CubeMapComponent>();
     world->register_component<WrenScriptComponent>();
+    world->register_component<SpotLight>();
 
     // Register systems
     world->register_system<FirstPersonCameraSystem>();

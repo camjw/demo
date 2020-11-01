@@ -28,6 +28,13 @@ struct PointLight {
 };
 
 struct SpotLight {
+    vec3 position;
+    vec3 direction;
+
+    // these should actually be the cosine of the angle
+    float inner_cone_angle;
+    float outer_cone_angle;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -97,12 +104,10 @@ void main()
 // calculates the color when using a directional light.
 vec3 calculate_directional_light_result(GBufferData data, DirectionalLight light, vec3 view_direction)
 {
-    // diffuse
     vec3 light_direction = normalize(-light.direction);
     float diff = max(dot(data.normal, light_direction), 0.0);
     vec3 diffuse = light.diffuse * diff * data.albedo;
 
-    // specular
     vec3 reflect_direction = reflect(-light_direction, data.normal);
     float spec = pow(max(dot(view_direction, reflect_direction), 0.0), 16.0);
     vec3 specular = light.specular * spec * data.specular;
@@ -111,14 +116,13 @@ vec3 calculate_directional_light_result(GBufferData data, DirectionalLight light
 
 vec3 calculate_point_light_result(GBufferData data, PointLight light, vec3 view_direction)
 {
-    // diffuse
     vec3 light_direction = normalize(light.position - data.frag_pos);
     vec3 diffuse = max(dot(data.normal, light_direction), 0.0) * data.albedo * light.diffuse;
-    // specular
+
     vec3 halfway_direction = normalize(light_direction + view_direction);
     float spec = pow(max(dot(data.normal, halfway_direction), 0.0), 16.0);
     vec3 specular = light.specular * spec * data.specular;
-    // attenuation
+
     float distance = length(light.position - data.frag_pos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
     diffuse *= attenuation;
@@ -127,7 +131,20 @@ vec3 calculate_point_light_result(GBufferData data, PointLight light, vec3 view_
     return diffuse + specular;
 }
 
-vec3 calculate_spot_light_result(GBufferData data, PointLight light, vec3 view_direction)
+vec3 calculate_spot_light_result(GBufferData data, SpotLight light, vec3 view_direction)
 {
+    vec3 light_direction = normalize(light.position - data.frag_pos);
+    vec3 diffuse = max(dot(data.normal, light_direction), 0.0) * data.albedo * light.diffuse;
+
+    vec3 halfway_direction = normalize(light_direction + view_direction);
+    float spec = pow(max(dot(data.normal, halfway_direction), 0.0), 16.0);
+    vec3 specular = light.specular * spec * data.specular;
+
+    float theta = dot(light_direction, normalize(-light.direction));
+    float epsilon = light.inner_cone_angle - light.outer_cone_angle;
+    float intensity = clamp((theta - light.outer_cone_angle) / epsilon, 0.0, 1.0);
+
+    diffuse  *= intensity;
+    specular *= intensity;
     return vec3(0);
 }

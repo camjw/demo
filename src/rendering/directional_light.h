@@ -15,7 +15,6 @@ struct DirectionalLight
 
     inline void bind(Shader* shader, int index)
     {
-        shader->bind();
         shader->set_float3("directionalLights[" + std::to_string(index) + "].direction", direction);
         shader->set_float3("directionalLights[" + std::to_string(index) + "].ambient", ambient);
         shader->set_float3("directionalLights[" + std::to_string(index) + "].diffuse", diffuse);
