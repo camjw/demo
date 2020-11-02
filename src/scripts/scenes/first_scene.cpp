@@ -17,7 +17,7 @@ void FirstScene::on_create()
     build_camera();
     build_skybox();
 
-    context->get_model_importer()->load_file("../assets/models/sponza.glb", graph->root().get());
+    context->get_model_importer()->load_file("../assets/models/sponza_2.glb", graph->root().get());
 }
 
 void FirstScene::on_destroy()
