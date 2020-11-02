@@ -3,10 +3,15 @@
 
 #include <ecs/components/name_component.h>
 #include <utility>
+#include <utils/uuid.h>
 
 void ModelImporter::load_fbx(const std::string& filename, SceneNode* scene_node, ModelImportOptions import_options)
 {
-    const aiScene* assimp_scene = assimp_importer.ReadFile(filename.c_str(), aiProcess_Triangulate);
+    const aiScene* assimp_scene = assimp_importer.ReadFile(filename.c_str(),
+        aiProcess_Triangulate
+            | aiProcess_GenNormals
+            | aiProcess_GenUVCoords
+            | aiProcess_EmbedTextures);
 
     if (assimp_scene == nullptr)
     {
@@ -105,7 +110,7 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
     for (unsigned int i = 0; i < num_textures; i++)
     {
         aiTexture* assimp_texture = assimp_scene->mTextures[i];
-        TextureID texture_id = texture_repository->create_texture(assimp_texture->mFilename.C_Str(), assimp_texture);
+        TextureID texture_id = texture_repository->create_texture(uuid::new_uuid(), assimp_texture);
         texture_ids.insert(std::pair<std::string, TextureID>(assimp_texture->mFilename.C_Str(), texture_id));
         texture_ids_list.push_back(texture_id);
     }
@@ -135,7 +140,14 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
             else
             {
                 int texture_index = atoi(&texture_path.C_Str()[1]);
-                diffuse_texture_id = texture_ids_list[texture_index];
+                if (texture_index < texture_ids_list.size())
+                {
+                    diffuse_texture_id = texture_ids_list[texture_index];
+                }
+                else
+                {
+                    diffuse_texture_id = texture_repository->create_texture(texture_path.C_Str(), texture_path.C_Str());
+                }
             }
 
             TextureID specular_texture_id = INVALID_TEXTURE;
@@ -149,7 +161,14 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
                 else
                 {
                     int texture_index = atoi(&texture_path.C_Str()[1]);
-                    specular_texture_id = texture_ids_list[texture_index];
+                    if (texture_index < texture_ids_list.size())
+                    {
+                        specular_texture_id = texture_ids_list[texture_index];
+                    }
+                    else
+                    {
+                        specular_texture_id = texture_repository->create_texture(texture_path.C_Str(), texture_path.C_Str());
+                    }
                 }
             }
 
@@ -207,8 +226,8 @@ std::vector<MeshID> ModelImporter::build_meshes(const aiScene* assimp_scene)
         const aiMesh* mesh = assimp_scene->mMeshes[i];
         unsigned int numVertices = mesh->mNumVertices;
 
-        std::vector<float3> vertices(numVertices);
-        std::vector<float3> normals(numVertices);
+        std::vector<float3> vertices(numVertices, float3::zero());
+        std::vector<float3> normals(numVertices, float3::zero());
         std::vector<float2> uvs(numVertices, float2::zero());
 
         for (int j = 0; j < numVertices; j++)
@@ -270,7 +289,7 @@ void ModelImporter::build_lights(const aiScene* assimp_scene, SceneNode* scene_n
             add_directional_light(light, light_entity);
             break;
         case aiLightSource_SPOT:
-            add_point_light(light, light_entity);
+            add_spot_light(light, light_entity);
             break;
         case aiLightSource_UNDEFINED:
         case aiLightSource_AMBIENT:
@@ -310,4 +329,9 @@ void ModelImporter::add_point_light(const aiLight* light, const Entity entity) c
     };
 
     world->add_component(entity, point_light);
+}
+
+void ModelImporter::add_spot_light(const aiLight* pLight, const Entity entity) const
+{
+    printf("Add spot light\n");
 }

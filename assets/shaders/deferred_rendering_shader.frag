@@ -11,6 +11,7 @@ struct Material {
     sampler2D diffuse_texture;
     sampler2D specular_texture;
     float shininess;
+    bool has_alpha_cutoff;
 };
 
 uniform Material material;
@@ -18,7 +19,7 @@ uniform Material material;
 void main()
 {
     vec4 diffuse_colour = texture(material.diffuse_texture, TexCoords);
-    if (diffuse_colour.a < 1.0f)
+    if (diffuse_colour.a < 1.0f && material.has_alpha_cutoff)
     {
         discard;
     }

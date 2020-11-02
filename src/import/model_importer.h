@@ -68,6 +68,7 @@ private:
     void build_lights(const aiScene* assimp_scene, SceneNode* scene_node);
     void add_point_light(const aiLight* light, const Entity entity) const;
     void add_directional_light(const aiLight* light, const Entity entity) const;
+    void add_spot_light(const aiLight* pLight, const Entity entity) const;
 };
 
 #endif //DEMO_MODEL_IMPORTER_H

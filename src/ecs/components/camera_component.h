@@ -7,7 +7,7 @@
 #include <timer.h>
 #include <vector>
 
-const float SPEED = 0.01f;
+const float SPEED = 0.001f;
 const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
 const float LOOK_SPEED = 0.5f;

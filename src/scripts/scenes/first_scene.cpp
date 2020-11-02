@@ -17,7 +17,7 @@ void FirstScene::on_create()
     build_camera();
     build_skybox();
 
-    context->get_model_importer()->load_file("../assets/models/sponza_with_lights.glb", graph->root().get());
+    context->get_model_importer()->load_file("../assets/models/sponza.glb", graph->root().get());
 }
 
 void FirstScene::on_destroy()
@@ -33,7 +33,7 @@ void FirstScene::build_camera()
                      .forward = float3(1.0, 0.0, 0.0).normalise(),
                  })
                  ->with(Transform {
-                     .position = float3(-1.0, 1.0, 0.0),
+                     .position = float3(-1.0, 0.0, 0.0),
                  })
                  ->with(WrenScriptComponent {
                      .script_filename = "assets/scripts/hello_world.wren",
