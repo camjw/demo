@@ -173,7 +173,6 @@ public:
         return *this;
     }
 
-
     float const& operator[](int index) const
     {
         switch(index)
@@ -188,6 +187,8 @@ public:
             return w;
         }
     }
+
+    operator float * () { return reinterpret_cast<float *>(this); }
 
     float x, y, z, w;
 };

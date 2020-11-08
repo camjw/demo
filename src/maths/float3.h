@@ -240,6 +240,8 @@ public:
         return glm::vec3(x, y, z);
     }
 
+    operator float * () { return reinterpret_cast<float *>(this); }
+
     float x, y, z;
 };
 

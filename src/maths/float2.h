@@ -152,6 +152,8 @@ public:
     }
 
     float x, y;
+
+    operator float * () { return reinterpret_cast<float *>(this); }
 };
 
 #endif
