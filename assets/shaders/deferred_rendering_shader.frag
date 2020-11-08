@@ -19,7 +19,7 @@ uniform Material material;
 void main()
 {
     vec4 diffuse_colour = texture(material.diffuse_texture, TexCoords);
-    if (diffuse_colour.a < 1.0f && material.has_alpha_cutoff)
+    if (diffuse_colour.a < 1.0f)
     {
         discard;
     }

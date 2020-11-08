@@ -1,0 +1,8 @@
+#ifndef DEMO_SCENE_HIERARCHY_VIEWER_H
+#define DEMO_SCENE_HIERARCHY_VIEWER_H
+
+class SceneHierarchyViewer
+{
+};
+
+#endif //DEMO_SCENE_HIERARCHY_VIEWER_H
