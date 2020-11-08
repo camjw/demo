@@ -26,13 +26,15 @@
 #include <resources/texture_repository.h>
 #include <scene/scene.h>
 #include <scene/scene_graph.h>
+#include <ui/ui_root.h>
 #include <utils/opengl_helpers.h>
 #include <window.h>
 
 class OpenGLRenderer
 {
 public:
-    OpenGLRenderer(std::shared_ptr<DemoContext> context, Window* window, std::shared_ptr<World> world);
+    OpenGLRenderer(std::shared_ptr<DemoContext> context, std::shared_ptr<Window> window,
+        std::shared_ptr<World> world, std::shared_ptr<UIRoot> ui_root);
     void draw_scene(const Time time, const Scene* scene);
 
 private:
@@ -47,10 +49,11 @@ private:
     void draw_entity(const Entity entity, glm::mat4 parent_transform);
     void enqueue_mesh(const Entity entity, glm::mat4 parent_transform);
     void draw_skybox(const Entity entity) const;
-    void end_draw(const Scene* scene) const;
+    void process_render_commands(const Scene* scene) const;
+    void resize_framebuffers();
     glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
 
-    Window* window {};
+    std::shared_ptr<Window> window;
 
     std::shared_ptr<World> world;
     std::shared_ptr<MeshRepository> mesh_repository;
@@ -63,12 +66,15 @@ private:
 
     std::unique_ptr<Framebuffer> framebuffer;
 
+    std::shared_ptr<UIRoot> ui_root;
+
     bool is_camera_set = false;
     int current_light_index = 0;
 
     std::vector<float3> lightPositions;
     std::vector<float3> lightColors;
     void process_command(const RenderCommand& command) const;
+    void end_draw();
 };
 
 #endif

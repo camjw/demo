@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <input/event_repository.h>
 #include <input/input_processor.h>
 #include <rendering/cube_map.h>
 #include <rendering/opengl_renderer.h>
@@ -19,6 +20,7 @@
 #include <stb_image.h>
 #include <thread>
 #include <timer.h>
+#include <ui/ui_root.h>
 #include <vector>
 #include <window.h>
 
@@ -40,13 +42,18 @@ private:
 
     bool is_running();
 
-    Window* window = nullptr;
-    InputProcessor* input = nullptr;
+    std::shared_ptr<Window> window;
+    std::unique_ptr<InputProcessor> input;
+    std::unique_ptr<EventRepository> event_repository;
+
+    std::shared_ptr<UIRoot> ui_root;
 
     std::shared_ptr<World> world;
     std::shared_ptr<DemoContext> context;
 
-    std::unique_ptr<SceneManager> scene_manager;
+    std::shared_ptr<SceneManager> scene_manager;
     std::unique_ptr<OpenGLRenderer> renderer;
+
+    ImGuiContext* imgui_context = nullptr;
 };
 #endif

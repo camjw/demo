@@ -2,9 +2,10 @@
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
-    Window* window, std::shared_ptr<World> world)
+    std::shared_ptr<Window> window, std::shared_ptr<World> world, std::shared_ptr<UIRoot> ui_root)
     : window(window)
     , world(world)
+    , ui_root(ui_root)
 {
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
@@ -28,11 +29,27 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
 void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
 {
+    glfwPollEvents();
+
     // Set common variables for shaders
     // TODO: set uniform struct rather than individual params
     shader_repository->for_each(SetShaderTime(time));
 
+    if (window->has_dirty_size)
+    {
+        resize_framebuffers();
+        window->has_dirty_size = false;
+    }
+
     is_camera_set = false;
+
+    ui_root->new_frame();
+}
+
+void OpenGLRenderer::resize_framebuffers()
+{
+    framebuffer.reset();
+    framebuffer = std::make_unique<Framebuffer>(window->width(), window->height());
 }
 
 void OpenGLRenderer::draw_scene_graph(const Scene* scene)
@@ -95,7 +112,7 @@ void OpenGLRenderer::draw_skybox(const Entity entity) const
 {
 }
 
-void OpenGLRenderer::end_draw(const Scene* scene) const
+void OpenGLRenderer::process_render_commands(const Scene* scene) const
 {
     framebuffer->bind();
 
@@ -133,10 +150,12 @@ void OpenGLRenderer::end_draw(const Scene* scene) const
     glCheckError();
 
     mesh_repository->get_or_create_square()->bind_and_draw();
-
-    glfwSwapBuffers(window->get_glfw_window());
-    glfwPollEvents();
     glCheckError();
+}
+
+void OpenGLRenderer::end_draw()
+{
+    glfwSwapBuffers(window->get_glfw_window());
 }
 
 void OpenGLRenderer::set_camera(const Entity camera_entity)
@@ -171,7 +190,9 @@ void OpenGLRenderer::draw_scene(const Time time, const Scene* scene)
     process_lights(scene);
     // TODO: add frustum culling here
     draw_scene_graph(scene);
-    end_draw(scene);
+    process_render_commands(scene);
+    ui_root->draw();
+    end_draw();
 }
 
 glm::mat4 OpenGLRenderer::get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const

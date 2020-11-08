@@ -13,11 +13,16 @@
 
 Engine::Engine()
 {
-    window = new Window("Estuary King");
+    window = std::make_shared<Window>("Estuary King");
     #ifdef WINDOWS
     window->load_icon("./assets/icon.png");
     #endif
-    input = new InputProcessor(window);
+
+    IMGUI_CHECKVERSION();
+    imgui_context = ImGui::CreateContext();
+    assert(imgui_context != nullptr && "Failed to create ImGui context");
+
+    input = std::make_unique<InputProcessor>(window);
 
     world = std::make_shared<World>();
     world->init(world);
@@ -75,17 +80,20 @@ Engine::Engine()
     wren_scripting_system_signature.set(world->get_component_type<WrenScriptComponent>());
     world->set_system_signature<WrenScriptingSystem>(wren_scripting_system_signature);
 
-    // Init renderer
-    renderer = std::make_unique<OpenGLRenderer>(context, window, world);
-
     // Init scene manager
-    scene_manager = std::make_unique<SceneManager>(context, world);
+    scene_manager = std::make_shared<SceneManager>(context, world);
+
+    ui_root = std::make_shared<UIRoot>(world, window, context, scene_manager, imgui_context);
+
+    // Init renderer
+    renderer = std::make_unique<OpenGLRenderer>(context, window, world, ui_root);
 }
 
 Engine::~Engine()
 {
-    delete input;
-    delete window;
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void Engine::run()
@@ -122,15 +130,15 @@ void Engine::run()
 
 void Engine::update(Time time)
 {
-    window->update(time, input);
-    scene_manager->update(time, input);
-    world->update_systems(time, input);
+    window->update(time, input.get());
+    scene_manager->update(time, input.get());
+    world->update_systems(time, input.get());
 }
 
 void Engine::late_update(Time time)
 {
-    scene_manager->late_update(time, input);
-    world->late_update_systems(time, input);
+    scene_manager->late_update(time, input.get());
+    world->late_update_systems(time, input.get());
 }
 
 void Engine::draw(Time time)

@@ -66,6 +66,8 @@ public:
         return int2(viewportWidth, viewportHeight);
     }
 
+    bool has_dirty_size = false;
+
 private:
     GLFWwindow* glfw_window = nullptr;
     bool close_window = false;
