@@ -6,6 +6,7 @@
 #include <utils/bitmask.h>
 #include <window.h>
 
+#include <imgui/imgui.h>
 #include <unordered_map>
 
 class InputState
@@ -23,7 +24,7 @@ public:
 class InputProcessor : public InputState
 {
 public:
-    InputProcessor(Window* window);
+    InputProcessor(std::shared_ptr<Window> window);
 
     void process_input();
 
@@ -84,6 +85,10 @@ private:
     float2 mouse_position;
 
     float2 framebuffer_size = float2(800, 600);
+
+    std::shared_ptr<Window> window;
+
+    ImGuiIO& imgui_io;
 };
 
 #endif

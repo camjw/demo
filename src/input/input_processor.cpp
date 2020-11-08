@@ -1,8 +1,10 @@
 #include <input/input_processor.h>
 
-InputProcessor::InputProcessor(Window* window)
-    : this_frame_mouse(0.0f, 0.0f)
+InputProcessor::InputProcessor(std::shared_ptr<Window> window)
+    : imgui_io(ImGui::GetIO())
+    , this_frame_mouse(0.0f, 0.0f)
     , last_frame_mouse(0.0f, 0.0f)
+    , window(window)
 {
     glfwSetWindowUserPointer(window->get_glfw_window(), this);
 }
@@ -67,6 +69,11 @@ bool InputProcessor::is_key_down(Key keycode)
 
 void InputProcessor::process_keyboard_event(int key, int scancode, int action, int mods)
 {
+    if (imgui_io.WantCaptureKeyboard)
+    {
+        return;
+    }
+
     switch (action)
     {
     case GLFW_PRESS:
@@ -80,12 +87,21 @@ void InputProcessor::process_keyboard_event(int key, int scancode, int action, i
 
 void InputProcessor::process_mouse_position_event(double xpos, double ypos)
 {
+    if (imgui_io.WantCaptureMouse)
+    {
+        return;
+    }
+
     mouse_position.x = (float)xpos;
     mouse_position.y = (float)ypos;
 }
 
 void InputProcessor::process_mouse_button_event(int button, int action, int mods)
 {
+    if (imgui_io.WantCaptureMouse)
+    {
+        return;
+    }
     switch (action)
     {
     case GLFW_PRESS:
@@ -100,4 +116,5 @@ void InputProcessor::process_mouse_button_event(int button, int action, int mods
 void InputProcessor::process_framebuffer_size_event(float width, float height)
 {
     framebuffer_size = float2(width, height);
+    window->has_dirty_size = true;
 }
