@@ -17,6 +17,7 @@ public:
     virtual void draw() override;
 
 private:
+    void draw_scene_node_inspector(SceneNode* node);
     std::shared_ptr<SceneManager> scene_manager;
     std::shared_ptr<World> world;
 };
