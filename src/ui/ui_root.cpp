@@ -9,12 +9,10 @@ UIRoot::UIRoot(std::shared_ptr<World> world, std::shared_ptr<Window> window, std
     , imgui_context(imgui_context)
 
 {
-    // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window->get_glfw_window(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
 
     scene_hierarchy_viewer = std::make_unique<SceneHierarchyViewer>(scene_manager, world);
     menu_bar = std::make_unique<MenuBar>();
