@@ -14,6 +14,8 @@ public:
     {
     }
 
+    virtual ~SceneHierarchyViewer() {}
+
     virtual void draw() override;
 
 private:

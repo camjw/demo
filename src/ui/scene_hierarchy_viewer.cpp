@@ -11,7 +11,7 @@ void SceneHierarchyViewer::draw()
         draw_scene_node_inspector(root_node);
         ImGui::TreePop();
     }
-    
+
     ImGui::End();
 }
 
@@ -22,14 +22,13 @@ void SceneHierarchyViewer::draw_scene_node_inspector(SceneNode* node)
     for (int i = 0; i < children.size(); i++)
     {
         std::string name = "MISSING NAME";
-        if (world->has_component<NameComponent>(node->get_entity()))
+        if (world->has_component<NameComponent>(children[i]->get_entity()))
         {
-            NameComponent name_component = world->get_component<NameComponent>(node->get_entity());
+            NameComponent name_component = world->get_component<NameComponent>(children[i]->get_entity());
             name = name_component.name;
         }
 
-        ImGui::TreeNodeEx(reinterpret_cast<const char*>(i), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick, "%s", name.c_str());
+        ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
         draw_scene_node_inspector(children[i]);
-        ImGui::TreePop();
     }
 }

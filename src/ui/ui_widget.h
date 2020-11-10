@@ -6,8 +6,18 @@
 class UIWidget
 {
 public:
-    virtual void draw() = 0;
+    inline void draw_if_active()
+    {
+        if (is_active)
+        {
+            draw();
+        }
+    }
+
     bool is_active = false;
+
+private:
+    virtual void draw() = 0;
 };
 
 #endif // DEMO_UI_WIDGET_H

@@ -2,6 +2,7 @@
 #define DEMO_UI_ROOT_H
 
 #include "material_editor.h"
+#include "menu_bar.h"
 #include "scene_hierarchy_viewer.h"
 #include <context/demo_context.h>
 #include <ecs/world.h>
@@ -27,6 +28,7 @@ private:
     ImGuiContext* imgui_context;
 
     std::unique_ptr<SceneHierarchyViewer> scene_hierarchy_viewer;
+    std::unique_ptr<MenuBar> menu_bar;
     std::unique_ptr<MaterialEditor> material_editor;
 };
 

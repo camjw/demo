@@ -11,18 +11,27 @@ Window::Window(const std::string& window_name)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
+
+    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-
-    glfw_window = glfwCreateWindow(800, 600, window_name.c_str(), nullptr, nullptr);
+    glfw_window = glfwCreateWindow(mode->width, mode->height, window_name.c_str(), nullptr, nullptr);
     if (glfw_window == nullptr)
     {
         printf("Failed to initialise GLFW window!\n");
         glfwTerminate();
     }
+
+    width_ = mode->width;
+    height_ = mode->height;
 
     glfwMakeContextCurrent(glfw_window);
 
@@ -94,7 +103,8 @@ void Window::update(Time time, InputState* input)
     close_window = input->is_key_pressed(Key::Esc);
 }
 
-void Window::load_icon(const std::string& icon_path) {
+void Window::load_icon(const std::string& icon_path)
+{
     GLFWimage images[1];
     images[0].pixels = stbi_load(icon_path.c_str(), &images[0].width, &images[0].height, 0, 4); //rgba channels
     glfwSetWindowIcon(glfw_window, 1, images);

@@ -17,6 +17,7 @@ UIRoot::UIRoot(std::shared_ptr<World> world, std::shared_ptr<Window> window, std
     ImGui::StyleColorsDark();
 
     scene_hierarchy_viewer = std::make_unique<SceneHierarchyViewer>(scene_manager, world);
+    menu_bar = std::make_unique<MenuBar>();
 }
 
 void UIRoot::new_frame()
@@ -29,7 +30,8 @@ void UIRoot::draw()
 {
     ImGui::NewFrame();
 
-    scene_hierarchy_viewer->draw();
+    scene_hierarchy_viewer->draw_if_active();
+    menu_bar->draw_if_active();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -1,12 +1,13 @@
 #include <input/input_processor.h>
 
 InputProcessor::InputProcessor(std::shared_ptr<Window> window)
-    : imgui_io(ImGui::GetIO())
-    , this_frame_mouse(0.0f, 0.0f)
+    : this_frame_mouse(0.0f, 0.0f)
     , last_frame_mouse(0.0f, 0.0f)
     , window(window)
+    , imgui_io(ImGui::GetIO())
 {
     glfwSetWindowUserPointer(window->get_glfw_window(), this);
+    process_framebuffer_size_event(window->width(), window->height());
 }
 
 void InputProcessor::process_input()
