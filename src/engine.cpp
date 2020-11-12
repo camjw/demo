@@ -133,12 +133,14 @@ void Engine::update(Time time)
     window->update(time, input.get());
     scene_manager->update(time, input.get());
     world->update_systems(time, input.get());
+    ui_root->update();
 }
 
 void Engine::late_update(Time time)
 {
     scene_manager->late_update(time, input.get());
     world->late_update_systems(time, input.get());
+    ui_root->late_update();
 }
 
 void Engine::draw(Time time)

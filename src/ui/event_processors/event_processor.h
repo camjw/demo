@@ -1,9 +1,12 @@
 #ifndef DEMO_EVENT_PROCESSOR_H
 #define DEMO_EVENT_PROCESSOR_H
 
+#include <ui/event.h>
+
 class EventProcessor
 {
-    virtual void process_event(ProcessableEvent event) = 0;
+public:
+    virtual void process_event(const Event* event) = 0;
 };
 
 #endif // DEMO_EVENT_PROCESSOR_H
