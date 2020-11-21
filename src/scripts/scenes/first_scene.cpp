@@ -2,8 +2,6 @@
 #include <maths/transform.h>
 #include <rendering/point_light.h>
 #include <utils/opengl_helpers.h>
-
-#include <ecs/components/wren_script_component.h>
 #include <utility>
 
 FirstScene::FirstScene(std::shared_ptr<DemoContext> context, const std::shared_ptr<World>& world, SceneID scene_id)
@@ -34,9 +32,6 @@ void FirstScene::build_camera()
                  })
                  ->with(Transform {
                      .position = float3(-1.0, 0.0, 0.0),
-                 })
-                 ->with(WrenScriptComponent {
-                     .script_filename = "assets/scripts/hello_world.wren",
                  })
                  ->build();
 }

@@ -28,7 +28,10 @@ void SceneHierarchyViewer::draw_scene_node_inspector(SceneNode* node)
             name = name_component.name;
         }
 
-        ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
-        draw_scene_node_inspector(children[i]);
+        if(ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick))
+        {
+            draw_scene_node_inspector(children[i]);
+            ImGui::TreePop();
+        }
     }
 }

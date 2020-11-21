@@ -23,5 +23,6 @@ void MenuBar::draw()
             ImGui::PopItemFlag();
             ImGui::EndMenu();
         }
+        ImGui::EndMainMenuBar();
     }
 }
