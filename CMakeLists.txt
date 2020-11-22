@@ -57,8 +57,7 @@ else()
 endif(WIN32)
 
 add_library(GLAD "src/glad.c")
-add_library(WREN "src/wren.c")
-set(LIBS ${LIBS} GLAD WREN)
+set(LIBS ${LIBS} GLAD)
 
 target_link_libraries(demo ${LIBS})
 
