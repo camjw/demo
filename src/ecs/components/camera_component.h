@@ -18,7 +18,7 @@ enum CameraType
     ORTHOGRAPHIC
 };
 
-struct CameraComponent
+struct Camera
 {
     float3 up;
     float3 forward;
@@ -37,7 +37,7 @@ struct CameraComponent
     CameraType projection_type = PERSPECTIVE;
 };
 
-REGISTER_COMPONENT(Camera, CameraComponent)
+REGISTER_COMPONENT(Camera, Camera)
 
 const float3 WORLD_UP = float3(0, 1, 0);
 

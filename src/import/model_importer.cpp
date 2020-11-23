@@ -2,7 +2,10 @@
 #include "assimp_helper_functions.h"
 
 #include <ecs/components/name_component.h>
+#include <rendering/data/material.h>
+#include <rendering/data/texture.h>
 #include <utility>
+#include <utils/opengl_helpers.h>
 #include <utils/uuid.h>
 
 void ModelImporter::load_fbx(const std::string& filename, SceneNode* scene_node, ModelImportOptions import_options)
@@ -19,10 +22,10 @@ void ModelImporter::load_fbx(const std::string& filename, SceneNode* scene_node,
         return;
     }
 
-    std::vector<MeshID> mesh_ids = build_meshes(assimp_scene);
-    std::unordered_map<MeshID, MaterialID> mesh_to_material_map = build_materials(assimp_scene, mesh_ids);
+    std::vector<ResourceHandle> mesh_ids = build_meshes(assimp_scene);
+    std::unordered_map<ResourceHandle, ResourceHandle> mesh_to_material_map = build_materials(assimp_scene, mesh_ids);
 
-    std::unordered_set<MeshID> used_meshes;
+    std::unordered_set<ResourceHandle> used_meshes;
     attach_assimp_node_to_scene(assimp_scene->mRootNode, scene_node, mesh_ids, mesh_to_material_map);
 
     if (import_options.import_camera)
@@ -47,7 +50,7 @@ void ModelImporter::update_scene_camera(const aiScene* assimp_scene, SceneNode* 
 
     const aiCamera* first_camera = assimp_scene->mCameras[0];
 
-    CameraComponent& scene_camera = world->get_component<CameraComponent>(scene_camera_entity);
+    Camera& scene_camera = world->get_component<Camera>(scene_camera_entity);
     const aiVector3D camera_up = first_camera->mUp;
     const aiVector3D camera_forward = first_camera->mLookAt;
 
@@ -60,8 +63,8 @@ void ModelImporter::update_scene_camera(const aiScene* assimp_scene, SceneNode* 
     scene_camera_transform.position = AssimpHelperFunctions::to_float3(camera_position);
 }
 
-void ModelImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<MeshID>& mesh_ids,
-    const std::unordered_map<MeshID, MaterialID>& mesh_to_material_map) const
+void ModelImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<ResourceHandle>& mesh_ids,
+    const std::unordered_map<ResourceHandle, ResourceHandle>& mesh_to_material_map) const
 {
     if (assimp_node->mNumMeshes > 0)
     {
@@ -81,18 +84,19 @@ void ModelImporter::attach_assimp_node_to_scene(const aiNode* assimp_node, Scene
 }
 
 void ModelImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_node,
-    const std::vector<MeshID>& mesh_ids, const std::unordered_map<MeshID, MaterialID>& mesh_to_materials_map) const
+    const std::vector<ResourceHandle>& mesh_ids, const std::unordered_map<ResourceHandle, ResourceHandle>& mesh_to_materials_map) const
 {
     int num_meshes = assimp_node->mNumMeshes;
     for (int i = 0; i < num_meshes; i++)
     {
-        MeshID mesh_id = mesh_ids[assimp_node->mMeshes[i]];
-        MaterialID material_id = mesh_to_materials_map.find(mesh_id)->second;
+        ResourceHandle mesh_id = mesh_ids[assimp_node->mMeshes[i]];
+        ResourceHandle material_id = mesh_to_materials_map.find(mesh_id)->second;
 
         scene_node->add_child(world->create_entity()
-                                  ->with(MeshComponent(mesh_id))
-                                  ->with(Transform::identity())
-                                  ->with(MaterialComponent(material_id, OPAQUE))
+                                  ->with(MeshRenderer {
+                                      .mesh = mesh_id,
+                                      .material = material_id,
+                                  })
                                   ->build());
     }
 
@@ -101,25 +105,26 @@ void ModelImporter::populate_node(const aiNode* assimp_node, SceneNode* scene_no
                                                    });
 }
 
-std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiScene* assimp_scene, const std::vector<MeshID>& mesh_ids)
+std::unordered_map<ResourceHandle, ResourceHandle> ModelImporter::build_materials(const aiScene* assimp_scene, const std::vector<ResourceHandle>& mesh_ids)
 {
     unsigned int num_textures = assimp_scene->mNumTextures;
-    std::unordered_map<std::string, TextureID> texture_ids;
-    std::vector<TextureID> texture_ids_list;
+    std::unordered_map<std::string, ResourceHandle> texture_ids;
+    std::vector<ResourceHandle> texture_ids_list;
 
     for (unsigned int i = 0; i < num_textures; i++)
     {
         aiTexture* assimp_texture = assimp_scene->mTextures[i];
-        TextureID texture_id = texture_repository->create_texture(uuid::new_uuid(), assimp_texture);
-        texture_ids.insert(std::pair<std::string, TextureID>(assimp_texture->mFilename.C_Str(), texture_id));
+        Texture texture = Texture(assimp_texture);
+        ResourceHandle texture_id = resource_manager->insert<Texture>(uuid::new_uuid(), std::move(texture));
+        texture_ids.insert(std::pair<std::string, ResourceHandle>(assimp_texture->mFilename.C_Str(), texture_id));
         texture_ids_list.push_back(texture_id);
     }
 
     unsigned int num_materials = assimp_scene->mNumMaterials;
-    std::vector<MaterialID> material_ids(num_materials);
+    std::vector<ResourceHandle> material_ids(num_materials);
 
-    ShaderID lighting_shader_id = shader_repository->get_shader_id("deferred_rendering");
-    ShaderID simple_lighting_shader_id = shader_repository->get_shader_id("simple_lighting");
+    ResourceHandle lighting_shader_id = resource_manager->load<Shader>("deferred_rendering");
+    ResourceHandle simple_lighting_shader_id = resource_manager->load<Shader>("simple_lighting");
 
     for (unsigned int i = 0; i < assimp_scene->mNumMaterials; i++)
     {
@@ -132,7 +137,7 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
             aiString texture_path;
             // This can fail but I think since we've already checked the texture count and we're getting the first one we don't need to double check
             assimp_material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_path);
-            TextureID diffuse_texture_id;
+            ResourceHandle diffuse_texture_id;
             if (texture_ids.find(texture_path.C_Str()) != texture_ids.end())
             {
                 diffuse_texture_id = texture_ids.find(texture_path.C_Str())->second;
@@ -146,11 +151,11 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
                 }
                 else
                 {
-                    diffuse_texture_id = texture_repository->create_texture(texture_path.C_Str(), texture_path.C_Str());
+                    diffuse_texture_id = resource_manager->load<Texture>(texture_path.C_Str());
                 }
             }
 
-            TextureID specular_texture_id = INVALID_TEXTURE;
+            ResourceHandle specular_texture_id = ResourceHandle::invalid_handle<Texture>();
             if (assimp_material->GetTextureCount(aiTextureType_SPECULAR) > 0)
             {
                 assimp_material->GetTexture(aiTextureType_SPECULAR, 0, &texture_path);
@@ -167,34 +172,39 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
                     }
                     else
                     {
-                        specular_texture_id = texture_repository->create_texture(texture_path.C_Str(), texture_path.C_Str());
+                        specular_texture_id = resource_manager->load<Texture>(texture_path.C_Str());
                     }
                 }
             }
 
-            material = Material(lighting_shader_id, diffuse_texture_id, specular_texture_id, 1.0f);
+            material = Material {
+                .diffuse_texture = diffuse_texture_id,
+                .specular_texture = specular_texture_id,
+                .shader = lighting_shader_id,
+                .shininess = 1.0f,
+            };
         }
         else
         {
-            material = Material(simple_lighting_shader_id);
+            material = Material { .shader = simple_lighting_shader_id };
         }
 
         aiColor4D assimp_ambient;
         if (assimp_material->Get(AI_MATKEY_COLOR_AMBIENT, assimp_ambient) == AI_SUCCESS)
         {
-            material.ambient_colour = AssimpHelperFunctions::to_float3(assimp_ambient);
+            material.ambient_colour = AssimpHelperFunctions::to_colour(assimp_ambient);
         }
 
         aiColor4D assimp_diffuse;
         if (assimp_material->Get(AI_MATKEY_COLOR_DIFFUSE, assimp_diffuse) == AI_SUCCESS)
         {
-            material.diffuse_colour = AssimpHelperFunctions::to_float3(assimp_diffuse);
+            material.diffuse_colour = AssimpHelperFunctions::to_colour(assimp_diffuse);
         }
 
         aiColor4D assimp_specular;
         if (assimp_material->Get(AI_MATKEY_COLOR_SPECULAR, assimp_specular) == AI_SUCCESS)
         {
-            material.specular_colour = AssimpHelperFunctions::to_float3(assimp_specular);
+            material.specular_colour = AssimpHelperFunctions::to_colour(assimp_specular);
         }
 
         ai_real assimp_shininess;
@@ -203,23 +213,23 @@ std::unordered_map<MeshID, MaterialID> ModelImporter::build_materials(const aiSc
             material.shininess = assimp_shininess;
         }
 
-        MaterialID new_material_id = material_repository->insert_material(material, material_name.C_Str());
+        ResourceHandle new_material_id = resource_manager->insert<Material>(material_name.C_Str(), std::move(material));
         material_ids[i] = new_material_id;
     }
 
-    std::unordered_map<MeshID, MaterialID> mesh_to_material_map;
+    std::unordered_map<ResourceHandle, ResourceHandle> mesh_to_material_map;
     for (unsigned int i = 0; i < assimp_scene->mNumMeshes; i++)
     {
-        mesh_to_material_map.insert(std::pair<MeshID, MaterialID>(mesh_ids[i], material_ids[assimp_scene->mMeshes[i]->mMaterialIndex]));
+        mesh_to_material_map.insert(std::pair<ResourceHandle, ResourceHandle>(mesh_ids[i], material_ids[assimp_scene->mMeshes[i]->mMaterialIndex]));
     }
 
     return mesh_to_material_map;
 }
 
-std::vector<MeshID> ModelImporter::build_meshes(const aiScene* assimp_scene)
+std::vector<ResourceHandle> ModelImporter::build_meshes(const aiScene* assimp_scene)
 {
     unsigned int num_meshes = assimp_scene->mNumMeshes;
-    std::vector<MeshID> mesh_ids(num_meshes);
+    std::vector<ResourceHandle> mesh_ids(num_meshes);
 
     for (unsigned int i = 0; i < num_meshes; i++)
     {
@@ -257,7 +267,8 @@ std::vector<MeshID> ModelImporter::build_meshes(const aiScene* assimp_scene)
             indices[3 * j + 2] = face.mIndices[2];
         }
 
-        mesh_ids[i] = mesh_repository->create_mesh(vertices, normals, uvs, indices);
+        Mesh demo_mesh = Mesh(vertices, normals, uvs, indices);
+        mesh_ids[i] = resource_manager->insert<Mesh>(uuid::new_uuid(), std::move(demo_mesh));
         glCheckError();
     }
 
@@ -308,9 +319,9 @@ void ModelImporter::add_directional_light(const aiLight* light, const Entity ent
     printf("Add directional light\n");
     DirectionalLight directional_light = DirectionalLight {
         .direction = AssimpHelperFunctions::to_float3(light->mDirection),
-        .ambient = AssimpHelperFunctions::to_float3(light->mColorAmbient),
-        .diffuse = AssimpHelperFunctions::to_float3(light->mColorDiffuse),
-        .specular = AssimpHelperFunctions::to_float3(light->mColorSpecular),
+        .ambient = AssimpHelperFunctions::to_colour(light->mColorAmbient),
+        .diffuse = AssimpHelperFunctions::to_colour(light->mColorDiffuse),
+        .specular = AssimpHelperFunctions::to_colour(light->mColorSpecular),
     };
 
     world->add_component(entity, directional_light);
@@ -323,9 +334,9 @@ void ModelImporter::add_point_light(const aiLight* light, const Entity entity) c
         .constant = light->mAttenuationConstant,
         .linear = light->mAttenuationLinear,
         .quadratic = light->mAttenuationQuadratic,
-        .ambient = AssimpHelperFunctions::to_float3(light->mColorAmbient),
-        .diffuse = AssimpHelperFunctions::to_float3(light->mColorDiffuse),
-        .specular = AssimpHelperFunctions::to_float3(light->mColorSpecular),
+        .ambient = AssimpHelperFunctions::to_colour(light->mColorAmbient),
+        .diffuse = AssimpHelperFunctions::to_colour(light->mColorDiffuse),
+        .specular = AssimpHelperFunctions::to_colour(light->mColorSpecular),
     };
 
     world->add_component(entity, point_light);

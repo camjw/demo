@@ -1,8 +1,7 @@
 #ifndef DEMO_WINDOW_HPP
 #define DEMO_WINDOW_HPP
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <utils/opengl_include.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

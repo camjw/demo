@@ -10,26 +10,6 @@ Entity EntityBuilder::build()
         m_world->add_component(entity, m_transform);
     }
 
-    if (texture_set)
-    {
-        m_world->add_component(entity, m_texture);
-    }
-
-    if (material_set)
-    {
-        m_world->add_component(entity, m_material);
-    }
-
-    if (mesh_set)
-    {
-        m_world->add_component(entity, m_mesh);
-    }
-
-    if (shader_set)
-    {
-        m_world->add_component(entity, m_shader);
-    }
-
     if (camera_set)
     {
         m_world->add_component(entity, m_camera);
@@ -55,9 +35,14 @@ Entity EntityBuilder::build()
         m_world->add_component(entity, m_directional_light);
     }
 
-    if (cube_map_set)
+    if (mesh_renderer_set)
     {
-        m_world->add_component(entity, m_cube_map);
+        m_world->add_component(entity, m_mesh_renderer);
+    }
+
+    if (cube_map_renderer_set)
+    {
+        m_world->add_component(entity, m_cube_map_renderer);
     }
 
     return entity;

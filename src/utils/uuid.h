@@ -11,7 +11,7 @@ namespace uuid
     static std::uniform_int_distribution<> dis(0, 15);
     static std::uniform_int_distribution<> dis2(8, 11);
 
-    std::string new_uuid()
+    inline std::string new_uuid()
     {
         std::stringstream ss;
         int i;

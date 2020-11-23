@@ -12,19 +12,15 @@
 #include <imgui/bindings/imgui_impl_opengl3.h>
 #include <imgui/imgui.h>
 #include <maths/transform.h>
-#include <rendering/cube_map.h>
-#include <rendering/directional_light.h>
+#include <rendering/data/cube_map.h>
+#include <rendering/data/material.h>
+#include <rendering/data/shader.h>
+#include <rendering/data/texture.h>
 #include <rendering/framebuffer.h>
-#include <rendering/material.h>
-#include <rendering/point_light.h>
+#include <rendering/lighting/directional_light.h>
+#include <rendering/lighting/point_light.h>
 #include <rendering/renderbuffer.h>
-#include <rendering/shader.h>
-#include <rendering/shader_commands/shader_commands.h>
-#include <rendering/texture.h>
-#include <resources/mesh_repository.h>
-#include <resources/shader_repository.h>
-#include <resources/texture_repository.h>
-#include <scene/scene.h>
+    #include <scene/scene.h>
 #include <scene/scene_graph.h>
 #include <ui/ui_root.h>
 #include <utils/opengl_helpers.h>
@@ -51,15 +47,12 @@ private:
     void draw_skybox(const Entity entity) const;
     void process_render_commands(const Scene* scene) const;
     void resize_framebuffers();
-    glm::mat4 get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const;
+    glm::mat4 get_view_matrix(const Camera& cameraComponent, const Transform& transform) const;
 
     std::shared_ptr<Window> window;
 
     std::shared_ptr<World> world;
-    std::shared_ptr<MeshRepository> mesh_repository;
-    std::shared_ptr<TextureRepository> texture_repository;
-    std::shared_ptr<MaterialRepository> material_repository;
-    std::shared_ptr<ShaderRepository> shader_repository;
+    std::shared_ptr<ResourceManager> resource_manager;
 
     std::unique_ptr<RenderQueue> opaque_render_queue;
     std::unique_ptr<RenderQueue> transparent_render_queue;

@@ -4,7 +4,7 @@ void FirstPersonCameraSystem::update(Time time, InputState* input)
 {
     for (Entity const& entity : entities)
     {
-        CameraComponent& camera = world->get_component<CameraComponent>(entity);
+        Camera& camera = world->get_component<Camera>(entity);
         Transform& transform = world->get_component<Transform>(entity);
 
         process_keyboard(time, input, camera, transform);
@@ -14,7 +14,7 @@ void FirstPersonCameraSystem::update(Time time, InputState* input)
 }
 
 bool FirstPersonCameraSystem::process_keyboard(Time time, InputState* input,
-    CameraComponent& camera, Transform& transform)
+    Camera& camera, Transform& transform)
 {
     bool has_updated = false;
     float velocity = camera.movement_speed * time.delta_time;
@@ -64,7 +64,7 @@ bool FirstPersonCameraSystem::process_keyboard(Time time, InputState* input,
 }
 
 bool FirstPersonCameraSystem::process_mouse_movement(Time time, InputState* input,
-    CameraComponent& camera, Transform& transform)
+    Camera& camera, Transform& transform)
 {
     if (!(input->is_key_pressed(Key::LeftMouseButton)))
     {
@@ -82,7 +82,7 @@ bool FirstPersonCameraSystem::process_mouse_movement(Time time, InputState* inpu
     return true;
 }
 
-void FirstPersonCameraSystem::update_camera_vectors(CameraComponent& camera,
+void FirstPersonCameraSystem::update_camera_vectors(Camera& camera,
     Transform& transform)
 {
     EulerAngles camera_euler_angles = transform.rotation.to_euler_angles();

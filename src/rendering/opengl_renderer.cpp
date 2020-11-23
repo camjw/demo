@@ -1,4 +1,5 @@
-#include "spot_light.h"
+#include "rendering/lighting/spot_light.h"
+#include <constants/shader_constants.h>
 #include <rendering/opengl_renderer.h>
 
 OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
@@ -15,10 +16,7 @@ OpenGLRenderer::OpenGLRenderer(std::shared_ptr<DemoContext> context,
 
     glCheckError();
 
-    mesh_repository = context->get_mesh_repository();
-    texture_repository = context->get_texture_repository();
-    material_repository = context->get_material_repository();
-    shader_repository = context->get_shader_repository();
+    resource_manager = context->get_resource_manager();
 
     opaque_render_queue = std::make_unique<RenderQueue>();
     transparent_render_queue = std::make_unique<RenderQueue>();
@@ -31,9 +29,11 @@ void OpenGLRenderer::begin_draw(const Time time, const Scene* scene)
 {
     glfwPollEvents();
 
-    // Set common variables for shaders
-    // TODO: set uniform struct rather than individual params
-    shader_repository->for_each(SetShaderTime(time));
+    resource_manager->for_each<Shader>([time](Shader* shader) {
+        shader->bind();
+        shader->set_float(DEMO_CONSTANTS_TOTAL_TIME, time.total_time);
+        shader->set_float(DEMO_CONSTANTS_DELTA_TIME, time.delta_time);
+    });
 
     if (window->has_dirty_size)
     {
@@ -80,7 +80,7 @@ void OpenGLRenderer::draw_node(const SceneNode* scene_node, glm::mat4 parent_tra
 
 void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform)
 {
-    if (world->has_component<MaterialComponent>(entity) && world->has_component<MeshComponent>(entity))
+    if (world->has_component<MeshRenderer>(entity))
     {
         enqueue_mesh(entity, parent_transform);
     }
@@ -88,22 +88,14 @@ void OpenGLRenderer::draw_entity(const Entity entity, glm::mat4 parent_transform
 
 void OpenGLRenderer::enqueue_mesh(const Entity entity, glm::mat4 parent_transform)
 {
-    MaterialID material_id = world->get_component<MaterialComponent>(entity).material_id;
-    std::shared_ptr<Material> material = material_repository->get_material(material_id);
+    MeshRenderer mesh_renderer = world->get_component<MeshRenderer>(entity);
 
     RenderCommand command;
-    command.shader_id = material->shader;
-    command.material_id = material_id;
-
-    command.diffuse_texture_id = material->diffuse_texture;
-    command.specular_texture_id = material->specular_texture;
-
+    command.mesh = mesh_renderer.mesh;
+    command.material = mesh_renderer.material;
     Transform transform = world->get_component<Transform>(entity);
     glm::mat4 model_matrix = parent_transform * transform.get_model_matrix();
     command.transform = model_matrix;
-
-    MeshComponent mesh = world->get_component<MeshComponent>(entity);
-    command.mesh_id = mesh.id;
 
     opaque_render_queue->push_back(command);
 }
@@ -140,7 +132,7 @@ void OpenGLRenderer::process_render_commands(const Scene* scene) const
     int2 viewportDimensions = window->get_viewport_dimensions();
     glViewport(0, 0, viewportDimensions.x, viewportDimensions.y);
 
-    Shader* deferred_shader = shader_repository->get_shader("deferred_lighting");
+    Shader* deferred_shader = resource_manager->get<Shader>("deferred_lighting");
     deferred_shader->bind();
 
     framebuffer->bind_textures();
@@ -149,7 +141,7 @@ void OpenGLRenderer::process_render_commands(const Scene* scene) const
     deferred_shader->set_int("gAlbedoSpec", 2);
     glCheckError();
 
-    mesh_repository->get_or_create_square()->bind_and_draw();
+    resource_manager->get<Mesh>("square")->bind_and_draw();
     glCheckError();
 }
 
@@ -160,7 +152,7 @@ void OpenGLRenderer::end_draw()
 
 void OpenGLRenderer::set_camera(const Entity camera_entity)
 {
-    CameraComponent& camera = world->get_component<CameraComponent>(camera_entity);
+    Camera& camera = world->get_component<Camera>(camera_entity);
     Transform& camera_transform = world->get_component<Transform>(camera_entity);
 
     float aspect_ratio = window->get_aspect_ratio();
@@ -175,11 +167,14 @@ void OpenGLRenderer::set_camera(const Entity camera_entity)
         projection_matrix = glm::ortho(glm::radians(camera.fov), aspect_ratio, camera.near_plane, camera.far_plane);
     }
 
-    shader_repository->for_each(SetShaderProjection(projection_matrix));
-    shader_repository->for_each(SetShaderCamera(
-        camera_transform.position,
-        camera_transform.position + camera.forward,
-        get_view_matrix(camera, camera_transform)));
+    glm::mat4 view_matrix = get_view_matrix(camera, camera_transform);
+    resource_manager->for_each<Shader>([projection_matrix, camera_transform, camera, view_matrix](Shader* shader) {
+        shader->bind();
+        shader->set_mat4(DEMO_CONSTANTS_PROJECTION, projection_matrix);
+        shader->set_float3(DEMO_CONSTANTS_CAMERA_POSITION, camera_transform.position);
+        shader->set_float3(DEMO_CONSTANTS_CAMERA_FORWARD, camera_transform.position + camera.forward);
+        shader->set_mat4(DEMO_CONSTANTS_VIEW, view_matrix);
+    });
 
     is_camera_set = true;
 }
@@ -195,7 +190,7 @@ void OpenGLRenderer::draw_scene(const Time time, const Scene* scene)
     end_draw();
 }
 
-glm::mat4 OpenGLRenderer::get_view_matrix(const CameraComponent& cameraComponent, const Transform& transform) const
+glm::mat4 OpenGLRenderer::get_view_matrix(const Camera& cameraComponent, const Transform& transform) const
 {
     return glm::lookAt(
         transform.position.to_glm(),
@@ -232,7 +227,7 @@ void OpenGLRenderer::process_point_lights(const std::vector<Entity> point_lights
 {
     assert(point_lights.size() < MAX_NUM_POINT_LIGHTS && "trying to send too many point lights to GPU");
 
-    Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
+    Shader* lighting_shader = resource_manager->get<Shader>("deferred_lighting");
     lighting_shader->bind();
     lighting_shader->set_int(DEMO_NUM_ACTIVE_POINT_LIGHTS, point_lights.size());
 
@@ -249,7 +244,7 @@ void OpenGLRenderer::process_spot_lights(const std::vector<Entity> spot_lights) 
 {
     assert(spot_lights.size() < MAX_NUM_SPOT_LIGHTS && "trying to send too many spot lights to GPU");
 
-    Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
+    Shader* lighting_shader = resource_manager->get<Shader>("deferred_lighting");
     lighting_shader->bind();
     lighting_shader->set_int(DEMO_NUM_ACTIVE_SPOT_LIGHTS, spot_lights.size());
 
@@ -266,7 +261,7 @@ void OpenGLRenderer::process_directional_lights(const std::vector<Entity> direct
 {
     assert(directional_lights.size() < MAX_NUM_DIRECTIONAL_LIGHTS && "trying to send too many directional lights to GPU");
 
-    Shader* lighting_shader = shader_repository->get_shader("deferred_lighting");
+    Shader* lighting_shader = resource_manager->get<Shader>("deferred_lighting");
     lighting_shader->bind();
     lighting_shader->set_int(DEMO_NUM_ACTIVE_DIRECTIONAL_LIGHTS, directional_lights.size());
 
@@ -279,7 +274,9 @@ void OpenGLRenderer::process_directional_lights(const std::vector<Entity> direct
 
 void OpenGLRenderer::process_command(const RenderCommand& command) const
 {
-    Shader* shader = shader_repository->get_shader(command.shader_id);
+    Material* material = resource_manager->get<Material>(command.material);
+    Shader* shader = resource_manager->get<Shader>(material->shader);
+
     glm::mat3 normal_model_matrix = glm::transpose(glm::inverse(command.transform));
 
     shader->bind();
@@ -288,16 +285,16 @@ void OpenGLRenderer::process_command(const RenderCommand& command) const
     shader->set_int("material.diffuse_texture", 0);
     shader->set_int("material.specular_texture", 1);
 
-    texture_repository->get_texture(command.diffuse_texture_id)->bind(0);
-    if (command.specular_texture_id == INVALID_TEXTURE)
+    resource_manager->get<Texture>(material->diffuse_texture)->bind(0);
+    if (material->specular_texture == ResourceHandle::invalid_handle<Texture>())
     {
-        texture_repository->get_texture(command.diffuse_texture_id)->bind(1);
+        resource_manager->get<Texture>(material->diffuse_texture)->bind(1);
     }
     else
     {
-        texture_repository->get_texture(command.specular_texture_id)->bind(1);
+        resource_manager->get<Texture>(material->specular_texture)->bind(1);
     }
 
-    material_repository->get_material(command.material_id)->bind(shader);
-    mesh_repository->get_mesh(command.mesh_id)->bind_and_draw();
+    material->bind(shader);
+    resource_manager->get<Mesh>(command.mesh)->bind_and_draw();
 }

@@ -2,7 +2,7 @@
 #define DEMO_FRAMEBUFFER_H
 
 #include "renderbuffer.h"
-#include "texture.h"
+#include "rendering/data/texture.h"
 #include <glad/glad.h>
 #include <string>
 #include <unordered_map>

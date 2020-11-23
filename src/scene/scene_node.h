@@ -3,7 +3,7 @@
 
 #include "scene_id.h"
 #include <ecs/ecs.h>
-#include <rendering/mesh.h>
+#include <rendering/data/mesh.h>
 #include <vector>
 
 class Scene;

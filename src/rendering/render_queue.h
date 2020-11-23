@@ -1,22 +1,16 @@
 #ifndef DEMO_RENDER_QUEUE_H
 #define DEMO_RENDER_QUEUE_H
 
-#include "material.h"
-#include "mesh.h"
-#include "shader.h"
-#include "texture.h"
+#include "rendering/data/material.h"
+#include "rendering/data/mesh.h"
+#include "rendering/data/shader.h"
+#include "rendering/data/texture.h"
 #include <glm/mat4x4.hpp>
 
 struct RenderCommand
 {
-    MeshID mesh_id;
-
-    ShaderID shader_id;
-
-    TextureID diffuse_texture_id = 0;
-    TextureID specular_texture_id = 0;
-
-    MaterialID material_id;
+    ResourceHandle mesh;
+    ResourceHandle material;
 
     glm::mat4 transform;
 };

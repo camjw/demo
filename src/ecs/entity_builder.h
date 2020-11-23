@@ -2,17 +2,15 @@
 #define DEMO_ENTITY_BUILDER_H
 
 #include <ecs/components/camera_component.h>
+#include <ecs/components/cube_map_renderer.h>
 #include <ecs/components/hierarchy_component.h>
+#include <ecs/components/mesh_renderer.h>
 #include <ecs/components/name_component.h>
 #include <maths/transform.h>
 #include <memory>
-#include <rendering/cube_map.h>
-#include <rendering/directional_light.h>
-#include <rendering/material.h>
-#include <rendering/mesh.h>
-#include <rendering/point_light.h>
-#include <rendering/shader.h>
-#include <rendering/texture.h>
+#include <rendering/data/cube_map.h>
+#include <rendering/lighting/directional_light.h>
+#include <rendering/lighting/point_light.h>
 
 class World;
 class EntityBuilder
@@ -30,24 +28,17 @@ public:
         return this;
     }
 
-    EntityBuilder* with(MeshComponent data)
+    EntityBuilder* with(MeshRenderer data)
     {
-        m_mesh = data;
-        mesh_set = true;
+        m_mesh_renderer = data;
+        mesh_renderer_set = true;
         return this;
     };
 
-    EntityBuilder* with(MaterialComponent data)
+    EntityBuilder* with(CubeMapRenderer data)
     {
-        m_material = data;
-        material_set = true;
-        return this;
-    };
-
-    EntityBuilder* with(CubeMapComponent data)
-    {
-        m_cube_map = data;
-        cube_map_set = true;
+        m_cube_map_renderer = data;
+        cube_map_renderer_set = true;
         return this;
     };
 
@@ -58,24 +49,10 @@ public:
         return this;
     };
 
-    EntityBuilder* with(ShaderComponent data)
-    {
-        m_shader = data;
-        shader_set = true;
-        return this;
-    };
-
-    EntityBuilder* with(CameraComponent data)
+    EntityBuilder* with(Camera data)
     {
         m_camera = data;
         camera_set = true;
-        return this;
-    };
-
-    EntityBuilder* with(TextureComponent data)
-    {
-        m_texture = data;
-        texture_set = true;
         return this;
     };
 
@@ -114,28 +91,22 @@ private:
     std::shared_ptr<World> m_world;
 
     Transform m_transform;
-    TextureComponent m_texture;
-    MaterialComponent m_material;
-    MeshComponent m_mesh;
-    ShaderComponent m_shader;
-    CameraComponent m_camera;
+    Camera m_camera;
     HierarchyComponent m_hierarchy;
     PointLight m_point_light;
     NameComponent m_name;
     DirectionalLight m_directional_light;
-    CubeMapComponent m_cube_map;
+    MeshRenderer m_mesh_renderer;
+    CubeMapRenderer m_cube_map_renderer;
 
     bool transform_set = false;
-    bool texture_set = false;
-    bool material_set = false;
-    bool mesh_set = false;
-    bool shader_set = false;
+    bool mesh_renderer_set = false;
     bool camera_set = false;
     bool hierarchy_set = false;
     bool name_set = false;
     bool point_light_set = false;
     bool directional_light_set = false;
-    bool cube_map_set = false;
+    bool cube_map_renderer_set = false;
 };
 
 #endif //DEMO_ENTITY_BUILDER_H

@@ -20,9 +20,9 @@ public:
     virtual ~FirstPersonCameraSystem() { }
 
 private:
-    bool process_keyboard(Time time, InputState* input, CameraComponent& camera, Transform& transform);
-    bool process_mouse_movement(Time time, InputState* input, CameraComponent& camera, Transform& transform);
-    void update_camera_vectors(CameraComponent& camera, Transform& transform);
+    bool process_keyboard(Time time, InputState* input, Camera& camera, Transform& transform);
+    bool process_mouse_movement(Time time, InputState* input, Camera& camera, Transform& transform);
+    void update_camera_vectors(Camera& camera, Transform& transform);
 };
 
 #endif // DEMO_FIRST_PERSON_CAMERA_SYSTEM_H

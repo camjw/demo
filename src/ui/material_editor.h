@@ -7,11 +7,13 @@
 
 class MaterialEditor : public UIWidget
 {
+public:
     MaterialEditor(std::shared_ptr<World> world)
         : UIWidget()
         , world(world)
     {
     }
+    virtual ~MaterialEditor() {}
     virtual void draw() override;
 
 private:

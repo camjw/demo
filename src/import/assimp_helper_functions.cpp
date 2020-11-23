@@ -5,14 +5,14 @@ float3 AssimpHelperFunctions::to_float3(aiVector3D v)
     return float3(v.x, v.y, v.z);
 }
 
-float3 AssimpHelperFunctions::to_float3(aiColor3D c)
+colour AssimpHelperFunctions::to_colour(aiColor3D c)
 {
-    return float3(c.r, c.g, c.b);
+    return colour(c.r, c.g, c.b);
 }
 
-float3 AssimpHelperFunctions::to_float3(aiColor4D c)
+colour AssimpHelperFunctions::to_colour(aiColor4D c)
 {
-    return float3(c.r, c.g, c.b);
+    return colour(c.r, c.g, c.b, c.a);
 }
 
 quaternion AssimpHelperFunctions::to_quaternion(aiQuaternion q)

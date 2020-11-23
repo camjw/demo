@@ -1,6 +1,7 @@
 #include "first_scene.h"
+#include <ecs/components/cube_map_renderer.h>
 #include <maths/transform.h>
-#include <rendering/point_light.h>
+#include <rendering/lighting/point_light.h>
 #include <utility>
 #include <utils/opengl_helpers.h>
 
@@ -26,7 +27,7 @@ void FirstScene::on_destroy()
 void FirstScene::build_camera()
 {
     camera = world->create_entity()
-                 ->with(CameraComponent {
+                 ->with(Camera {
                      .up = float3(0.0, 1.0, 0.0),
                      .forward = float3(1.0, 0.0, 0.0).normalise(),
                  })
@@ -38,19 +39,19 @@ void FirstScene::build_camera()
     world->create_entity()
         ->with(DirectionalLight {
             .direction = float3(0.0, -5.0, 1.333).normalise(),
-            .ambient = float3(1.0, 1.0, 1.0),
+            .ambient = colour(1.0, 1.0, 1.0),
         })
         ->build();
 
     world->create_entity()
         ->with(PointLight {
-            .colour = float3(1.0, 0.0, 0.0),
+            .main_colour = colour(1.0, 0.0, 0.0),
             .constant = 0,
             .linear = 1,
             .quadratic = 0,
-            .ambient = float3(1.0, 0.0, 0.0),
-            .diffuse = float3(1.0, 0.0, 0.0),
-            .specular = float3(1.0, 0.0, 0.0),
+            .ambient = colour(1.0, 0.0, 0.0),
+            .diffuse = colour(1.0, 0.0, 0.0),
+            .specular = colour(1.0, 0.0, 0.0),
         })
         ->with (Transform {
             .position = float3(-110.0, 14.0, -41.0),
@@ -59,13 +60,13 @@ void FirstScene::build_camera()
 
     world->create_entity()
         ->with(PointLight {
-            .colour = float3(0.0, 1.0, 0.0),
+            .main_colour = colour(0.0, 1.0, 0.0),
             .constant = 0,
             .linear = 1,
             .quadratic = 0,
-            .ambient = float3(0.0, 1.0, 0.0),
-            .diffuse = float3(0.0, 1.0, 0.0),
-            .specular = float3(0.0, 1.0, 0.0),
+            .ambient = colour(0.0, 1.0, 0.0),
+            .diffuse = colour(0.0, 1.0, 0.0),
+            .specular = colour(0.0, 1.0, 0.0),
         })
         ->with (Transform {
             .position = float3(-110.0, 14.0, -41.0),
@@ -74,13 +75,13 @@ void FirstScene::build_camera()
 
     world->create_entity()
         ->with(PointLight {
-            .colour = float3(0.0, 0.0, 1.0),
+            .main_colour = colour(0.0, 0.0, 1.0),
             .constant = 0,
             .linear = 1,
             .quadratic = 0,
-            .ambient = float3(0.0, 0.0, 1.0),
-            .diffuse = float3(0.0, 0.0, 1.0),
-            .specular = float3(0.0, 0.0, 1.0),
+            .ambient = colour(0.0, 0.0, 1.0),
+            .diffuse = colour(0.0, 0.0, 1.0),
+            .specular = colour(0.0, 0.0, 1.0),
         })
         ->with (Transform {
             .position = float3(110, 16.0, 41.0),
@@ -89,13 +90,13 @@ void FirstScene::build_camera()
 
     world->create_entity()
         ->with(PointLight {
-            .colour = float3(1.0, 0.0, 1.0),
+            .main_colour = colour(1.0, 0.0, 1.0),
             .constant = 0,
             .linear = 1,
             .quadratic = 0,
-            .ambient = float3(1.0, 0.0, 1.0),
-            .diffuse = float3(1.0, 0.0, 1.0),
-            .specular = float3(1.0, 0.0, 1.0),
+            .ambient = colour(1.0, 0.0, 1.0),
+            .diffuse = colour(1.0, 0.0, 1.0),
+            .specular = colour(1.0, 0.0, 1.0),
         })
         ->with (Transform {
             .position = float3(-110.0, 16.0, 41.0),
@@ -105,8 +106,10 @@ void FirstScene::build_camera()
 
 void FirstScene::build_skybox()
 {
-    CubeMapID cloudy_sky_id = context->get_cube_map_repository()->create_cube_map("cloudy_sky", "../assets/skyboxes/cloudy_sky");
+    ResourceHandle cloudy_sky = context->get_resource_manager()->load<CubeMap>("cloudy_sky");
     skybox = world->create_entity()
-                 ->with(CubeMapComponent(cloudy_sky_id))
+                 ->with(CubeMapRenderer {
+                     .cube_map = cloudy_sky,
+                 })
                  ->build();
 }

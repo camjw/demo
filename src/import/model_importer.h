@@ -7,10 +7,7 @@
 #include <assimp/scene.h>
 #include <ecs/world.h>
 #include <memory>
-#include <resources/material_repository.h>
-#include <resources/mesh_repository.h>
-#include <resources/shader_repository.h>
-#include <resources/texture_repository.h>
+#include <resources/resource_manager.h>
 #include <scene/scene.h>
 #include <scene/scene_node.h>
 #include <string>
@@ -32,13 +29,8 @@ struct ModelImportOptions
 class ModelImporter
 {
 public:
-    ModelImporter(std::shared_ptr<MeshRepository> mesh_repository, std::shared_ptr<TextureRepository> texture_repository,
-        std::shared_ptr<MaterialRepository> material_repository, std::shared_ptr<ShaderRepository> shader_repository,
-        std::shared_ptr<World> world)
-        : mesh_repository(std::move(mesh_repository))
-        , texture_repository(std::move(texture_repository))
-        , material_repository(std::move(material_repository))
-        , shader_repository(std::move(shader_repository))
+    ModelImporter(std::shared_ptr<ResourceManager> resource_manager, std::shared_ptr<World> world)
+        : resource_manager(std::move(resource_manager))
         , world(std::move(world))
     {
     }
@@ -50,21 +42,18 @@ public:
     };
 
 private:
-    void attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<MeshID>& mesh_ids,
-        const std::unordered_map<MeshID, MaterialID>& meshes_to_materials_map) const;
+    void attach_assimp_node_to_scene(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<ResourceHandle>& mesh_ids,
+        const std::unordered_map<ResourceHandle, ResourceHandle>& meshes_to_materials_map) const;
     void update_scene_camera(const aiScene* assimp_scene, SceneNode* scene_node);
-    std::vector<MeshID> build_meshes(const aiScene* assimp_scene);
-    std::unordered_map<MeshID, MaterialID> build_materials(const aiScene* assimp_scene, const std::vector<MeshID>& mesh_ids);
+    std::vector<ResourceHandle> build_meshes(const aiScene* assimp_scene);
+    std::unordered_map<ResourceHandle, ResourceHandle> build_materials(const aiScene* assimp_scene, const std::vector<ResourceHandle>& mesh_ids);
 
-    std::shared_ptr<MeshRepository> mesh_repository;
-    std::shared_ptr<TextureRepository> texture_repository;
-    std::shared_ptr<MaterialRepository> material_repository;
-    std::shared_ptr<ShaderRepository> shader_repository;
+    std::shared_ptr<ResourceManager> resource_manager;
     std::shared_ptr<World> world;
 
     Assimp::Importer assimp_importer;
-    void populate_node(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<MeshID>& mesh_ids,
-        const std::unordered_map<MeshID, MaterialID>& meshes_to_materials_map) const;
+    void populate_node(const aiNode* assimp_node, SceneNode* scene_node, const std::vector<ResourceHandle>& mesh_ids,
+        const std::unordered_map<ResourceHandle, ResourceHandle>& meshes_to_materials_map) const;
     void build_lights(const aiScene* assimp_scene, SceneNode* scene_node);
     void add_point_light(const aiLight* light, const Entity entity) const;
     void add_directional_light(const aiLight* light, const Entity entity) const;
