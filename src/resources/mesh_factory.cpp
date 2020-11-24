@@ -14,25 +14,23 @@ ResourceHandle MeshFactory::create_mesh(
 
 Mesh* MeshFactory::get_or_create_square()
 {
-    Mesh* square_mesh = get("cube");
-    if (square_mesh != nullptr)
+    if (is_present("square"))
     {
-        return square_mesh;
+        return get("square");
     }
 
     Mesh mesh = Mesh::square();
 
-    insert("sqyare", std::move(mesh));
+    insert("square", std::move(mesh));
 
     return get("square");
 }
 
 Mesh* MeshFactory::get_or_create_cube()
 {
-    Mesh* cube_mesh = get("cube");
-    if (cube_mesh != nullptr)
+    if (is_present("cube"))
     {
-        return cube_mesh;
+        return get("cube");
     }
 
     Mesh mesh = Mesh::cube();
@@ -44,10 +42,9 @@ Mesh* MeshFactory::get_or_create_cube()
 
 Mesh* MeshFactory::get_or_create_skybox()
 {
-    Mesh* skybox_mesh = get("skybox");
-    if (skybox_mesh != nullptr)
+    if (is_present("skybox"))
     {
-        return skybox_mesh;
+        return get("skybox");
     }
 
     Mesh mesh = Mesh::skybox();

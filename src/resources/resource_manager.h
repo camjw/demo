@@ -56,7 +56,7 @@ public:
     }
 
     template <class T>
-    T* get (const std::string& name) const
+    T* get (const std::string& name)
     {
         std::type_index type_index = std::type_index(typeid(T));
         auto factory = resource_factories.find(type_index);

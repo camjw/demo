@@ -73,9 +73,22 @@ public:
         return new_resource_handle;
     }
 
-    T* get(const std::string& name) const
+    bool is_present(const std::string& name) const
     {
-        assert(name_to_id.find(name) != name_to_id.end() && "No resource with that name.");
+        return name_to_id.find(name) != name_to_id.end();
+    }
+
+    bool is_present(const ResourceHandle& id) const
+    {
+        return id_to_resource.find(id) != id_to_resource.end();
+    }
+
+    T* get(const std::string& name)
+    {
+        if (!is_present(name))
+        {
+            load(name);
+        }
 
         return id_to_resource.at(name_to_id.at(name)).get();
     }
